@@ -1,0 +1,148 @@
+EXTRA_DIST += %D%/tiger_parse.i
+
+## -------------------- ##
+## Scanner generation.  ##
+## -------------------- ##
+
+# A Flex wrapper for C++.
+FLEXXX = $(top_builddir)/build-aux/bin/flex++
+FLEXXX_IN = $(top_srcdir)/build-aux/bin/flex++.in
+
+MAINTAINERCLEANFILES += %D%/scantiger.cc
+
+EXTRA_DIST += %D%/scantiger.ll
+
+# The dependency is on flex++.in and not flex++, since flex++ is
+# regenerated at distribution time, and voids the time stamps (which
+# we don't want!).
+%D%/scantiger.cc: %D%/scantiger.ll $(FLEXXX_IN)
+	$(AM_V_GEN)mkdir -p $(@D)
+	$(AM_V_at)rm -f $@
+	$(AM_V_at)$(MAKE) $(AM_MAKEFLAGS) $(FLEXXX)
+# Guarantees atomic generation of the output.
+	$(AM_V_at)$(FLEXXX) -r src -- $< $@ $(FLEXXXFLAGS)
+
+## ------------------- ##
+## Parser generation.  ##
+## ------------------- ##
+
+# A Bison wrapper for C++.
+BISONXX = $(top_builddir)/build-aux/bin/bison++
+BISONXX_IN = $(top_srcdir)/build-aux/bin/bison++.in
+BISONXXFLAGS =					\
+  $(if $(V:0=),--verbose)
+AM_BISONFLAGS =					\
+  --report=all
+
+# We do not use Automake features here.
+SOURCES_PARSETIGER_YY =				\
+  %D%/location.hh				\
+  %D%/parsetiger.cc				\
+  %D%/parsetiger.hh				\
+  %D%/position.hh
+BUILT_SOURCES += $(SOURCES_PARSETIGER_YY)
+
+# Ship %D%/stack.hh only if GLR is disabled, as Bison does not
+# generate this file for GLR parsers.
+dist-hook: dist-hook-parse
+dist-hook-parse:
+	@grep '%glr-parser' $(srcdir)/%D%/parsetiger.yy >/dev/null \
+	  || cp -p $(srcdir)/%D%/stack.hh $(distdir)/src/parse/
+
+# Compile the parser and save cycles.
+# This code comes from "Handling Tools that Produce Many Outputs",
+# from the Automake documentation.
+EXTRA_DIST +=					\
+  %D%/parsetiger.stamp			\
+  %D%/parsetiger.yy
+# The dependency is on bison++.in and not bison++, since bison++ is
+# regenerated at distribution time, and voids the time stamps (which
+# we don't want!).
+%D%/parsetiger.stamp: %D%/parsetiger.yy $(BISONXX_IN)
+	$(AM_V_GEN)mkdir -p $(@D)
+	$(AM_V_at)rm -f $@ $@.tmp
+	$(AM_V_at)echo '$@ rebuilt because of: $?' >$@.tmp
+	$(AM_V_at)$(MAKE) $(BISONXX)
+	$(AM_V_at)$(BISONXX) $(BISONXXFLAGS)	\
+	  -r $(srcdir)/src			\
+	  --					\
+	  $< $(srcdir)/%D%/parsetiger.cc	\
+	  $(AM_BISONFLAGS) $(BISONFLAGS)
+	$(AM_V_at)mv -f $@.tmp $@
+
+## If Make does not know it will generate in the srcdir, then when
+## trying to compile from *.cc to *.lo, it will not apply VPATH
+## lookup, since it expects the file to be in builddir.  So *here*,
+## make srcdir explicit.
+$(addprefix $(srcdir)/, $(SOURCES_PARSETIGER_YY)): %D%/parsetiger.stamp
+	$(AM_V_GEN)if test -f $@; then :; else	\
+	  rm -f $<;				\
+	  $(MAKE) $(AM_MAKEFLAGS) $<;		\
+	fi
+
+# We tried several times to run make from ast/ to build position.hh and
+# location.hh.  Unfortunately, because of different, but equivalent,
+# paths, BSD Make was unable to build them.  The following hook is
+# here to address this.
+.PHONY: generate-parser
+generate-parser: $(SOURCES_PARSETIGER_YY)
+
+CLEANFILES += %D%/prelude.cc
+%D%/prelude.cc: $(top_srcdir)/data/prelude.tih
+	$(AM_V_GEN)$(AWK)						\
+	   'BEGIN {							\
+	     print("#include \"parse/tiger-parser.hh\"");		\
+	     print("");							\
+	     print("namespace parse");					\
+	     print("{");						\
+	     print("  const char* TigerParser::prelude () const");	\
+	     print("  {");						\
+	     print("    return");					\
+	   }								\
+	   /^\#(<<|>>)/ {						\
+	     next;							\
+	   }								\
+	   {								\
+	     gsub(/[\\\"]/, "\\\\&", $$0);				\
+	     print("      \"" $$0 "\\n\"");				\
+	   }								\
+	   END {							\
+	     print("    ;");						\
+	     print("  }");						\
+	     print("} // namespace parse");				\
+	   }'								\
+	  $(top_srcdir)/data/prelude.tih >$@.tmp
+	$(AM_V_at)mv $@.tmp $@
+
+
+## ---------- ##
+## libparse.  ##
+## ---------- ##
+
+src_libtc_la_SOURCES +=				\
+  $(SOURCES_PARSETIGER_YY)			\
+  %D%/fwd.hh					\
+  %D%/libparse.hh %D%/libparse.cc		\
+  %D%/metavar-map.hh %D%/metavar-map.hxx	\
+  %D%/scantiger.hh %D%/scantiger.cc		\
+  %D%/tiger-parser.hh %D%/tiger-parser.cc	\
+  %D%/tweast.hh %D%/tweast.cc %D%/tweast.hxx
+
+nodist_src_libtc_la_SOURCES +=			\
+  %D%/prelude.cc
+
+## ------- ##
+## Tests.  ##
+## ------- ##
+
+check_PROGRAMS +=					\
+  %D%/test-parse				\
+  %D%/test-tweast
+
+# Find the prelude.
+%C%_test_parse_CPPFLAGS = $(AM_CPPFLAGS) -DPKGDATADIR=\"$(pkgdatadir)\"
+%C%_test_parse_LDADD = src/libtc.la
+%C%_test_tweast_LDADD = src/libtc.la
+
+
+TASKS += %D%/tasks.hh %D%/tasks.cc

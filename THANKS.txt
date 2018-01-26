@@ -1,0 +1,221 @@
+This package was written by and with the assistance of
+
+* Akim Demaille                akim@lrde.epita.fr
+  - Project inception.
+  - Intensive maintenance of the whole compiler.
+  - Manipulation of concrete syntax improved thanks to parser metavariables.
+  - Sixth redesign of the AST (can be an expression or a list of
+    declarations; creation of a _main function in the former case).
+  - Conversion to GLR parser.
+  - Concrete syntax desugaring within the parser.
+
+* Alain Vongsouvanh            vongso_a@epita.fr
+  - Type-checking of object constructions.
+
+* Alexandre Duret-Lutz         adl@lrde.epita.fr
+
+* Alexis Brouard               brouar_a@epita.fr
+  - Portability of tc-check to NetBSD.
+
+* Arnaud Fabre                 fabre_a@epita.fr
+  - "import" support.
+  - Disjunctive tasks.
+
+* Ashkan Kiaie-Sandjie         kiaies_a@epita.fr
+  - Add LLVM debug information.
+
+* Axel Manuel                  manuel_c@epita.fr
+
+* Benoît Perrot                benoit@lrde.epita.fr
+  - Extensive documentation.
+  - Redesign of the Task system.
+  - Design and implementation of target handling.
+  - Deep clean up of every single module.
+  - Third redesign of the AST, and actually, automatic generation of the AST.
+  - IA-32 back-end.
+  - Dissociate generation of frame allocation/deallocation statements
+    from generation of procedure entry/exit statements in code
+    generators.
+  - Move general tools into lib/ and enforce the STL coding style for these.
+
+* Benoît Sigoure               tsuna@lrde.epita.fr
+  - Rename the visitors using imperative class names.
+  - Coding style clean-up.
+  - Renaming from Tiger to Leopard (through codenamize).
+  - Access to the concrete-syntax rewriter from the Tiger language.
+
+* Benoît Tailhades             tailha_b@epita.fr
+  - Tiger Interpreter in Python.
+  - Binding of object constructions.
+
+* Cédric Bail                  bail_c@epita.fr
+  - Initial escaping static link computation framework.
+
+* Christophe Duong             chris@epita.fr
+  - symbol::Symbol simplification.
+  - Refactoring of maps.
+
+* Clément Vasseur              clement.vasseur@lrde.epita.fr
+  - Debian packaging.
+
+* Cyprien Orfila               orfila_c@epita.fr
+  - First draft on a functional stage.
+
+* Daniel Gazard                gazard_d@epita.fr
+  - Initial framework from LIR to MIPS.
+
+* Fabien Ouy                   fabien@epita.fr
+  - String parsing refactoring.
+  - Conversion to boost::shared_ptr.
+  - Seventh AST refactoring (use VarDecs for formal parameters instead of
+    Fields).
+
+* Etienne Renault	        renault@lrde.epita.fr
+
+* Francis Maes                 francis@lrde.epita.fr
+  - Generation of static C++ Tree As Types.
+
+* Francis Visoiu Mistrih       francis@epita.fr
+  - Implementation of a new stage for LLVM IR generation (TC-L).
+
+* Gilles Walbrou                walbro_g@epita.fr
+  - Completion of misc::xalloc.
+
+* Guillaume Duhamel            duhame_u@epita.fr
+  - Unify dev/ with Gostai's version.
+
+* Guillaume Marques            marque_o@epita.fr
+  - Replacement of lists with vectors.
+  - Cleanup of the documentation and removal of its warnings.
+
+* Jérémie Simon                simon_j@epita.fr
+
+* Julien Roussel               spip@lrde.epita.fr
+  - "let" desugaring.
+  - A lot of memory leak hunting.
+
+* Julien Grall                  julien.grall@gmail.com
+  - Support for TC-0 tarballs in tc-check.
+
+* Laurent Gourvénec             laurent.gourvenec@epita.fr
+  - FreeBSD support.
+
+* Léo Ercolanelli               ercola_l@epita.fr
+
+* Loïc Banet                    banet_l@epita.fr
+  - Introduction to C++17.
+
+* Michaël Cadilhac              michael.cadilhac@lrde.epita.fr
+  - Conversion to MonoBurg.
+
+* Matthieu Simon                simon_f@epita.fr
+
+* Moray Baruh                   moray.baruh@epita.fr
+  - First draft on a functional stage.
+
+* Nicolas Burrus
+  - Generation of a Swig bindings of the tc libraries to Python.
+  - Implementation of a tc shell.
+
+* Nicolas Pouillard            pouill_n@lrde.epita.fr
+  - Massive revisions of studentize and tc-check.
+  - Fourth AST generation change: conversion to using YAML.
+  - Massive coding style normalizations.
+  - VCS support.
+
+* Nicolas Teck                 teck_n@epita.fr
+  - Conversion to BOOST_FOREACH.
+  - Many tests for the Bistromatig.
+
+* Pablo Oliveira               pablo.oliveira@prism.uvsq.fr
+  - Mandelbrot set plotting test and mini-morpho test correction.
+
+* Pierre-Louis Dagues          dagues_p@epita.fr
+  - Redesign of the Pruner.
+
+* Pierre-Yves Strub            strub_p@epita.fr
+  - Second redesign of the AST.
+  - Second redesign of Symbol.
+
+* Pierre De Abreu              deabre_p@epita.fr
+
+* Quôc Peyrot                  chojin@lrde.epita.fr
+  - Initial Task implementation.
+
+* Raphaël Poss                 r.poss@online.fr
+  - Conversion of AST to using pointers instead of references.
+  - Breakup between interfaces and implementations (.hh only -> .hxx, .cc)
+  - Miscellaneous former TODO items.
+  - Implementation of reference counting for Tree.
+
+* Razik Yousfi                 yousfi_r@epita.fr
+  - Parsing and abtract syntax of objects constructions.
+
+* Roland Levillain             roland@lrde.epita.fr
+  - Intensive maintenance of the whole compiler.
+  - Maintenance of the package (SWIG, statistics, generators,
+    studentification etc.).
+  - Revival of the overloading support.
+  - Fifth AST refactoring (multiple inheritance for Typable,
+    TypeConstructor, etc.).
+  - AST cloning and desugaring.
+  - Conversion to boost::variant.
+  - Conversion to Boost Graph Library.
+  - Dynamic array bounds checking.
+  - Inline expansion of function bodies.
+  - misc::variant.
+  - Revamp the TCSH-based Tiger Interpreter.
+  - Parsing and abtract syntax of objects constructions.
+  - Desugaring of object constructions.
+  - Concrete-syntax rewrite engine.
+  - The Simple Tiger Compiler (stc).
+  - The Bistromatig.
+  - Conversion to C++ 2011.
+
+* Robert Anisko                anisko_r@epita.fr
+
+* Sarasvati Moutoucomarapoulé  moutou_s@epita.fr
+  - First draft on a functional stage.
+
+* Sébastien Broussaud          brouss_s@epita.fr
+  - Escapes torture tests.
+
+* Sébastien Piat               spiat@lrde.epita.fr
+  - Support for overload and object at the same time.
+
+* Stéphane Molina              molina_s@epita.fr
+  - Configuration files in tc-check.
+
+* Théophile Ranquet            ranquet@lrde.epita.fr
+  - Stylistic changes.
+
+* Thierry Géraud               theo@epita.fr
+  - Initial idea for visitors.
+  - Initial idea for tasks.
+  - Initial implementation of AST.
+  - Initial implementation of Tree.
+
+* Valentin David               david_v@epita.fr
+  - Some additional tests.
+
+* Yann Grandmaître             grandm_y@epita.fr
+  - Use boost::lexical_cast for integer-to-string conversions.
+  - Clean up lib/misc/.
+  - Tiger Interpreter in C++.
+  - Support for the Boehm-Demers-Weiser garbage collector on IA-32.
+  - Support for TC-0 tarballs in tc-check.
+
+* Yann Popo                    popo_y@epita.fr
+  - Implementation of the Timer class.
+
+* Yann Régis-Gianas            yann@lrde.epita.fr
+  - Reimplementation of graphs.
+
+Copyright (C) 2004-2017  LRDE.
+
+--
+Local Variables:
+mode: text
+coding: utf-8
+ispell-local-dictionary: "american"
+End:

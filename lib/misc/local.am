@@ -1,0 +1,56 @@
+## --------- ##
+## libmisc.  ##
+## --------- ##
+EXTRA_DIST += %D%/tiger_misc.i
+
+noinst_LTLIBRARIES = %D%/libmisc.la
+%C%_libmisc_la_SOURCES =                                        \
+  %D%/fwd.hh                                                    \
+  %D%/libmisc.hh                                                \
+  %D%/algorithm.hh %D%/algorithm.hxx                            \
+  %D%/contract.hh %D%/contract.cc                               \
+  %D%/deref.hh %D%/deref.hxx %D%/deref.cc                       \
+  %D%/error.hh %D%/error.hxx %D%/error.cc                       \
+  %D%/escape.hh %D%/escape.hxx %D%/escape.cc                    \
+  %D%/file-library.hh %D%/file-library.hxx %D%/file-library.cc  \
+  %D%/flex-lexer.hh                                             \
+  %D%/graph.hh %D%/graph.hxx                                    \
+  %D%/indent.hh %D%/indent.cc                                   \
+  %D%/map.hh %D%/map.hxx                                        \
+  %D%/endomap.hh %D%/endomap.hxx                                \
+  %D%/pair.hh %D%/pair.hxx                                      \
+  %D%/ref.hh %D%/ref.hxx                                        \
+  %D%/select-const.hh                                           \
+  %D%/set.hh %D%/set.hxx                                        \
+  %D%/separator.hh %D%/separator.hxx                            \
+  %D%/symbol.hh %D%/symbol.hxx %D%/symbol.cc                    \
+  %D%/timer.hh %D%/timer.hxx %D%/timer.cc                       \
+  %D%/unique.hh %D%/unique.hxx                                  \
+  %D%/variant.hh %D%/variant.hxx %D%/vector.hh %D%/vector.hxx   \
+  %D%/xalloc.hh %D%/xalloc.hxx
+
+
+%C%_libmisc_la_LDFLAGS = $(BOOST_SYSTEM_LDFLAGS) $(BOOST_FILESYSTEM_LDFLAGS)
+%C%_libmisc_la_LIBADD  = $(BOOST_SYSTEM_LIBS)    $(BOOST_FILESYSTEM_LIBS)
+
+
+## ------- ##
+## Tests.  ##
+## ------- ##
+
+check_PROGRAMS +=                               \
+  %D%/test-deref                                \
+  %D%/test-error                                \
+  %D%/test-escape                               \
+  %D%/test-graph                                \
+  %D%/test-indent                               \
+  %D%/test-separator                            \
+  %D%/test-scoped                               \
+  %D%/test-symbol                               \
+  %D%/test-timer                                \
+  %D%/test-unique                               \
+  %D%/test-variant                              \
+  %D%/test-xalloc
+%C%_test_variant_CXXFLAGS = -Wno-unused
+
+LDADD = %D%/libmisc.la

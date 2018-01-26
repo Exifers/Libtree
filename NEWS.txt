@@ -1,0 +1,2006 @@
+New in 1.63, 2018-01-25
+
+* More C++17 features
+  - use structured bindings
+  - use std::variant instead of boost::variant
+  - use class template argument deduction
+  - use if(init; condition)
+
+* General Mainenance
+  - swap callee-save and caller-save order
+  - add desugar implementation for ArrayExp during TC-O
+  - replace enums with enum classes
+  - ensure _main existence and correct prototype in the AST
+  - remove MetavarExp and Metavariable AST nodes
+  - use nested namespaces
+  - replace some raw pointers with unique_ptr or shared_ptr
+  - add alternative rewrite_program implementation
+
+New in 1.62, 2017-06-26
+
+* General Maintenance
+  - fix typos 
+
+New in 1.61, 2017-06-05
+
+* General Maintenance
+
+New in 1.60, 2017-05-19
+
+* General Maintenance
+  - regenerate backends
+  - clean code
+
+New in 1.59, 2017-05-12
+
+* General Maintenance
+  - tests: remove duplicate tests
+  - fix typos
+  - fix function call conventions
+  - generalize registers to multiple targets
+  - clean code
+
+New in 1.58, 2017-04-12
+
+* General Maintenance
+  - style: put tree constructors in .cc
+  - fix typos
+  - cleanify code 
+
+New in 1.57, 2017-03-03
+
+* General Maintenance
+
+New in 1.56, 2017-02-13
+
+* Fix documentation
+
+New in 1.55, 2017-02-02
+
+* General Maintenance
+  - Remove unnecessary/deprecated Fixmes
+  - Clean code
+  - use more c++11 features
+
+New in 1.54, 2017-01-24
+
+* Style and General maintenance
+  - Add maintainers
+  - Propagate use of pragma once
+  - Add missing override
+  - Remove comnination between override and virtual
+  - Use more STL algorithms
+  - Add useful warning
+  - Modernize tc-a
+  - Fix typos
+  - Propagate use of vector rather than lists
+  - Add more tests
+  - Add namespace indication at the end of scope
+  - Prefer nullptr to NULL
+  - Remove useless implementations thanks to =default
+  - Don't repeat the same access qualifier
+  - Tools to replace Fixmes by warnings
+
+* Inline
+  - More verification about return type
+
+* Object
+ - Clarify comments
+ - Fix use of self inside of functions
+
+* LLVM
+  - Improve escape-collector
+  - Do not construct type when no record is set
+  - Don't include runtime in the distribution
+  - Use native types
+  - Remove useless return values
+  - More explanation about the translator
+  - Fix compatibility issues with 3.9
+
+* Type
+  - Do not provide files to student before needed
+  - Simplify record-exp
+  - Improve type_set
+  - Move constructor and destructor in implementation files
+
+* Binder
+  - Fix displays
+  - Adjust bindings for vardecs
+  - Update definition for self
+
+* C++1z
+  - Add comments to suggest how to use new features
+
+New in 1.53, 2016-06-24
+
+* General maintenance
+
+New in 1.52, 2016-06-06
+
+* General maintenance
+
+New in 1.51, 2016-05-30
+
+* Remove useless typedef
+
+New in 1.50, 2016-05-19
+
+* General maintenance
+   - Simplify code
+   - Updates according to coding-style
+   - Remove useless hidden block
+   - Simplify type checker for classes
+   - Update llvm dependencies to please gcc
+
+New in 1.49, 2016-05-03
+
+* General maintenance of LLVM
+
+New in 1.48, 2016-04-18
+
+* General maintenance
+  - replace list by vector int type/class
+  - Ajust given code
+  - Remove nested annotations
+
+New in 1.47, 2016-04-08:
+
+* Add support for LLVM
+  - add llvm translate module
+  - replace the dump method with a visitor
+  - add a record_type to the Nil type
+  - add --llvm-runtime-display and --llvm-display
+
+* General Maintenance
+  - arm: fix dependencies and use correct cross compiler
+  - llvm: require llvm-3.8
+
+
+New in 1.46, 2016-03-07:
+
+* General Maintenance
+
+  - Add missing FIXMEs
+
+New in 1.45, 2016-02-18:
+
+* General Maintenance
+
+  - Propagate changes for new version of Havm and Monoburg
+  - Remove useless FIXME
+
+New in 1.44, 2016-02-05:
+
+* General Maintenance
+
+  - Generalize use of pragma once
+  - Support for boost 1.58
+  - Use `unique_ptr` instead of `auto_ptr`
+  - Adjust compatibility with gcc 5
+  - Adjust compatibility with flex 2.6
+  - Fix typos
+  - Remove useless declarations
+  - Start to promote C++14
+
+* Use type alias template in all the visitors
+
+  - End the work started at 1.39 before the new
+    release for students.
+
+* Finalize integration with ARM
+
+* Compatibility with overload and object
+
+   - Support for bindings
+   - Support for type checking
+   - Support for desugar and renamer
+   - Tests
+
+New in 1.43, 2015-06-26:
+
+* Fix error when computing object type inside ifexp
+
+* Update comments to fit iplemntation
+
+New in 1.42, 2015-06-05:
+
+* Fix pruning of unused function declarations
+
+* Add tests for bounds-checking
+
+New in 1.41, 2015-05-27:
+
+* Maintenance for arm backend
+
+New in 1.40, 2015-05-25:
+
+* No significant changes 
+
+New in 1.39, 2015-04-30:
+
+* Start upgrading visitor
+
+  Use a type alias template to shorten type names. Nonetheless
+  since it may lead to conflicts with students codes, it's just
+  an introduction.
+
+* Fix check routines
+
+  - Fix marks for studistcheck
+  - Fix distcheck
+
+New in 1.38, 2015-03-19:
+
+* Support Python 3
+
+  Fix compatibility with python 3.
+
+* Update pretty printer
+
+  Print attributes bindings.
+
+New in 1.37, 2015-02-26:
+
+* More targets
+
+  - Clean ia32, mips target files
+  - Add arm backend files
+  - Initializer lits for cpu class
+
+New in 1.36, 2015-02-12:
+
+* More C++17 features
+
+  - More uses of Boost.FileSystem's path.
+
+New in 1.35, 2015-02-04:
+
+* More C++11/14 features
+
+  - type aliases with 'using';
+  - moving away from std::list to promote std::vector;
+  - misc::variant is now always variadic, implemented with variadic
+    templates instead of dark magic incantations with Boost.Preprocessor.
+
+* Bounds Checking
+
+  The official name is 'bounds checking', not 'bound checking'.  So
+  everything was renamed to include that plural.
+
+* Simpler Build System
+
+  The build system was simplified to be both simpler and faster: we no
+  longer build local libraries for the modules, rather object files
+  are directly linked together into libtc.
+
+* Safer and Faster Build System
+
+  We also have reduced the number of Makefiles to... one.  This is by
+  far the best approach to development.  Have a look at this:
+  <http://aegis.sourceforge.net/auug97.pdf>.
+
+* Compilable Code with Gaps
+
+  The code delivered to students now compiles cleanly.
+
+* More C++17 features
+
+  Some libraries, such as Boost.Optional, Boost.ProgramOptions, and
+  Boost.FileSystem, are expected to be adopted by the forthcoming C++
+  standard.  As a consequence, we started to use them liberally,
+  instead of alternative implementations (e.g., argp is no longer used
+  at all for command line option processing).
+
+
+
+New in 1.34, 2014-02-17:
+
+* Even more C++ 2011 features
+
+  The Tiger compiler uses some more features from the C++ 2011
+  ISO/IEC standard:
+
+  - (standard) smart pointers (std::unique_ptr, std::shared_ptr);
+  - general-purpose initializer lists;
+  - lambda expressions;
+  - explicit overrides;
+  - template aliases;
+  - new function declarator syntax;
+  - delegating constructors;
+  - non-static data member initializers;
+  - inherited constructors.
+
+  These changes require at least g++ 4.8 or clang++ 3.3.
+
+* Moved to using Bison 3
+
+  A special version of Bison 3 is required to build the parser.
+
+* C++ scanner
+
+  The scanner has been turned into a C++ class, still generated by
+  Flex.
+
+* ast::ObjectVisitor
+
+  A visitor performing default traversal of object nodes,
+  ast::ObjectVisitor, has been introduced.
+
+* Allow `nil' as valid value for objects
+
+  Objects (class instances) can now be initialized to `nil' or
+  assigned `nil', like records.
+
+* Repaired TCSH
+
+  TCSH was broken due to SWIG 2 not understanding C++ 2011 constructs.
+  These constructions have been hidden to SWIG so that TCSH can be
+  built again.
+
+* Style
+
+  Many stylistics changes have been performed, mainly to match the
+  EPITA Coding Style.
+
+
+
+New in 1.33, 2013-02-11:
+
+* Maintenance release
+
+  More test cases, more documentation and tools to manage the test
+  suite, some bug fixes, some updates to catch up with recent versions
+  of tools, minor improvements, and various stylistic changes
+  (especially with respect to spacing).
+
+* More C++ 2011 features
+
+  Explicit template instantiation declarations are introduced to
+  replace the ad hoc mechanism used so far, based on *.hcc files
+  that were included once.
+
+
+
+New in 1.32, 2012-01-27:
+
+* Text files renamed as *.txt.
+
+  This enables more features from tools (such as Mac OS X's Finder and
+  so forth).
+
+* Fixed location handling in the scanner/parser.
+
+  The new scheme (make_SYMBOL) broke the transmission of the current
+  location from the parser to the scanner (via yylloc).  We actually
+  had two "current" locations: the scanner's and the parser's.  Only
+  the latter was properly initialized (with the current file name).
+  "Fortunately" the standard default constructor also made the
+  scanner's location work properly wrt lines and columns, but, of
+  course, had an empty file name.
+
+  The TigerParser featured a useless location_ member.  We now use it
+  to exchange the current location betwenn the parser and the scanner.
+
+  To summarize:
+
+  - TigerParser::location_ is now the current (scanner and parser)
+    location;
+
+  - TigerParser::parse_ initializes this location with the right file
+    name;
+
+  - the parser no longer needs to initialize its $@;
+
+  - the scanner no longer uses a (static) variable loc, but
+    tp.location_, tp being the TigerParser, provided to it via %param.
+
+* Better support for x86-64 architectures
+
+* Improved support for clang
+
+  The clang C and C++ front ends to the LLVM infrastructure are better
+  supported.  The only real limitation is now the Argp library, which
+  is not compatible with the C99 standard and must be compiled using a
+  C89 compiler (using option `-std=c89' or `-std=gnu89').
+
+* C++ 2011 features
+
+  The Tiger compiler uses some new features from the latest C++
+  ISO/IEC standard, including:
+
+  - explicitly defaulted and deleted functions;
+  - consecutive right angle brackets allowed in templates;
+  - auto-typed variables;
+  - template metaprogramming traits provided by the standard library;
+  - the `nullptr' literal constant;
+  - range-based for-loops (``for (type val : container) ...'').
+
+  The current changes are compatible with g++ 4.6 and clang 3.0.
+
+
+
+New in 1.31, 2011-01-30:
+
+* Style changes for inheritance and constructors.
+
+  Instead of
+
+    class Foo
+      : public Bar,
+        public Baz
+    {
+      Foo()
+        : Bar(),
+          Baz()
+      { }
+    };
+
+  write
+
+    class Foo
+      : public Bar
+      , public Baz
+    {
+      Foo()
+        : Bar()
+        , Baz()
+      {}
+    };
+
+* Style change in #include.
+
+  When used with double-quotes, the included header is looked-up for
+  relatively to the including file.  This is not how we use #include,
+  since we all qualify our included files.  Hence, for consistency with
+  the semantics and for safety, convert to using <>.
+
+
+
+New in 1.30, 2011-01-13:
+
+* Moved to using Bison's api.tokens.prefix
+
+  Instead of:
+
+    %token TOK_STRING "string"
+
+  and using TOK_STRING in the grammar, we now use:
+
+    %define api.tokens.prefix "TOK_"
+    %token STRING "string"
+
+  and use STRING in the grammar, but still TOK_STRING elsewhere (i.e.,
+  the token enumeration generated in the header still defines
+  TOK_STRING, not STRING).
+
+* Moved to using Bison's %param
+
+  Instead of:
+
+    %parse-param { ::parse::TigerParser& tp }
+    %lex-param   { ::parse::TigerParser& tp }
+
+  we now use:
+
+    %param { ::parse::TigerParser& tp }
+
+* Moved to using Bison's named references
+
+  Instead of:
+
+    "for" escaping ID ":=" exp "to" exp "do" exp
+     {
+       $$ = new ast::ForExp (@$,
+                             new ast::VarDec (@3, $3, $2, 0, $5),
+                             $7, $9);
+     }
+
+  we now use:
+
+    "for" escaping ID[var] ":=" exp[lo] "to" exp[hi] "do" exp[body]
+     {
+       $$ = new ast::ForExp (@$,
+                             new ast::VarDec (@var, $var, $escaping, 0, $lo),
+                             $hi, $body);
+     }
+
+* Moved to using Bison's make_SYMBOL functions
+
+  By specifying "%define lex_symbol", we can change the scanner to use
+  a type-safe interface: instead of handling the tokens in three parts
+  (the return value is the type, the incoming arguments yylval and
+  yylloc for the semantic value and the location), return an object of
+  the type symbol_type with aggregates these three components).
+
+  Instead of:
+
+    {number}  {
+          yylval->ival = strtol (yytext, 0, 0);
+          return parse::parser::token::INT;
+    }
+
+  we now use:
+
+    {number}  return parse::parser::make_INT(strtol (yytext, 0, 0), loc);
+
+  It is now impossible to return a INT, and yet assign the wrong
+  semantic value.  Using some macro, the scanner can be reduced to:
+
+    {number}  return TOKEN_VAL(INT, strtol (yytext, 0, 0));
+
+* Moved to using Bison's variant interface
+
+  Instead of:
+
+    %union {
+      int ival;
+      std::string* sval;
+    };
+    %token <str>    STRING "string"
+    %token <ival>   INT    "integer"
+
+  we now use:
+
+    %token <std::string>    STRING "string"
+    %token <int>            INT    "integer"
+
+  and use genuine objects, instead of pointers to objects.  Change the
+  scanner accordingly.
+
+* Moved to using Automake 1.11's silent-rules
+
+  By default, running "make" no longer displays the (longish)
+  compilation commands.  Rather, it displays:
+
+    CXXLD  transform/libtransform.la
+    CXX    astclone/tasks.o
+    CXX    overload/tasks.o
+    CXX    desugar/tasks.o
+    CXX    inlining/tasks.o
+    CXXLD  tc
+
+  Errors and warnings are therefore much easier to see.  If you need a
+  verbose run, use "make V=1".  See "Silent rules" in the Automake
+  documentation for more.
+
+* Avoid recursive Makefile.am's
+
+  Since "Recursive Makefiles are considered harmful" (they hide
+  dependencies, they hinder performances by preventing concurrent
+  compilation in nested directories, they force Make to read large
+  repetitive files instead of a larger but unique one), nested
+  Makefiles have been replaced by "local.mk" files.  These are
+  included by the parent Makefile, which therefore yield to a single
+  Makefile in the end.
+
+
+
+New in 1.29, 2010-01-15:
+
+* Fix a bug in unique objects' pretty-printer
+
+* More developer documentation on the distribution process
+
+
+
+New in 1.28, 2010-01-11:
+
+* Maintenance release
+
+  Bug fixes, updates to catch up with modern tools, minor
+  improvements, aesthetic changes.
+
+  The repository has also been converted to Git.
+
+
+
+New in 1.27, 2009-02-27:
+
+* Support for the Boehm-Demers-Weiser Garbage Collector on IA-32
+
+  On IA-32, option `--garbage-collection' generates code relying on
+  the Boehm-Demers-Weiser garbage collector for memory management
+  (see http://www.hpl.hp.com/personal/Hans_Boehm/gc/).  Such code is
+  to be linked against the garbage collector's library
+  (gcc -lgc out.s).
+
+
+
+New in 1.26, 2009-01-16:
+
+* Tiger Interpreter in C++
+
+  In addition to the TCSH-based Tiger Interpreter in Python, an
+  interpreter written in C++ is available.  It uses either HAVM, the
+  MIPS back end (and Nolimips) or the IA-32 back end (and GCC).
+
+* The Bistromatig
+
+  The project features a large example of code written in Tiger, the
+  Bistromatig, an arbitrary-radix infinite-precision calculator.
+
+
+
+New in 1.25, 2008-05-19:
+
+* All escape sequences in literal strings are compatible with the GNU Assembler
+
+
+
+New in 1.24, 2008-03-10:
+
+* No significant change.
+
+
+
+New in 1.23, 2008-02-25:
+
+* misc::unique<T, C>, a generalization of misc::symbol
+
+* Use a new set of Autoconf macros for the Boost libraries by Benoît Sigoure
+
+* Merge more code with Gostai's code base w.r.t. code generators
+
+
+
+New in 1.22, 2007-12-10:
+
+* Concrete-syntax run-time program transformations
+
+  A new module, namely `transform', provides rewriting services to the
+  compiler.  Rewrite rules are expressed using concrete syntax.  Most
+  of the current services are directly exposed through the language,
+  using the `rule' keyword.
+
+* Factor some code using BOOST_FOREACH and boost::lexical_cast
+
+* Miscellaneous renaming, mostly in lib/misc/.
+
+
+
+New in 1.21, 2007-07-04:
+
+* Object desugaring
+
+  Object desugaring is working, though the implementation needs
+  some refactoring.
+
+* TWEASTs embedded in TWEASTs
+
+  Allow a TWEAST to carry other TWEASTs as metavariables.  Such a
+  structure is like a tree, which must be ``flattened'' before the
+  parsing.  This feature is useful to build complex TWEASTs.  For
+  instance, one can populate a TWEAST ``non linearly'' (reserving a
+  slot for a TWEAST that will be filled later).
+
+
+
+New in 1.20, 2007-06-12:
+
+* Some more (little) work on object desugaring, with no user-visible changes
+
+
+
+New in 1.19, 2007-06-06:
+
+* First step towards object desugaring
+
+  The option --object-desugar can translate some object constructs
+  into plain Tiger.  Method calls and accesses to attributes are not
+  handled yet, though.
+
+
+
+New in 1.18, 2007-05-15:
+
+* No significant change.
+
+
+
+New in 1.17, 2007-04-27:
+
+* Improve the type-checking of types and class definitions.
+
+  object::TypeChecker now allows the use of every type defined in a
+  block of types from any location of this block (for instance, create
+  an object of a class defined later, in the same block). The
+  invariance of methods is checked.
+
+
+
+New in 1.16, 2007-04-23:
+
+* Object-aware type-checking.
+
+  The visitor object::TypeChecker allows the computation of types on
+  an AST with objects.
+
+* Enforce STL coding style in lib/misc/.
+
+* Emacs major mode for Leopard
+
+  The distribution comes with an Emacs major mode for the Leopard
+  language.  The Tiger mode has been updated as well to highlight
+  Leopard's specific syntactic elements.
+
+
+
+New in 1.15, 2007-04-06:
+
+* Object-aware bindings.
+
+  The visitor object::Binder allows the computation of bindings on an
+  AST with objects.
+
+
+
+New in 1.14, 2007-03-30:
+
+* Two forms of class declarations.
+
+  Two forms of syntax for class declarations are allowed.  The first
+  one, known as the ``canonical'' one, is similar to other type
+  declarations in Leopard (notably, array and records).  The second
+  one, known as the ``alternative'' one (or ``Appel's'') was the
+  original syntax, described in Appel's ``Modern Compiler
+  Implementation'' books.
+
+
+
+New in 1.13, 2007-03-29:
+
+* No significant change.
+
+
+
+New in 1.12, 2007-03-28:
+
+* Introduce Leopard
+
+  From now on, the Tiger project is known as the Leopard project.  This
+  reflects the changes made to the language, which is also now called
+  Leopard (see below).
+
+* Add object-oriented syntactic constructions
+
+  The language is extended with simple object-related constructions
+  (class and method declarations, inheritance, object construction,
+  method calls).  This extension of the Tiger language gives birth to
+  a new dialect, called Leopard.
+
+* Visitor renaming
+
+  Visitors are renamed with ``actor'' names (e.g., Binder,
+  TypeChecker, etc.).
+
+
+
+New in 1.11, 2007-03-23:
+
+* Tiger Interpreter
+
+  A Tiger interpreter, written in Python and using TCSH, HAVM and
+  Nolimips, is available.  It is installed along with the Tiger
+  compiler when TCSH is built.
+
+
+
+New in 1.10, 2006-09-04:
+
+* Ruby Tcsh
+
+  The Tiger Compiler Shell is available for the Ruby language, in
+  addition to Python.
+
+
+
+New in 1.9, 2006-06-21:
+
+* Improve compatibility with NetBSD.
+
+
+New in 1.8, 2006-06-15:
+
+* Fix the distribution about the target module.
+
+
+New in 1.7, 2006-05-31:
+
+* Testing renamings and runtime errors
+
+  The test suite is augmented to check the renaming pass and the
+  runtime errors.
+
+
+New in 1.6, 2006-05-03:
+
+* Casts
+
+  The keyword for casts is now "_cast" and no longer "cast".  "_cast"
+  is valid only when syntactic extensions are enabled, and "cast" is
+  no longer special in any circumstance.
+
+* Tcsh
+
+  The instruction selection has been improved so that the register
+  allocation works again.
+
+
+New in 1.5, 2006-04-13:
+
+* Literal integers
+
+  The semantics for literal is clarified, and the compiler matches
+  this definition.
+
+
+New in 1.4, 2006-04-05:
+
+* Tcsh is functional again.
+
+
+
+New in 1.3, 2006-03-31:
+
+* No significant change.
+
+
+
+New in 1.2, 2006-03-21:
+
+* Tcsh is fixed (almost)
+
+  The liveness analysis inside the register allocation is broken, but
+  the other stages work fine in tcsh.
+
+* The codegen module is merged into the target module
+
+* Mac OS X 10.3 (Panther) compatibility
+
+  Have the project distcheck on Panther (in particular, be nice to
+  g++ 3.3 and work around missing utilities).
+
+
+
+New in 1.1, 2006-03-17:
+
+* Desugaring in concrete syntax within the parser
+
+  The parser desugars some constructions (logic ``and'', logic ``or'',
+  unary minus) in concrete syntax.
+
+* misc::variant
+
+  A simple wrapper around boost::variant is provided.  It only support
+  two parameters, but it has conversion operators to these types.
+  Hence, misc::variant can be assigned to one of its ``real'' type
+  without using boost::get (an exception is thrown when there is
+  a conversion to a bad type).
+
+* libparse interface
+
+  Thanks to variants, the interface of libparse is simpler.  The main
+  parse function returns an ast_type -- a misc::variant holding either
+  an ast::Exp* or a ast::DecsList*
+
+
+
+New in 1.0, 2006-03-10:
+
+* Desugaring of the implicit Main function
+
+  When the user types in
+
+      <body>
+
+  as an input program, this is desugared as
+
+    primitive print (string : string)
+    ...
+    function _main () = (<body>; ())
+
+* Overload and desugar
+
+  Formerly, desugar::desugar used to call bind::bind and
+  type::types_check after it cloned the AST and removed the syntactic
+  sugar.  It was thus impossible to go further in the compiler chain
+  with OverTiger programs, since the bindings computation and the
+  type-checking triggered errors on programs with overloaded
+  functions.
+
+  The task system now allows the user to desugar a program with
+  overloaded functions and to proceed to the translation and the next
+  steps, thanks to a new task, overfun-desugar.  The translation no
+  longer depends on desugar, but on a disjunctive task,
+  desugar-default.
+
+* Dynamic array bound checking and BoundCheckingVisitor
+
+  The desugar step can perform a new program transformation that add
+  checks on the bounds of an array subscript at runtime, when reading
+  from (de-referencing) or writing to (assignment) the cell of an
+  array.
+
+  When a subscript is out of bounds, an error message is written on
+  the standard error output and the program exits with error code 120.
+
+  This transformation is done by a new visitor, BoundCheckingVisitor,
+  and triggered by the --bound-checks-add and --overfun-bound-checks-add
+  options.
+
+* TigerInput and parser metavariables
+
+  Rather than using plain strings, chunks of concrete syntax are
+  stored in a dedicated container, TigerInput.
+
+  Program transformations from the desugar module using concrete
+  syntax can save some time thanks to metavariables.  A metavariable
+  is a named abstract syntax subtree stored in an instance of
+  TigerInput.  Formerly, to use an AST node within a piece of concrete
+  syntax, one had to pretty-print this node and re-parse it.  Now, the
+  parser can accept nodes as actual subtrees, and ``re-attach'' them
+  at the right place in the produced AST.
+
+* TigerParser
+
+  The interface of TigerParser is refactored and uses template `parse'
+  methods.
+
+* Casts
+
+  The extended Tiger language supports casts.  This feature is not
+  meant to be used in program written by humans, but by the compiler
+  within program transformations.  For instance, BoundCheckingVisitor
+  uses it to simulate generic arrays in the _check_bounds builtin.
+
+* Conversion to Boost's shared_ptr
+
+  The implementation of misc::ref uses boost::shared_ptr.
+
+* GLR Parser
+
+  tc uses a GLR Parser instead of the previous LALR(1) parser.  Bison
+  2.2 is required to generate this parser.
+
+* Renaming
+
+  As soon as the bindings are computed, every identifier can be
+  renamed with a unique name thanks to RenameVisitor.
+
+  For instance, the renaming facility is used to turn a Tiger program
+  with overloaded functions into a program with no overloaded
+  functions.  This simplifies post-type-checking tasks such as
+  desugaring or inlining.
+
+* Inlining
+
+  The compiler supports the inline expansion of functions as a program
+  transformation.  Identifiers must have been renamed to unique names to
+  avoid name capture (RenameVisitor); then the bodies of non recursive
+  user functions are expanded (InlineVisitor); finally, unused
+  functions are optionally removed (PruneVisitor).
+
+* Containers refactoring
+
+  Syntactic sugar for misc::Map is refactored and misc::Endomap is a
+  renaming mapping defaulting to identity.
+
+  misc::ScopedMap is a generalization of the previous symbol::Table,
+  used in InliningVisitor.  The former is used to refactor the latter.
+
+  Symbols are no longer constructed with a `create' class (static)
+  member; the constructor is used instead, which is much more natural.
+  An automatic conversion to `const std::string&' is introduced.
+
+* CppGen
+
+  This module has been in a broken state for a long time, and is
+  removed from the project.
+
+* IA32 back-end
+
+  The IA32 back-end has been rewritten and uses MonoBURG to generate
+  its code generator (as does the Mips back-end).
+
+* Runtime errors
+
+  The runtime errors are reported on the standard error ouput.
+  tc-check is aware of this new convention, and checks the standard
+  error ouput messages too.
+
+* TC-1 distribution
+
+  The distribution machinery can now generate valid teacher tarballs.
+
+
+
+New in 0.92, 2005-06-27:
+
+* Use MonoBURG's named subtrees
+
+  Since MonoBURG 1.0.2, subtrees in the right-hand side of a rule can
+  be named so that the user can refer to them in the corresponding
+  action block.  The MIPS code generator uses this feature to simplify
+  its actions.
+
+
+
+New in 0.91, 2005-06-20:
+
+* Conversion of graphs to Boost Graphs
+
+  Graphs (CallGraph, ParentGraph, InterferenceGraph, FlowGraph,
+  Liveness) are now implemented with the Boost Graph Library (BGL).
+  The graph::Graph abstraction inherits from boost::adjacency_list,
+  and all its subclasses handle graphs à la Boost.
+
+* First attempts in MIPS code generator refactoring
+
+  The grammar of the code emitter is smaller, thanks to MonoBURG's
+  multiple rules feature.
+
+
+
+New in 0.90, 2005-06-14:
+
+* Task name normalization
+
+  Tasks can be named like-this or like_this, but their real names only
+  use dashes (foo_bar is just an alias for foo-bar).
+
+* Computing cycles executed in Nolimips
+
+  Tc-check's --profile option computes cycles of execution on Nolimips
+  tests (thanks to its --profile option).
+
+* misc::list
+
+  The temp::List class, used to store temps and labels, becomes a more
+  general container, misc::list.
+
+* Better integration of MonoBURG
+
+  The build system is more robust w.r.t MonoBURG.
+
+
+
+New in 0.89, 2005-06-07:
+
+* Generation of the code generator
+
+  The code generator for Mips is now generated, thanks to MonoBURG.
+  Grammar files (src/codegen/mips/*.brg) describe the tree rewriting
+  patterns used in the translation from LIR (expressed in the Tree
+  language) to Assem.
+
+  An extended version of MonoBURG is required to produce this Mips
+  code generator.
+
+* Argument passing registers
+
+  Their number can now be bounded using --argument=LIMIT.
+
+* Raw desugaring
+
+  To ease the development of DesugarVisitor, the desugar module
+  provides a new task, raw-desugar, which performs just desugaring,
+  without recomputing the bindings nor checking the types of the AST.
+  Thus, a desugared tree which has bind- or type-related errors can
+  still be pretty-printed for debugging purpose.
+
+* Profiling in tc-check
+
+  Tc-check supports a --profile option which reports the number of
+  cycles of execution of the tested compiler.
+
+
+New in 0.88, 2005-05-11:
+
+* Desugaring before translating
+
+  configure supports the option --enable-desugar that makes the task
+  hir-compute depend on the task desugar, rather than just type.
+
+* temp::Temp and temp::Label use boost::variant
+
+  temp::Identifier are implemented using boost::variant instead of
+  inclusion polymorphism.  Factories are no longer needed to build and
+  manage these objects.
+
+  The path to the headers of the Boost C++ Libraries can be given at
+  configuration time using the option --with-boost.
+
+* Symbols
+
+  Due to the new implementation of temp::Identifier, symbols need to
+  be assignable.  Thus symbol::Symbol no longer carries a reference to
+  the string representation of a symbol, but a pointer.
+
+* Timers
+
+  Module objects (in liveness and regalloc) have their own timers, and
+  tasks merge them to the global timer.
+
+
+New in 0.87, 2005-04-26:
+
+* TempMap
+
+  TempMap are independent of Temp, they have moved to misc/.
+
+* Driver options and tasks
+
+  Catch up with the TLRM: -B/--bindings-display does not imply
+  -b/--bind; -O is a shortcut for --overfun-types-compute.
+
+  New option: --no-prelude (same as --prelude="").
+
+* Symbols and strings
+
+  A symbol::Symbol can be compared to a std::string directly, without
+  Symbol::create().
+
+* Tcsh and studentize
+
+  Tcsh files are no longer stripped at dist time by
+  stagize/studentize.  Python's introspection mechanisms are used
+  instead to check tc's available modules.
+
+* Astclone and desugar are delivered
+
+  These modules are now part of TC-4, and are shipped in student
+  tarballs.
+
+
+New in 0.86, 2005-04-14:
+
+* Binding of formals
+
+  The formals are bound by the BindVisitor.  Binding record fields
+  remains a task for the TypeVisitor.
+
+
+New in 0.85, 2005-04-14:
+
+* Builtin prelude
+
+  To make tc self contained, the TigerParser now includes a hard copy
+  of the standard prelude.
+
+* Type checking options
+
+  The disjunctive option --types-check-default is now -T/--type.
+  Former -T/--types-check is now --types-compute.
+
+
+New in 0.84, 2005-04-08:
+
+* String parsing
+
+  TigerParser::parse_string allows to parse a string instead of a
+  file.
+
+* Concrete syntax desugaring
+
+  Early experiments have started.
+
+* Error handlers
+
+  They now also support member manipulator.  This is the first use of
+  member function pointers in the Tiger Project.
+
+
+New in 0.83, 2005-04-01:
+
+* Visitors are functors
+
+  The visitors now really have a top level operator() for Ast, and
+  derive from unary_function.  This also simplifies/clarifies the
+  calling conventions.
+
+* Error handling
+
+  The former global exit_status and free functions working on it are
+  replaced by the Error class, implementing error handlers.  Not only
+  this is better OO programming, but this also improves the pureness
+  of the library: they no longer make side effects on cerr and
+  exit_status, they have there own error handler into which error are
+  logs, and the top level retrieves these errors, and merge them
+  within the top level error handler.
+
+  More specifically, instead of writing
+
+     if (!yyin)
+       {
+         std::cerr
+           << program_name
+           << ": cannot open `" << name << "': "
+           << strerror (errno) << std::endl;
+         misc::exit_set (misc::exit_failure);
+         misc::exit_on_error ();
+       }
+
+  now write
+
+    if (!yyin)
+      error << misc::Error::failure
+            << program_name << ": cannot open `" << name << "': "
+            << strerror (errno) << std::endl;
+    error.exit_on_error ();
+
+  or even
+
+     if (!yyin)
+       error << misc::Error::failure
+             << program_name << ": cannot open `" << name << "': "
+             << strerror (errno) << std::endl
+             << exit;
+
+  where error is your local error handler.
+
+* The scanner is purer
+
+  The TigerParser is now passed to yylex.  The static variables from
+  the scanner and its free functions are now members of the
+  TigerParser.
+
+* Overloaded Tiger
+
+  Support for overloaded Tiger is back, using overload aware
+  subclasses from the BindVisitor and the TypeVisitor.
+
+
+New in 0.82, 2005-03-22:
+
+* AST file names
+
+  The file names in the AST follow the coding style: var-dec.hh
+  instead of vardec.hh, etc.
+
+* Function overloading
+
+  A visitor computing the bindings of OverTiger programs has been set
+  up.  This OverfunBindVisitor does the same job as BindVisitor, but
+  doesn't compute function's bindings, since some type-checking is
+  needed to resolve function calls.  These function's bindings are now
+  handled by OverfunTypeVisitor, which has been repaired (it uses the
+  same interface as the TypeVisitor).
+
+
+New in 0.81, 2005-03-16:
+
+* Boolean
+
+  Boolean operators & and | now return only 1 or 0.
+
+* Tasks
+
+  It is now possible to define a task which requires only one of its
+  dependencies, allowing alternatives. This is done thanks to a new
+  task, DisjunctiveTask.
+
+* Symbols
+
+  Symbols are now handled by a factory.  Before one unique of the
+  string value was stored, now one Symbol suffice.  Many
+  allocations/deallocations are saved.
+
+* Swig 1.3.24
+
+  Dependency tracking is enabled.  We no longer use the obsoleted
+  -runtime.
+
+* misc::separator
+
+  This auxiliary function provides sugar to print separated lists.
+  For convenience, it dereferences list of pointers.  It replaces the
+  functions print_with_separator.
+
+* Parsing module
+
+  The parsing module has been completely overhauled.  The handling of
+  "import" directive is now performed when found: the scanner and
+  parser are recursively called.  The new class TigerParser
+  coordinates the scanner and parser, and caries the results.  The
+  debatable "using namespace ast" has been removed.
+
+* tcsh
+
+  Libtool is now used to compile a top level dynamic library, libtc,
+  containing all the modules.  The tc executable is linked statically
+  against this dynamic library on platforms that support it.  This
+  considerably simplifies tcsh which only needs to be linked against
+  the dynamic libtc.
+
+  More natural translations are provided, especially thanks to __str__
+  methods.
+
+  The Python bindings are moved in tcsh/python.
+
+* break checks
+
+  The BindVisitor now also binds the break's to their loop construct.
+  Hence incorrect breaks now trigger a bind-error instead of a
+  type-error.
+
+* Clone Visitor
+
+  This new visitor makes a deep copy of an AST.  It also serves as a
+  basis for the construction of the following visitor.
+
+* Desugar Visitor
+
+  A new visitor, removing syntactic sugar from an AST while cloning it.
+  It currently handles the following sugar:
+
+  - String operators (<, <=, >, >=, =, !=)
+    Using strcmp and streq (new primitives), change these operators
+    into integer operators:
+
+        ... a < b ...
+
+    where a and b are strings
+
+        ... strcmp (a, b) < 0 ...
+
+    and so forth.
+
+  - ForExp
+    For's can be desugared as while's, as the former is a particular
+    case of the latter.
+
+
+New in 0.80, 2004-11-10:
+
+* Swig files
+
+  The handling of Swig files has changed again: they are no longer
+  shipped, hence Swig is required to build tcsh.  This release was
+  tested with Swig 1.3.22.
+
+  This change was prompted by the fact that some of tc's sources are
+  generated (version.cc).  Since Swig input is tc's sources, even if
+  one shipped Swig output files, they had a missing dependency
+  (version.cc) which `make' tried to satisfy.  Hence Swig was
+  relaunched, trying to overwrite shipped files.
+
+* Call and parent graphs
+
+  The call graph (what functions are called by a function), and the
+  parent graph (what functions are nested in another) have moved into
+  the callgraph module.
+
+* Type Checking
+
+  Type checking is vastly simplified using a better set of auxiliary
+  functions.  The handling of types themselves, especially
+  comparisons, is also simplified.  For loop indexes processing is
+  simplified using a misc::set.
+
+
+New in 0.79, 2004-10-26:
+
+* Typable
+
+  The ``typable'' nodes of the AST inherit from a new abstract base
+  class, ast::Typable, which holds a pointer to the type (type::Type)
+  of the node.
+
+* TypeVisitor and type labelling
+
+  Typable AST nodes are labelled with their type by the TypeVisitor,
+  as well as type declaration holders (ast::Dec nodes). Type
+  environments have become useless, as type definitions are retrieved
+  directly from the AST nodes using their type labels and their
+  definition sites (set by the BindVisitor).
+
+* Function overloading
+
+  Since the new TypeVisitor no longer uses environments to store the
+  type information, the old interface used by the OverfunTypeVisitor
+  is broken.  Hence, function overloading has been disabled, waiting
+  for a future repair.
+
+* AST display
+
+  The display of the AST has changed: the options --bindings-display,
+  --escapes-display etc. no longer display the AST, rather they enable
+  features from -A.  Hence, when one used to run -E, now run -EA.
+
+* Type and Translate Visitors
+
+  They are vastly simplified thanks to (i) the BindVisitor, and (ii)
+  the type annotations.  The so-called "Entries" and "Env" have
+  disappeared, replaced by much simpler std::maps.  Kinds have
+  disappeared: type annotations suffice.
+
+
+New in 0.78, 2004-10-13:
+
+* Prelude
+
+  Full prelude support is implemented, and activated.  New options
+  --library-append and --library-prepend, and new envvar,
+  TC_PKGDATADIR.
+
+* Memory leaks
+
+  Many leaks are solved.  There remains memory that STL does not free
+  when there are many xallocs.
+
+* PrintVisitor
+
+  The PrintVisitor is revamped and uses operator<< internally, instead
+  of accept.  This was done thanks to misc::xalloc to pass flags to the
+  PrintVisitor.
+
+
+New in 0.77, 2004-10-06:
+
+* Coding Style
+
+  The coding style for type is finally defined, and the code was
+  normalized.
+
+* Streams extentions
+
+  misc::xalloc provides a convenient wrappers around xalloc and pword.
+
+* Prelude
+
+  Preliminary support for a prelude is implemented:
+
+  - import "FILE"
+    Inclusion a library file from a Tiger source file is enabled.
+    The syntax of the FILE is
+
+       let
+         DECS
+       end
+
+    To support the two different syntaxes with a single parser, we use
+    a "seed": an initial fake token that branches the start symbol on
+    one of the two "sub-grammars" (declaration file, or source file).
+
+  - primitive
+    The new keyword "primitive", similar to "function" allows for the
+    introduction of function signatures, without bodies.
+
+  - --prelude=PRELUDE
+    The definitions included in the file PRELUDE are automatically put
+    "around" the source file.  Technically, when PRELUDE is not null,
+    it is equivalent to parsing
+
+       let
+         import "PRELUDE"
+       in
+         FILE
+       end
+
+    where FILE is the source file to compile.
+
+  Support for a library search path will soon be included.  This will
+  enable the definition of a standard Tiger prelude defining (via
+  "primitive") the Tiger primitives (builtins).
+
+* LetExp
+
+  Second change in the handling of declarations: "let" are no longer
+  de-sugared into homogeneous nested "let"s.  Rather, a "let" is an
+  heterogeneous list of homogeneous lists of declarations.
+
+* FieldInit
+
+  Replaces the FieldExp, which no longer derives from Exp.
+
+* Default Visitor
+
+  The machinery to select a const or non const iterator is fixed, and
+  spread on the whole Visitor hierarchy.  The selection of const/non
+  const Visitor is also cleaner, using a template template argument.
+
+  Also, the former Defaultvisitor class template is renamed
+  GenDefaultvisitor for consistency with the Visitor hierarchy itself.
+  DefaultVisitor and DefaultConstVisitor are now classes.
+
+* Bind Visitor
+
+  This new visitor is in charge of binding names, i.e., linking every
+  identifier use (function call, type name, variable name) to its
+  definition.  As a result, no other Visitor now uses a scoped symbol
+  table: using the address of the definition site is enough (it plays
+  the role of a unique global name, free from scopes).
+
+* Escapable
+
+  Multiple inheritance is used to factor the possibility of being
+  escaped.
+
+* Cpu
+
+  They own a TempMap that contains the needed magic to change fp into
+  $fp etc.  In addition, MipsCpu becomes (more or less) a NolimipsCpu
+  that also knows how to map t4 into $x4.  This allows to transform
+  local hacks into a general feature.
+
+* Levels
+
+  Andrew W. Appel suggests the use of two system levels: the "outer"
+  level, the one containing the primitives and the main function, and
+  of course the "main" level, that of the "main" function.  We now
+  only have a single level, that of "main".
+
+* Parser adjustments
+
+  %destructor and %printer are used: the parser is more verbose, and
+  no longer leaks.
+
+* PrintVisitor
+
+  It nows uses misc::indent instead of local code.
+
+New in 0.76, 2004-07-07:
+
+* New option: --target-default
+
+  This task was introduced to work around a design issue:
+  interdependent global variables initialization.  Some architectures
+  failed at launching because of this issue.
+
+
+New in 0.75, 2004-07-06:
+
+* Debian package
+
+  A package for Debian GNU/Linux can be automatically generated using
+  `make deb'. The package version is deduced from the version of TC and
+  the repository revision.
+
+* Interference Graph
+
+  The move related nodes are now reported.
+
+* Graph output
+
+  Empty labels are no longer produced.  This improves rendering with,
+  e.g., OmniGrafle.
+
+
+New in 0.74, 2004-06-25:
+
+* Identifiers Mapping
+
+  The old class TempMap was recycled into Map <Identifier>.  The
+  Identifier<> class template is now equipped with means to
+  store/retrieve one such Map on a stream, using xalloc and pword.  It
+  also now enjoys a magical operator<< which uses such a Map to format
+  Identifiers during the output.
+
+* Code Pessimization
+
+  Some code pessimization was identified and fixed.
+
+* Callee/caller save registers
+
+  0 now stands for 0 such registers, whereas before it meant "the
+  default number".  Use 99 or whatever to revert.
+
+* Testing framework
+
+  tc-check now distinguishes unsupported features from broken
+  implementations.
+
+  Test files are properly shipped, thereby freeing the user from the
+  formerly mandatory available... tc compiler.
+
+* Stream modifiers
+
+  misc/escape and misc/indent now properly save/restore the state of
+  the stream.
+
+* Assem
+
+  The printing is assem instructions is simplified thanks to using
+  TempMap in ostream, together with the debugging flag.
+
+
+New in 0.73, 2004-06-10:
+
+* Fixes
+
+  Distcheck, now properly works.  Errors in comments/documentation
+  were fixed.
+
+* Memory leaks
+
+  Memory leaks from T6 to T9 were handled and removed.
+
+* Targets: Nolimips
+
+  Mipsy is now replaced with Nolimips.
+
+* Targets: Overhaul
+
+  The overhaul of the target modules has started to let code generator
+  enjoys the specific features of the target processor.  In a
+  forthcoming version, Nolimips will considered as an architecture,
+  and there will be TempMap derived classes to cope with architecture
+  register name specificities.
+
+New in 0.72, 2004-05-10:
+
+* Fragments and Visitors.
+
+  Tree and Assem fragments now support Visitors to provide a cleaner
+  alternative to dynamic_cast.  Assem Visitors are clarified:
+  MapVisitor is removed, and Visitor is extended (to parallel with
+  a GenDefaultVisitor for the ast module).
+
+* Inner classes
+
+  Function Inner classes are now demonstrated to call single use
+  Fragment visitors.
+
+* Less dependencies.
+
+  More fwd.hh files were introduced.
+
+
+New in 0.71, 2004-04-30:
+
+* Tasks.
+
+  They are finally moved into their own namespace, task.
+  Printing functions are standardized.
+
+* Identifier redesign.
+
+  The implementation of temp::Identifier was simplified by merging the
+  parameter and the parameter's traits.  As a result, the Identifier,
+  TaggedIdentifier, and Factory class templates are now parameterized
+  by a class template (the traits).
+
+* Compilation warning flags.
+
+  They are no longer used to compile SWIG output files.
+
+* Less dependencies.
+
+  More fwd.hh files were introduced.  Newly introduced *.hcc files
+  help reducing compilation dependencies.
+
+* Memory leaks.
+
+  Intermediate code leaks were fixed.  The test suite now checks for
+  memory leaks at every stage of the compiler (except when recovering
+  from parse errors).
+
+* More unit tests.
+
+  More independent library files are checked, and existing tests have
+  been improved, in order to help independent development of these
+  auxiliary (but fundamental) files.
+
+* Indenting ostream.
+
+  (Intermediate) fragments now use misc::indent.
+
+* Wrapping sliced tarballs.
+
+  Studentize check that its input has balanced student marks:
+  it should now be impossible to produce student tarballs with
+  missing files.
+
+  Stagize is smarter, and allows to distcheck sliced tarballs.
+
+* Tree code.
+
+  The class tree::Node was renamed as tree::Tree which is more
+  meaningful, since that's how this intermediate representation is
+  called (Tree code).
+
+  The fragments are finally part of tree::, instead of translate:: as
+  Andrew Appel suggests.  The clarity of this layout seems to
+  outweigh the benefits of sticking to Appel's design.
+
+* Independence from target.
+
+  The target module is not needed in T5: the frame module is truly
+  independent from the name of the real target fp and rv register
+  names.  There remains a dependency on the word size.  It is
+  considered to always be 4 bytes.
+
+
+New in 0.70, 2004-04-05:
+
+* Memory is properly reclaimed when reporting an error.
+  This required getting rid of all `std::exit' invocations, since they
+  exit immediately, without stack unwinding.  The functions from
+  common.cc that used to call `std::exit' are replaced by the functions
+  from misc/fail.* that throw exceptions.
+
+  Then, the driver is changed to catch exceptions.  Without `catch'
+  clauses, the standard specifies that performing or not performing
+  stack unwinding is undefined.
+
+  Note that *there must not be any invocation of `exit'*, as it skips
+  stack unwinding, i.e., it skips memory reclaiming.  Every explicit
+  call to `exit' must be replaced by a `throw', either direct, or via
+  a call to `error_on_exit'.
+
+* Wider use of misc::indent.
+  Indented output is extremely convenient if most routines use it.
+  Its use was generalized in symbol tables, type checking, and
+  intermediate code.
+
+* tc-check.
+
+  - Recent changes in tc-check caused it to be insensitive to some
+    failures, this is fixed.  Now, it is also checking memory leaks in
+    type checking (including when there are type errors).
+
+  - Diffs are less verbose, in order to keep some privacy over the
+    test suite.
+
+  - Standard error output is checked when auditing escape computation.
+
+* Translation to intermediate code is cleaned up.
+
+* `if then' is finally implemented as syntactic sugar.
+
+New in 0.69, 2004-03-26:
+
+* ios::xalloc is used to control the depth of record type pretty printing.
+
+* New indentation relative functions added.
+  Two new files: src/misc/indent.hh and src/misc/indent.cc.
+
+* No memory leaks in T4.
+
+* More traits available.
+  misc::traits provides some information about types.
+
+* The Type module was revised.
+  Many simplifications are introduced such as:
+
+  - use of the method `type' as a sort of `accept' with a return
+    value.
+
+  - use of the overloaded template methods `error' to factor error
+    reporting and recovery.
+
+* Similarly in the Translate and Overload modules.
+
+* Tcsh is repaired.
+  Tcsh was broken in the latest releases.  It is up and running
+  again.
+
+
+New in 0.68, 2004-03-19:
+
+* The function misc::for_each allows for pseudo functional programming
+  using function objects.  For instance, instead of
+
+    for (list_t::const_iterator i = l.begin (); i != l.end (); ++i)
+      f (*i);
+
+  one may write
+
+    misc::for_each (l, f);
+
+  The difference with std::for_each is that `f' is not copied, it is
+  passed by reference, so it is not sliced.
+
+* The DefaultVisitor has a template method for arbitrary pointer
+  types, so that
+
+     i->accept (visitor);
+
+  can now be replaced with
+
+     visitor (*i);
+
+  Combined with misc::for_each, one may now replace
+
+    for (list_t::const_iterator i = l.begin (); i != l.end (); ++i)
+      i->accept (v);
+
+  with
+
+    misc::for_each (l, v);
+
+* The attributes `name' from FunctionDec, VarDec, and TypeDec are now
+  factored into a single attribute `name' in Dec.  As a result, more
+  code can be factored (e.g., checking that a name is defined only
+  once).
+
+* The documentation is undergoing a full overhaul to be more
+  effective.
+
+* The configuration of Swig is softened:
+  - --with-swig mandates Swig, i.e., if Swig is not available, it is a
+    hard error.
+  - without-swig disables it completely.
+  - If not specified (or --with=swig=auto), Swig support is built if
+    available.
+
+* The files parse/location.hh and parse/position.hh are built if
+  missing when building src/ast (which requires them).
+
+* The file misc/select_const.hh provides support for const vs. non
+  const iterators.  This is most useful in the DefaultVisitor
+  template.
+
+
+New in 0.67, 2004-03-03:
+
+* The Singleton idiom used for Symbols is more robust to dependencies.
+  That solves a portability problem on Mac OS X, where the module
+  Target tried to create a Symbol before its class member `set_' was
+  constructed.
+
+* The AST module is cleaned up.
+  - The outdated file src/ast/README is removed.
+  - A trailing, unused, misleading definition of decs_type is removed.
+
+* CppGen is somewhat repaired (23 passes over 128 tests as compared
+  to... 0), but a lot remains to be done.
+
+* The argp library is updated to its latest release, to improve
+  Mac OS X compatibility.
+
+* Many Doxygen warnings are removed.
+
+New in 0.66, 2004-02-18:
+* All the visitors now use `operator()' instead of `visit' as method
+  name.  This is more compliant with other C++ programming groups, such
+  as Boost (e.g., http://www.boost.org/libs/graph/doc/visitor_concepts.html).
+
+New in 0.65, 2004-02-17:
+* Declarations in "let" are reduced to a single kind (function,
+  type, or variable).  Only one variable can be introduced at a time.
+  Mixed "let" are de-sugared as nested "let"s.
+* Constructors of AST nodes are moved in the implementation file,
+  as for the destructors.
+* Hooks for escapes, kinds etc. are no longer delivered during T2.
+
+New in 0.64, 2004-02-06:
+* Symbols are sorted lexicographically.
+* temp::Temp and Label share the same implementation, based upon
+  (natural) dynamic polymorphism instead of an ad hoc implementation.
+* Traits are (finally) demonstrated: they help implement the common
+  framework for temp::Temp and Label.
+* "print" functions always return an ostream.
+* tcsh: The Tiger Compiler Shell...
+  Swig is used to import the Tiger libraries into a Python shell.
+  Thanks to Nicolas Burrus.
+* The compilation of Bison files is safer and lazy.
+* Autoconf 2.58.
+* Automake 1.8.2.
+* Gzip archives are no longer built by default.
+* The Tiger Emacs mode is now shipped (config/tiger.el).
+
+New in 0.63, 2003-11-17:
+* The test suite is no longer a sub package, it is a regular sub
+  directory.
+* Fix tc-check file location.
+* Fix escape checks.
+* Automake 1.7.9.
+
+New in 0.62, 2003-10-29:
+* Tree memory management is handled by reference counting.
+* --callee-save and --caller-save allow to address fake limited
+  architectures.
+* BooleanTasks and IntTasks.
+* foo/foo-tasks.* are renamed as foo/tasks.*.
+* Compute escaping static link.
+* Compute and dump call and parent graphs.
+* More code moved out of the headers.
+* Use NameTy instead of Symbol for RecordExp, ArrayExp, ArrayTy,
+  Field.
+* The transformation from HIR to LIR is performed by objects
+  instead of stand-alone functions.
+* The AST is rewritten to use pointers instead of reference: "*new"
+  has disappeared from the parser.
+* Rebox is provided to build nice boxed comments.
+* Temp now uses a factory, which is also in charge of memory deallocation.
+* Coding style is standardized.  For instance private members are
+  "foo_"-like, no longer "_foo".
+* temp::Label and temp::Temp are factored into the class template
+  temp::Identifier.
+* Heavy use of forward declarations as compiler firewalls.
+* The ast is generated.
+* Automake 1.7.8, Havm 0.21 are required.
+
+New in 0.61, 2003-08-14:
+* The Cpu class no longer includes a "color register" category.
+* Register allocation is improved.
+* The runtime functions are fixed and tested for failures.
+* Calls to the "exit" syscall set the status.
+* Ia32 back-end is improved, but still fails on some cases.
+
+New in 0.60, 2003-07-22:
+* List of temporaries are sorted.  This should help regression tests.
+* misc::set have properly working version of set_union, operator+ etc.
+* --target-display describes the current target.
+* --inst-debug enables verbose output of the instructions, i.e.,
+  with the "use", "def", and "jump" lists.
+* The register allocator was rewritten from scratch.  The results
+  are much better, and the code is much closer to Appel's.
+
+New in 0.59, 2003-07-07:
+* src/codegen/tiger-runtime presents the C source of the Tiger
+  runtime.
+* The MIPS getchar implementation is fixed.
+* Mipsy support (-Y/--mipsy-display).
+* The C++ generation is now checked.
+
+New in 0.58, 2003-06-26:
+* Compiler warnings are enabled during the build.
+* Lots of these warnings are removed.
+* Using Bison 1.875c is recommended (to neutralize some warnings).
+* Function overload added.
+* This file.
+* Count of removed lines in README.
+* Refixed escape checks.
+* Register allocation speed up.
+* No longer wastes frame slots when spilling.
+
+New in 0.57, 2003-05-23:
+* Escape checks fixed.
+* Handling of for loop upper bounds fixed.
+* Error messages normalized.
+* Support for --liveness/-V
+* Ix is enabled by default, use --hir-naive to disable.
+* tc-check works on NetBSD as is.
+
+New in 0.56, 2003-05-12:
+* --task-graph.
+* Translate, canon and codegen clean up.
+
+New in 0.55, 2003-04-28:
+* Simplified declaration of tasks.
+* Extended tc-check, with tarball time stamp support.
+* tc-check supports a configuration file.
+* --target-ia32.
+* misc/deref.hh provides a magic means to output the contents of
+  containers of pointers.
+* Complete revamping of the back end.
+
+FIXME: Continue the extraction from the ChangeLog.
+Be careful that "Bump to 0.54" means "Release 0.53".
+
+
+New in 0.54, 2003-04-08:
+
+New in 0.52, 2003-03-19:
+
+New in 0.50, 2003-01-29:
+
+New in 0.20, 2003-01-10:
+
+New in 0.18, 2002-07-11:
+
+New in 0.17, 2002-05-31:
+
+New in 0.15, 2002-05-18:
+
+New in 0.14, 2002-03-05:
+
+New in 0.13, 2002-02-14:
+
+New in 0.12, 2001-09-13:
+
+New in 0.11, 2001-09-10:
+
+New in 0.8, 2001-07-05:
+
+New in 0.7, 2001-06-23:
+
+New in 0.5, 2001-06-08:
+
+Local Variables:
+coding: utf-8
+mode: outline
+ispell-local-dictionary: "american"
+End:
