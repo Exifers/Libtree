@@ -1,0 +1,3 @@
+Emmanuel Meric de Bellefon <emmanuel.meric-de-bellefon@epita.fr>
+Arnaud Lehuby <arnaud.lehuby@epita.fr>
+Clément Shi <clement.shi@epita.fr>
