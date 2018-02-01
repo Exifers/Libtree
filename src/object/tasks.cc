@@ -4,6 +4,7 @@
  */
 
 
+#include <ast/tasks.hh>
 #include <common.hh>
 #include <object/libobject.hh>
 #define DEFINE_TASKS 1

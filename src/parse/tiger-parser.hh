@@ -11,6 +11,7 @@
 
 #include <boost/filesystem.hpp>
 
+#include <ast/fwd.hh>
 #include <common.hh>
 #include <misc/error.hh>
 #include <misc/file-library.hh>

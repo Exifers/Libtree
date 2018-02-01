@@ -67,6 +67,30 @@
 %token <int>            INT    "integer"
 
 
+/*--------------------------------.
+| Support for the non-terminals.  |
+`--------------------------------*/
+
+%code requires
+{
+# include <ast/fwd.hh>
+// Provide the declarations of the following classes for the
+// %destructor clauses below to work properly.
+# include <ast/exp.hh>
+# include <ast/var.hh>
+# include <ast/ty.hh>
+# include <ast/name-ty.hh>
+# include <ast/field.hh>
+# include <ast/field-init.hh>
+# include <ast/function-dec.hh>
+# include <ast/type-dec.hh>
+# include <ast/var-dec.hh>
+# include <ast/any-decs.hh>
+# include <ast/decs-list.hh>
+}
+
+  // FIXME: Some code was deleted here (Printers and destructors).
+
 
 /*-----------------------------------------.
 | Code output in the implementation file.  |
@@ -79,6 +103,8 @@
 # include <parse/tweast.hh>
 # include <misc/separator.hh>
 # include <misc/symbol.hh>
+# include <ast/all.hh>
+# include <ast/libast.hh>
 
   namespace
   {
@@ -153,6 +179,9 @@
        WHILE        "while"
        EOF 0        "end of file"
 
+%type <ast::Exp*> exp
+%type <ast::DecsList*> decs
+  // FIXME: Some code was deleted here (More %types).
 
   // FIXME: Some code was deleted here (Priorities/associativities).
 %start program
@@ -160,14 +189,14 @@
 %%
 program:
   /* Parsing a source program.  */
-  exp   
+  exp   { tp.ast_ = $1; }
 | /* Parsing an imported file.  */
-  decs  
+  decs  { tp.ast_ = $1; }
 ;
 
 exp:
   INT
-   
+   { $$ = new ast::IntExp(@$, $1); }
   // FIXME: Some code was deleted here (More rules).
 
 /*---------------.
@@ -176,7 +205,7 @@ exp:
 
 %token DECS "_decs";
 decs:
-  %empty                
+  %empty                { $$ = new ast::DecsList(@$); }
   // FIXME: Some code was deleted here (More rules).
 %%
 
