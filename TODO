@@ -1,0 +1,38 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+== Bug List ==
+
+[ ] Lexer : see what ANSI-C means
+[ ] Lexer : add double quote escape on STRING type
+[ ] Lexer : add \num, \xnum, backslash and double quote
+[ ] Lexer : add comments
+[ ] Lexer : raise error on unknown character
