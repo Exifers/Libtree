@@ -1,9 +1,8 @@
+%option noyywrap
+
 %{
 #include <iostream>
 %}
-
-
-%option noyywrap
 
 SPACE [ \t\n\r]
   /* \r \n \r\n and \n\r are white spaces, if they're ignored, considering
@@ -14,7 +13,6 @@ ID ([a-zA-Z][0-9a-zA-Z_]*|"_main")
 INTEGER [0-9]+
 
 %%
-
 
   /* keywords */
 "array" {}
@@ -70,13 +68,10 @@ INTEGER [0-9]+
 
   /* Additional */
 {STRING} {}
-{ID} {}
+{ID} { }
 {INTEGER} {}
 {SPACE} {}
 
-%%
+. { }
 
-int main(void)
-{
-  return yylex();
-}
+%%
