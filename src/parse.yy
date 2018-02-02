@@ -82,8 +82,25 @@ YY_DECL;
 
 %%
 
-file: ARRAY {}
-    ;
+  /* Hint : non terminals are in lower case, terminals in upper case */
+
+program: exp   {}
+       | decs  {}
+       ;
+
+exp:
+  /* Literals */
+  NIL          {}
+| INTEGER      {}
+| STRING       {}
+  /* Array and record creation */
+| type-id OBRA exp CBRA OF exp
+;
+
+decs: ARRAY    {}
+
+type-id: ID    {}
+
 
 %%
 
