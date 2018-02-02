@@ -17,10 +17,36 @@
 YY_DECL;
 }
 
-%token<int> INTEGER
-%token PLUS "+"
-%token MINUS "-"
-%token EOF 0 "end of file"
+%token<int> INT
+%token  PLUS        "+"
+        MINUS       "-"
+        EOF 0       "end of file"
+        ARRAY       "array"
+        IF          "if"
+        THEN        "then"
+        ELSE        "else"
+        WHILE       "while"
+        FOR         "for"
+        TO          "to"
+        DO          "do"
+        LET         "let"
+        IN          "in"
+        END         "end"
+        OF          "of"
+        BREAK       "break"
+        NIL         "nil"
+        FUNCTION    "function"
+        VAR         "var"
+        TYPE        "type"
+        IMPORT      "import"
+        PRIMITIVE   "primitive"
+        CLASS       "class"
+        EXTENDS     "extends"
+        METHOD      "method"
+        NEW         "new"
+
+
+
 
 %start file
 
@@ -36,9 +62,9 @@ file:
   ;
 
 exp:
-      INTEGER PLUS exp  { std::cout << $1 << std::endl; }
-   |  INTEGER MINUS exp
-   |  INTEGER
+      INT PLUS exp  { std::cout << $1 << std::endl; }
+   |  INT MINUS exp
+   |  INT
    ;
 
 %%
