@@ -1,6 +1,6 @@
 
 all:
-	bison -o src/parse.cc src/parse.yy
+	bison -o src/parse.cc src/parse.yy --defines=src/parse.hh
 	flex -o src/scan.cc src/scan.ll 
 	g++ -c src/parse.cc -o src/parse.o
 	g++ -c src/scan.cc -o src/scan.o

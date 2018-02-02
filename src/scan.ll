@@ -2,6 +2,13 @@
 
 %{
 #include <iostream>
+#include "parse.hh"
+yy::parser::location_type loc;
+
+#define YY_USER_ACTION    \
+  do {                    \
+    loc.columns(yyleng);  \
+  } while(false);
 %}
 
 SPACE [ \t\n\r]
@@ -13,6 +20,7 @@ ID ([a-zA-Z][0-9a-zA-Z_]*|"_main")
 INTEGER [0-9]+
 
 %%
+  loc.step();
 
   /* keywords */
 "array" {}
@@ -69,9 +77,11 @@ INTEGER [0-9]+
   /* Additional */
 {STRING} {}
 {ID} { }
-{INTEGER} {}
+{INTEGER}
 {SPACE} {}
 
 . { }
+
+<<EOF>> return yy::parser::make_EOF(loc);
 
 %%
