@@ -75,10 +75,10 @@ INTEGER [0-9]+
 ":=" {}
 
   /* Additional */
-{STRING} {}
+{STRING} { }
 {ID} { }
-{INTEGER}
-{SPACE} {}
+{INTEGER} { std::cout << "integer\n"; }
+{SPACE} { }
 
 . { }
 

@@ -22,7 +22,7 @@ YY_DECL;
 %token MINUS "-"
 %token EOF 0 "end of file"
 
-%start exp
+%start file
 
 %nterm <int> exp
 %printer { yyo << $$; } <int>;
@@ -30,6 +30,11 @@ YY_DECL;
 %%
 
   /* Grammar rules */
+file:
+	  exp file
+	| EOF
+  ;
+
 exp:
       INTEGER PLUS exp  { std::cout << $1 << std::endl; }
    |  INTEGER MINUS exp
