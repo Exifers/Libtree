@@ -2,8 +2,8 @@
 trash = scan.o parse.cc parse.o scan.cc position.hh parse.hh stack.hh \
         location.hh
 
-all: flex bison
-	g++ src/scan.o src/parse.o -o tg
+all: bison flex
+	g++ src/scan.o src/parse.o -o tc
 
 flex:
 	flex -o src/scan.cc src/scan.ll 	

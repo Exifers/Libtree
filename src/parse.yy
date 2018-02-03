@@ -80,6 +80,8 @@ YY_DECL;
 
 %printer { yyo << $$; } <int>;
 
+  /* TODO check operator priority on these from subject */
+
 %%
 
   /* Hint : non terminals are in lower case, terminals in upper case */
@@ -94,13 +96,33 @@ exp:
 | INTEGER      {}
 | STRING       {}
   /* Array and record creation */
-| type-id OBRA exp CBRA OF exp
+| ID OBRA exp CBRA OF exp
+| ID OCBRA CCBRA
+| ID OCBRA rec_init_list CCBRA
+  /* Object creation */
+| NEW ID
+  /* Variables, field, element of an array */
+| lvalue
+;
+
+rec_init_list:
+  ID EQUAL exp
+| ID EQUAL exp COMMA rec_init_list
+;
+
+lvalue:
+  ID
+| ID POINT ID lvalue_follow
+| ID OBRA exp CBRA lvalue_follow
+;
+
+lvalue_follow:
+  %empty
+| POINT ID lvalue_follow
+| OBRA exp CBRA lvalue_follow
 ;
 
 decs: ARRAY    {}
-
-type-id: ID    {}
-
 
 %%
 
