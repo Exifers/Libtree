@@ -4,17 +4,16 @@ Tiger Compiler : project steps and bugs
 [X] Lexer // remains -> bug list
 [X] Parser // remains -> bug list
 
-[ ] Testsuite
+[/] Testsuite // upon test 17 out of 50 has been completed
 
 == TC-1 ==
+
+[ ] Autotools
 
 [ ] Figure out how to create an AST with Flex/Bison
 [ ] Make AST
 
-
-
-
-
+[ ] Testsuite ?
 
 
 

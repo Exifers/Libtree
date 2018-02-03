@@ -1,17 +1,28 @@
+CXX = g++
+
+FLEX = flex
+BISON = bison
+
+bin = tc
 
 trash = scan.o parse.cc parse.o scan.cc position.hh parse.hh stack.hh \
         location.hh
 
+testsuite_trash = error.log
+
 all: bison flex
-	g++ src/scan.o src/parse.o -o tc
+	$(CXX) src/scan.o src/parse.o -o $(bin)
 
 flex:
-	flex -o src/scan.cc src/scan.ll 	
-	g++ -c src/scan.cc -o src/scan.o
+	$(FLEX) -o src/scan.cc src/scan.ll
+	$(CXX) -c src/scan.cc -o src/scan.o
 
 bison:
-	bison -o src/parse.cc src/parse.yy --defines=src/parse.hh
-	g++ -c src/parse.cc -o src/parse.o
+	$(BISON) -o src/parse.cc src/parse.yy --defines=src/parse.hh
+	$(CXX) -c src/parse.cc -o src/parse.o
+
+check:
+	./tests/test.sh
 
 clean:
-	$(RM) tg $(addprefix src/, $(trash))
+	$(RM) $(bin) $(addprefix src/, $(trash)) $(testsuite_trash)
