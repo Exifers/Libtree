@@ -19,6 +19,9 @@ For now just type 'make', and run the tc binary with './tc'.
 == How to use Tiger Compiler ? ==
 The binary 'tc' reads Tiger source code on standard input.
 
+== Testsuite ==
+This project comports a testsuite. Type 'make check' to run it.
+
 == Licence ==
 You're free to copy, share, reuse this code the way you want.
 
