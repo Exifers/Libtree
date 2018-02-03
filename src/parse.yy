@@ -80,7 +80,18 @@ YY_DECL;
 
 %printer { yyo << $$; } <int>;
 
+
   /* TODO check operator priority on these from subject */
+%left AND OR
+%left EQUAL NEQUAL
+%left LESST LESSE MORET MOREE
+%left PLUS MINUS
+%left TIMES SLASH
+
+%right "array_of"
+%right "assign"
+%right "if_then"
+%right "if_then_else"
 
 %%
 
@@ -96,7 +107,7 @@ exp:
 | INTEGER      {}
 | STRING       {}
   /* Array and record creation */
-| ID OBRA exp CBRA OF exp
+| ID OBRA exp CBRA OF exp              %prec "array_of"
 | ID OCBRA CCBRA
 | ID OCBRA rec_init_list CCBRA
   /* Object creation */
@@ -108,6 +119,41 @@ exp:
 | ID OPAR exp_comma_list CPAR
   /* Method call */
 | method_body OPAR CPAR
+| method_body OPAR exp_comma_list CPAR
+  /* Operations */
+| MINUS exp
+| exp_binary_operations
+| OPAR exps CPAR
+  /* Assignment */
+| lvalue ASSIGN exp                    %prec "assign"
+  /* Control structures */
+| IF exp THEN exp                      %prec "if_then"
+| IF exp THEN exp ELSE exp             %prec "if_then_else"
+;
+
+exps:
+  %empty
+| exp_semicolon_list
+;
+
+exp_semicolon_list:
+  exp
+| exp SEMICOLON exp_semicolon_list
+;
+
+exp_binary_operations:
+  exp PLUS exp
+| exp MINUS exp
+| exp TIMES exp
+| exp SLASH exp
+| exp EQUAL exp
+| exp NEQUAL exp
+| exp LESST exp
+| exp LESSE exp
+| exp MORET exp
+| exp MOREE exp 
+| exp AND exp
+| exp OR exp
 ;
 
 method_body:
