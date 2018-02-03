@@ -92,6 +92,10 @@ YY_DECL;
 %right "assign"
 %right "if_then"
 %right "if_then_else"
+%right "while"
+%right "for"
+
+%expect 1 /* Can't figure out how to solve it XD */
 
 %%
 
@@ -129,6 +133,10 @@ exp:
   /* Control structures */
 | IF exp THEN exp                      %prec "if_then"
 | IF exp THEN exp ELSE exp             %prec "if_then_else"
+| WHILE exp DO exp                     %prec "while"
+| FOR ID ASSIGN exp TO exp DO exp      %prec "for"
+| BREAK
+| LET decs IN exps END
 ;
 
 exps:
@@ -191,7 +199,66 @@ lvalue_follow:
 | OBRA exp CBRA lvalue_follow
 ;
 
-decs: ARRAY    {}
+decs:
+	%empty
+| dec decs
+;
+
+dec:
+  /* Type declaration */
+  TYPE ID EQUAL ty
+  /* Class definition (alternative form) */
+| CLASS ID OCBRA classfields CCBRA
+| CLASS ID EXTENDS typeid OCBRA classfields CCBRA
+  /* Variable declaration */
+| vardec
+  /* Function declaration */
+| FUNCTION ID OPAR tyfields CPAR EQUAL exp
+| FUNCTION ID OPAR tyfields CPAR COLON typeid EQUAL exp
+  /* Primitive declaration */
+| PRIMITIVE ID OPAR tyfields CPAR
+| PRIMITIVE ID OPAR tyfields CPAR COLON typeid
+  /* Importing a set of declaration */
+| IMPORT STRING 
+;
+
+classfields:
+  %empty
+| classfield classfields
+;
+
+classfield:
+  vardec
+| METHOD ID OPAR tyfields CPAR EQUAL exp
+| METHOD ID OPAR tyfields CPAR COLON typeid EQUAL exp
+;
+
+tyfields:
+  %empty
+| ID COLON typeid tyfields_tail
+;
+
+tyfields_tail:
+  %empty
+| COMMA ID COLON typeid tyfields_tail
+;
+
+typeid:
+  ID
+;
+
+vardec:
+  VAR ID ASSIGN exp
+| VAR ID COLON typeid ASSIGN exp
+;
+
+ty:
+  typeid
+| OCBRA tyfields CCBRA
+| ARRAY OF typeid
+| CLASS OCBRA classfields CCBRA
+| CLASS EXTENDS typeid OCBRA classfields CCBRA
+;
 
 %%
 

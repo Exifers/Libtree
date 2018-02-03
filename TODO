@@ -30,3 +30,5 @@ Tiger Compiler : project steps and bugs
 [ ] Lexer : add \num, \xnum, backslash and double quote
 [ ] Lexer : add comments
 [ ] Lexer : raise error on unknown character
+
+[ ] Parser : fix the shift/reduce conflict
