@@ -1,13 +1,15 @@
 Tiger Compiler : project steps and bugs
 
 == TC-O ==
-[/] Lexer
-[/] Parser
+[X] Lexer // remains -> bug list
+[X] Parser // remains -> bug list
+
+[ ] Testsuite
 
 == TC-1 ==
 
-
-
+[ ] Figure out how to create an AST with Flex/Bison
+[ ] Make AST
 
 
 
