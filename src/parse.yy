@@ -103,6 +103,31 @@ exp:
 | NEW ID
   /* Variables, field, element of an array */
 | lvalue
+  /* Function call */
+| ID OPAR CPAR
+| ID OPAR exp_comma_list CPAR
+  /* Method call */
+| method_body OPAR CPAR
+;
+
+method_body:
+  ID method_spec
+;
+
+method_spec:
+  POINT ID method_spec_tail
+| OBRA exp CBRA POINT ID method_spec_tail
+;
+
+method_spec_tail:
+  %empty
+| POINT ID method_spec_tail
+| OBRA exp CBRA POINT ID method_spec_tail
+;
+
+exp_comma_list:
+  exp
+| exp COMMA exp_comma_list
 ;
 
 rec_init_list:
@@ -111,9 +136,7 @@ rec_init_list:
 ;
 
 lvalue:
-  ID
-| ID POINT ID lvalue_follow
-| ID OBRA exp CBRA lvalue_follow
+  ID lvalue_follow
 ;
 
 lvalue_follow:
