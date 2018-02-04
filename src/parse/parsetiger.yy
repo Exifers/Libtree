@@ -1,101 +1,167 @@
+                                                                // -*- C++ -*-
+%require "3.0"
 %language "C++"
+// Set the namespace name to `parse', instead of `yy'.
+%name-prefix "parse"
 %define api.value.type variant
 %define api.token.constructor
+
+  // FIXME: Some code was deleted here (Other directives: %skeleton "lalr1.cc" %expect 0 etc).
+%error-verbose
+%defines
+%debug
+// Prefix all the tokens with TOK_ to avoid colisions.
 %define api.token.prefix {TOK_}
-%define parse.error verbose
-%define parse.trace
+
+/* We use pointers to store the filename in the locations.  This saves
+   space (pointers), time (no deep copy), but leaves the problem of
+   deallocation.  This would be a perfect job for a misc::symbol
+   object (passed by reference), however Bison locations require the
+   filename to be passed as a pointer, thus forcing us to handle the
+   allocation and deallocation of this object.
+
+   Nevertheless, all is not lost: we can still use a misc::symbol
+   object to allocate a flyweight (constant) string in the pool of
+   symbols, extract it from the misc::symbol object, and use it to
+   initialize the location.  The allocated data will be freed at the
+   end of the program (see the documentation of misc::symbol and
+   misc::unique).  */
+%define filename_type {const std::string}
 %locations
 
-%param { int& num_errors }
+// The parsing context.
+%param { ::parse::TigerParser& tp }
+
+/*---------------------.
+| Support for tokens.  |
+`---------------------*/
+%code requires
+{
+#include <string>
+#include <misc/algorithm.hh>
+#include <misc/separator.hh>
+#include <misc/symbol.hh>
+#include <parse/fwd.hh>
+
+  // Pre-declare parse::parse to allow a ``reentrant'' parsing within
+  // the parser.
+  namespace parse
+  {
+    ast_type parse(Tweast& input);
+  }
+}
 
 %code provides
 {
-#define YY_DECL yy::parser::symbol_type yylex(int& num_errors)
-YY_DECL;
+  // Announce to Flex the prototype we want for lexing (member) function.
+  # define YY_DECL_(Prefix)                               \
+    ::parse::parser::symbol_type                          \
+    (Prefix parselex)(::parse::TigerParser& tp)
+  # define YY_DECL YY_DECL_(yyFlexLexer::)
 }
 
-%{
-  #include <iostream>
-  void yyerror(const char *);
-%}
+%printer { yyo << $$; } <int> <std::string> <misc::symbol>;
 
-  /* regexes */
-%token STRING
-%token ID
-%token<int> INTEGER
+%token <std::string>    STRING "string"
+%token <misc::symbol>   ID     "identifier"
+%token <int>            INT    "integer"
 
-  /* keywords */
-%token ARRAY
-%token IF
-%token THEN
-%token ELSE
-%token WHILE
-%token FOR
-%token TO
-%token DO
-%token LET
-%token IN
-%token END
-%token OF
-%token BREAK
-%token NIL
-%token FUNCTION
-%token VAR
-%token TYPE
-%token IMPORT
-%token PRIMITIVE
 
-  /* object extension keyword */
-%token CLASS
-%token EXTENDS
-%token METHOD
-%token NEW
 
-  /* Symbols */
-%token COMMA ","
-%token COLON ":"
-%token SEMICOLON ";"
-%token OPAR "("
-%token CPAR ")"
-%token OBRA "["
-%token CBRA "]"
-%token OCBRA "{"
-%token CCBRA "}"
-%token POINT "."
-%token PLUS "+"
-%token MINUS "-"
-%token TIMES "*"
-%token SLASH "/"
-%token EQUAL "="
-%token NEQUAL "<>"
-%token LESST "<"
-%token LESSE "<="
-%token MORET ">"
-%token MOREE ">="
-%token AND "&"
-%token OR "|"
-%token ASSIGN ":="
+/*-----------------------------------------.
+| Code output in the implementation file.  |
+`-----------------------------------------*/
 
-%token EOF 0 "end of file"
+%code
+{
+# include <parse/tiger-parser.hh>
+# include <parse/scantiger.hh>
+# include <parse/tweast.hh>
+# include <misc/separator.hh>
+# include <misc/symbol.hh>
 
-%printer { yyo << $$; } <int>;
+  namespace
+  {
 
+    /// Get the metavar from the specified map.
+    template <typename T>
+    T*
+    metavar(parse::TigerParser& tp, unsigned key)
+    {
+      parse::Tweast* input = tp.input_;
+      return input->template take<T>(key);
+    }
+
+  }
+
+  /// Use our local scanner object.
+  inline
+  ::parse::parser::symbol_type
+  parselex(parse::TigerParser& tp)
+  {
+    return tp.scanner_->parselex(tp);
+  }
+}
+
+// Definition of the tokens, and their pretty-printing.
+%token AND          "&"
+       ARRAY        "array"
+       ASSIGN       ":="
+       BREAK        "break"
+       CAST         "_cast"
+       CLASS        "class"
+       COLON        ":"
+       COMMA        ","
+       DIVIDE       "/"
+       DO           "do"
+       DOT          "."
+       ELSE         "else"
+       END          "end"
+       EQ           "="
+       EXTENDS      "extends"
+       FOR          "for"
+       FUNCTION     "function"
+       GE           ">="
+       GT           ">"
+       IF           "if"
+       IMPORT       "import"
+       IN           "in"
+       LBRACE       "{"
+       LBRACK       "["
+       LE           "<="
+       LET          "let"
+       LPAREN       "("
+       LT           "<"
+       MINUS        "-"
+       METHOD       "method"
+       NE           "<>"
+       NEW          "new"
+       NIL          "nil"
+       OF           "of"
+       OR           "|"
+       PLUS         "+"
+       PRIMITIVE    "primitive"
+       RBRACE       "}"
+       RBRACK       "]"
+       RPAREN       ")"
+       SEMI         ";"
+       THEN         "then"
+       TIMES        "*"
+       TO           "to"
+       TYPE         "type"
+       VAR          "var"
+       WHILE        "while"
+       EOF 0        "end of file"
 
   /* TODO check operator priority on these from subject */
 %left AND OR
-%left EQUAL NEQUAL
-%left LESST LESSE MORET MOREE
+%left EQ NE
+%left LT LE GT GE
 %left PLUS MINUS
-%left TIMES SLASH
+%left TIMES DIVIDE
 
-%right "array_of"
-%right "assign"
-%right "if_then"
-%right "if_then_else"
-%right "while"
-%right "for"
 
-%expect 1 /* Can't figure out how to solve it XD */
+%start program
 
 %%
 
@@ -108,26 +174,26 @@ program: exp   {}
 exp:
   /* Literals */
   NIL          {}
-| INTEGER      {}
+| INT          {}
 | STRING       {}
   /* Array and record creation */
-| ID OBRA exp CBRA OF exp              %prec "array_of"
-| ID OCBRA CCBRA
-| ID OCBRA rec_init_list CCBRA
+| ID LBRACK exp RBRACK OF exp              %prec "array_of"
+| ID LBRACE RBRACE
+| ID LBRACE rec_init_list RBRACE
   /* Object creation */
 | NEW ID
   /* Variables, field, element of an array */
 | lvalue
   /* Function call */
-| ID OPAR CPAR
-| ID OPAR exp_comma_list CPAR
+| ID LPAREN LPAREN
+| ID LPAREN exp_comma_list RPAREN
   /* Method call */
-| method_body OPAR CPAR
-| method_body OPAR exp_comma_list CPAR
+| method_body LPAREN RPAREN
+| method_body LPAREN exp_comma_list RPAREN
   /* Operations */
 | MINUS exp
 | exp_binary_operations
-| OPAR exps CPAR
+| LPAREN exps RPAREN
   /* Assignment */
 | lvalue ASSIGN exp                    %prec "assign"
   /* Control structures */
@@ -146,20 +212,20 @@ exps:
 
 exp_semicolon_list:
   exp
-| exp SEMICOLON exp_semicolon_list
+| exp SEMI exp_semicolon_list
 ;
 
 exp_binary_operations:
   exp PLUS exp
 | exp MINUS exp
 | exp TIMES exp
-| exp SLASH exp
-| exp EQUAL exp
-| exp NEQUAL exp
-| exp LESST exp
-| exp LESSE exp
-| exp MORET exp
-| exp MOREE exp 
+| exp DIVIDE exp
+| exp EQ exp
+| exp NE exp
+| exp LT exp
+| exp LE exp
+| exp GT exp
+| exp GE exp 
 | exp AND exp
 | exp OR exp
 ;
@@ -169,14 +235,14 @@ method_body:
 ;
 
 method_spec:
-  POINT ID method_spec_tail
-| OBRA exp CBRA POINT ID method_spec_tail
+  DOT ID method_spec_tail
+| LBRACK exp RBRACK DOT ID method_spec_tail
 ;
 
 method_spec_tail:
   %empty
-| POINT ID method_spec_tail
-| OBRA exp CBRA POINT ID method_spec_tail
+| DOT ID method_spec_tail
+| LBRACK exp RBRACK DOT ID method_spec_tail
 ;
 
 exp_comma_list:
@@ -185,8 +251,8 @@ exp_comma_list:
 ;
 
 rec_init_list:
-  ID EQUAL exp
-| ID EQUAL exp COMMA rec_init_list
+  ID EQ exp
+| ID EQ exp COMMA rec_init_list
 ;
 
 lvalue:
@@ -195,31 +261,33 @@ lvalue:
 
 lvalue_follow:
   %empty
-| POINT ID lvalue_follow
-| OBRA exp CBRA lvalue_follow
+| DOT ID lvalue_follow
+| LBRACK exp RBRACK lvalue_follow
 ;
 
+%token DECS "_decs";
+
 decs:
-	%empty
+  %empty
 | dec decs
 ;
 
 dec:
   /* Type declaration */
-  TYPE ID EQUAL ty
+  TYPE ID EQ ty
   /* Class definition (alternative form) */
-| CLASS ID OCBRA classfields CCBRA
-| CLASS ID EXTENDS typeid OCBRA classfields CCBRA
+| CLASS ID LBRACE classfields RBRACE
+| CLASS ID EXTENDS typeid LBRACE classfields RBRACE
   /* Variable declaration */
 | vardec
   /* Function declaration */
-| FUNCTION ID OPAR tyfields CPAR EQUAL exp
-| FUNCTION ID OPAR tyfields CPAR COLON typeid EQUAL exp
+| FUNCTION ID LPAREN tyfields RPAREN EQ exp
+| FUNCTION ID LPAREN tyfields RPAREN COLON typeid EQ exp
   /* Primitive declaration */
-| PRIMITIVE ID OPAR tyfields CPAR
-| PRIMITIVE ID OPAR tyfields CPAR COLON typeid
+| PRIMITIVE ID LPAREN tyfields RPAREN
+| PRIMITIVE ID LPAREN tyfields RPAREN COLON typeid
   /* Importing a set of declaration */
-| IMPORT STRING 
+| IMPORT STRING
 ;
 
 classfields:
@@ -229,8 +297,8 @@ classfields:
 
 classfield:
   vardec
-| METHOD ID OPAR tyfields CPAR EQUAL exp
-| METHOD ID OPAR tyfields CPAR COLON typeid EQUAL exp
+| METHOD ID LPAREN tyfields RPAREN EQ exp
+| METHOD ID LPAREN tyfields RPAREN COLON typeid EQ exp
 ;
 
 tyfields:
@@ -254,29 +322,21 @@ vardec:
 
 ty:
   typeid
-| OCBRA tyfields CCBRA
+| LBRACE tyfields RBRACE
 | ARRAY OF typeid
-| CLASS OCBRA classfields CCBRA
-| CLASS EXTENDS typeid OCBRA classfields CCBRA
+| CLASS RBRACE classfields LBRACE
+| CLASS EXTENDS typeid LBRACE classfields RBRACE
 ;
+
+
+/*---------------.
+| Declarations.  |
+`---------------*/
 
 %%
 
-void yy::parser::error(const location_type& loc, const std::string& s)
+void
+parse::parser::error(const location_type& l, const std::string& m)
 {
-  num_errors += 1;
-  std::cerr << loc << ": " << s << std::endl;
-}
-
-int main(void)
-{
-  auto num_errors = 0;
-  yy::parser parser(num_errors);
-  extern int yy_flex_debug;
-
-  if (getenv("YYDEBUG"))
-    parser.set_debug_level(1);
-
-  auto status = parser.parse();
-  return status || num_errors;
+  // FIXME: Some code was deleted here.
 }

@@ -1,87 +1,161 @@
-%option noyywrap
+                                                            /* -*- C++ -*- */
+%option c++
+%option nounput
+%option debug
+%option batch
 
 %{
-#include <iostream>
-#include "parsetiger.hh"
-yy::parser::location_type loc;
 
-#define YY_USER_ACTION    \
-  do {                    \
-    loc.columns(yyleng);  \
-  } while(false);
+#include <cerrno>
+#include <climits>
+#include <regex>
+#include <string>
+
+#include <boost/lexical_cast.hpp>
+
+#include <misc/contract.hh>
+  // Using misc::escape is very useful to quote non printable characters.
+  // For instance
+  //
+  //    std::cerr << misc::escape('\n') << '\n';
+  //
+  // reports about `\n' instead of an actual new-line character.
+#include <misc/escape.hh>
+#include <misc/symbol.hh>
+#include <parse/parsetiger.hh>
+#include <parse/tiger-parser.hh>
+
+  // FIXME: Some code was deleted here.
+
+// Convenient shortcuts.
+#define TOKEN_VAL(Type, Value)                  \
+  parser::make_ ## Type(Value, tp.location_)
+
+#define TOKEN(Type)                             \
+  parser::make_ ## Type(tp.location_)
+
+
+// Flex uses `0' for end of file.  0 is not a token_type.
+#define yyterminate() return TOKEN(EOF)
+
+# define CHECK_EXTENSION()                              \
+  do {                                                  \
+    if (!tp.enable_extensions_p_)                       \
+      tp.error_ << misc::error::error_type::scan        \
+                << tp.location_                         \
+                << ": invalid identifier: `"            \
+                << misc::escape(yytext) << "'\n";       \
+  } while (false)
+
+YY_FLEX_NAMESPACE_BEGIN
 %}
 
+%x SC_COMMENT SC_STRING
+
+/* Abbreviations.  */
+int             [0-9]+
 SPACE [ \t]
 STRING "\""[^"\""]*"\""
 ID ([a-zA-Z][0-9a-zA-Z_]*|"_main")
 INTEGER [0-9]+
 
 %%
-  loc.step();
+%{
+  // FIXME: Some code was deleted here (Local variables).
+
+  // Each time yylex is called.
+  tp.location_.step();
+%}
+
+ /* The rules.  */
+
+{int}         {
+                int val = 0;
+  // FIXME: Some code was deleted here (Decode, and check the value).
+                return TOKEN_VAL(INT, val);
+              }
 
   /* keywords */
-"array" { return yy::parser::make_ARRAY(loc); }
-"if" { return yy::parser::make_IF(loc); }
-"then" { return yy::parser::make_THEN(loc); }
-"else" { return yy::parser::make_ELSE(loc); }
-"while" { return yy::parser::make_WHILE(loc); }
-"for" { return yy::parser::make_FOR(loc); }
-"to" { return yy::parser::make_TO(loc); }
-"do" { return yy::parser::make_DO(loc); }
-"let" { return yy::parser::make_LET(loc); }
-"in" { return yy::parser::make_IN(loc); }
-"end" { return yy::parser::make_END(loc); }
-"of" { return yy::parser::make_OF(loc); }
-"break" { return yy::parser::make_BREAK(loc); }
-"nil" { return yy::parser::make_NIL(loc); }
-"function" { return yy::parser::make_FUNCTION(loc); }
-"var" { return yy::parser::make_VAR(loc); }
-"type" { return yy::parser::make_TYPE(loc); }
-"import" { return yy::parser::make_IMPORT(loc); }
-"primitive" { return yy::parser::make_PRIMITIVE(loc); }
+"array" { return TOKEN(ARRAY); }
+"if" { return TOKEN(IF); }
+"then" { return TOKEN(THEN); }
+"else" { return TOKEN(ELSE); }
+"while" { return TOKEN(WHILE); }
+"for" { return TOKEN(FOR); }
+"to" { return TOKEN(TO); }
+"do" { return TOKEN(DO); }
+"let" { return TOKEN(LET); }
+"in" { return TOKEN(IN); }
+"end" { return TOKEN(END); }
+"of" { return TOKEN(OF); }
+"break" { return TOKEN(BREAK); }
+"nil" { return TOKEN(NIL); }
+"function" { return TOKEN(FUNCTION); }
+"var" { return TOKEN(VAR); }
+"type" { return TOKEN(TYPE); }
+"import" { return TOKEN(IMPORT); }
+"primitive" { return TOKEN(PRIMITIVE); }
 
   /* object extension keyword */
-"class" { return yy::parser::make_CLASS(loc); }
-"extends" { return yy::parser::make_EXTENDS(loc); }
-"method" { return yy::parser::make_METHOD(loc); }
-"new" { return yy::parser::make_NEW(loc); }
+"class" { return TOKEN(CLASS); }
+"extends" { return TOKEN(EXTENDS); }
+"method" { return TOKEN(METHOD); }
+"new" { return TOKEN(NEW); }
 
   /* Symbols */
-"," { return yy::parser::make_COMMA(loc); }
-":" { return yy::parser::make_COLON(loc); }
-";" { return yy::parser::make_SEMICOLON(loc); }
-"(" { return yy::parser::make_OPAR(loc); }
-")" { return yy::parser::make_CPAR(loc); }
-"[" { return yy::parser::make_OBRA(loc); }
-"]" { return yy::parser::make_CBRA(loc); }
-"{" { return yy::parser::make_OCBRA(loc); }
-"}" { return yy::parser::make_CCBRA(loc); }
-"." { return yy::parser::make_POINT(loc); }
-"+" { return yy::parser::make_PLUS(loc); }
-"-" { return yy::parser::make_MINUS(loc); }
-"*" { return yy::parser::make_TIMES(loc); }
-"/" { return yy::parser::make_SLASH(loc); }
-"=" { return yy::parser::make_EQUAL(loc); }
-"<>" { return yy::parser::make_NEQUAL(loc); }
-"<" { return yy::parser::make_LESST(loc); }
-"<=" { return yy::parser::make_LESSE(loc); }
-">" { return yy::parser::make_MORET(loc); }
-">=" { return yy::parser::make_MOREE(loc); }
-"&" { return yy::parser::make_AND(loc); }
-"|" { return yy::parser::make_OR(loc); }
-":=" { return yy::parser::make_ASSIGN(loc); }
+"," { return TOKEN(COMMA); }
+":" { return TOKEN(COLON); }
+";" { return TOKEN(SEMI); }
+"(" { return TOKEN(LPAREN); }
+")" { return TOKEN(RPAREN); }
+"[" { return TOKEN(LBRACK); }
+"]" { return TOKEN(RBRACK); }
+"{" { return TOKEN(LBRACE); }
+"}" { return TOKEN(RBRACE); }
+"." { return TOKEN(DOT); }
+"+" { return TOKEN(PLUS); }
+"-" { return TOKEN(MINUS); }
+"*" { return TOKEN(TIMES); }
+"/" { return TOKEN(DIVIDE); }
+"=" { return TOKEN(EQ); }
+"<>" { return TOKEN(NE); }
+"<" { return TOKEN(LT); }
+"<=" { return TOKEN(LE); }
+">" { return TOKEN(GT); }
+">=" { return TOKEN(GE); }
+"&" { return TOKEN(AND); }
+"|" { return TOKEN(OR); }
+":=" { return TOKEN(ASSIGN); }
 
   /* Additional */
-{STRING} { return yy::parser::make_STRING(loc); }
-{ID} { return yy::parser::make_ID(loc); }
-{INTEGER} { return yy::parser::make_INTEGER(strtol(yytext, nullptr, 0), loc); }
-{SPACE}   { }
+{STRING} { return TOKEN_VAL(STRING, yytext); }
+{ID} { return TOKEN_VAL(ID, yytext); }
 
-<<EOF>> return yy::parser::make_EOF(loc);
+<<EOF>> return TOKEN(EOF);
 \n        { loc.lines(yyleng); }
 .         {
-            std::cerr << "Unexpected character : " << yytext << std::endl; 
-            num_errors += 1;
+            std::cerr << "Unexpected character : " << yytext << std::endl;
             std::exit(2); /* TODO check subject for exit status */
           }
+
 %%
+
+// Do not use %option noyywrap, because then flex generates the same
+// definition of yywrap, but outside the namespaces, so it defines it
+// for ::yyFlexLexer instead of ::parse::yyFlexLexer.
+int yyFlexLexer::yywrap() { return 1; }
+
+void
+yyFlexLexer::scan_open_(std::istream& f)
+{
+  yypush_buffer_state(YY_CURRENT_BUFFER);
+  yy_switch_to_buffer(yy_create_buffer(&f, YY_BUF_SIZE));
+}
+
+void
+yyFlexLexer::scan_close_()
+{
+  yypop_buffer_state();
+}
+
+YY_FLEX_NAMESPACE_END
