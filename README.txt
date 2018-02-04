@@ -38,6 +38,9 @@ In case of an error it should display a message.
 == Testsuite ==
 This project comports a testsuite. It is not linked to the build system yet.
 
+Typing 'make check' will run some kind of testsuite but we have no idea of what
+it does exactly.
+
 == Licence ==
 You're free to copy, share, reuse this code the way you want.
 
