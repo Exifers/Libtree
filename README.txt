@@ -11,16 +11,32 @@ in that program.
 - Linux
 - flex, version 1.2.6
 - bison
-- autotools (> TC-0)
+- autotools
+
+Autotools may ask for various modules.
 
 == How to compile this project ? ==
-For now just type 'make', and run the tc binary with './tc'.
+
+  ./bootstrap
+  export CXX=g++
+  ./configure
+  make
+
+This should produce the 'tc' binary in the 'src/' folder.
 
 == How to use Tiger Compiler ? ==
-The binary 'tc' reads Tiger source code on standard input.
+The binary 'tc' reads Tiger source code on a file given as argument. For now
+it just checks the syntax.
+
+Ouput value :
+  - O : syntax is correct
+  - 1 : parser error
+  - 2 : lexer error
+
+In case of an error it should display a message.
 
 == Testsuite ==
-This project comports a testsuite. Type 'make check' to run it.
+This project comports a testsuite. It is not linked to the build system yet.
 
 == Licence ==
 You're free to copy, share, reuse this code the way you want.
