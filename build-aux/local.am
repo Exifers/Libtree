@@ -1,0 +1,21 @@
+## Makefile.am -- Process this file with automake to produce Makefile.in
+##
+
+## Automake 1.11.1's support for dist_lisp_LISP is buggy on files with
+## a subdir.
+dist_lisp_DATA = build-aux/rebox.el build-aux/panther.el build-aux/tiger.el
+
+dist_noinst_SCRIPTS =                           \
+  build-aux/bin/coverage                        \
+  build-aux/bin/fuse-switch                     \
+  build-aux/bin/move-if-change
+
+nodist_noinst_SCRIPTS = build-aux/bin/bison++
+
+EXTRA_DIST += build-aux/tiger-syntax.vim build-aux/tiger-ftdetect.vim
+
+# Fetch the latest version of boost.m4 from upstream.
+.PHONY: boost-m4-up
+boost-m4-up:
+	wget -O "$(srcdir)/build-aux/m4/boost.m4" \
+	  'https://raw.github.com/tsuna/boost.m4/master/build-aux/boost.m4'

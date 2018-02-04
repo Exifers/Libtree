@@ -1,0 +1,28 @@
+DOXYGEN = doxygen
+
+.PHONY: doc html
+
+doc: html
+
+html-local: %D%/Doxyfile
+	$(DOXYGEN) $<
+
+edit = sed -e "s|@ID@|$$Id|" \
+	   -e 's,@PACKAGE_NAME\@,$(PACKAGE_NAME),g' \
+	   -e 's,@PACKAGE_VERSION\@,$(PACKAGE_VERSION),g' \
+	   -e 's,@top_builddir\@,$(top_builddir),g' \
+	   -e 's,@top_srcdir\@,$(top_srcdir),g'
+
+EXTRA_DIST += %D%/Doxyfile.in
+CLEANFILES += %D%/Doxyfile
+# Sed is used to generate Doxyfile from Doxyfile.in instead of
+# configure, because the former is way faster than the latter.
+# Moreover, this file is updated whenever ChangeLog is touched: using
+# sed instead of configure saves us a lot of time.
+%D%/Doxyfile: $(top_srcdir)/ChangeLog $(srcdir)/%D%/Doxyfile.in
+	Id=`grep '^\$$Id' $(top_srcdir)/ChangeLog`; \
+	$(edit) $(srcdir)/%D%/Doxyfile.in >%D%/Doxyfile
+
+clean-local: clean-doc
+clean-doc:
+	rm -rf html latex

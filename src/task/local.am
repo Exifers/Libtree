@@ -1,0 +1,15 @@
+## Task module.
+src_libtc_la_SOURCES +=							\
+  %D%/fwd.hh %D%/libtask.hh						\
+  %D%/task.hh %D%/task.hxx %D%/task.cc					\
+  %D%/boolean-task.hh %D%/boolean-task.cc				\
+  %D%/function-task.hh %D%/function-task.cc				\
+  %D%/int-task.hh %D%/int-task.cc					\
+  %D%/string-task.hh %D%/string-task.cc					\
+  %D%/multiple-string-task.hh %D%/multiple-string-task.cc		\
+  %D%/disjunctive-task.hh %D%/disjunctive-task.cc			\
+  %D%/task-register.hh %D%/task-register.cc %D%/task-register.hxx   \
+  %D%/simple-task.hh %D%/simple-task.cc   \
+  %D%/argument-task.hh %D%/argument-task.cc
+
+TASKS += %D%/tasks.hh %D%/tasks.cc

@@ -82,6 +82,6 @@ INTEGER [0-9]+
 .         {
             std::cerr << "Unexpected character : " << yytext << std::endl; 
             num_errors += 1;
-            std::exit(1); /* TODO check subject for exit status */
+            std::exit(2); /* TODO check subject for exit status */
           }
 %%

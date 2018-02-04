@@ -1,0 +1,64 @@
+EXTRA_DIST += src/tiger_common.i
+
+## ------------ ##
+## version.cc.  ##
+## ------------ ##
+
+EXTRA_DIST += src/version.cc.in
+CLEANFILES += src/version.stamp
+src/version.stamp: $(top_srcdir)/ChangeLog $(srcdir)/src/version.cc.in
+	$(AM_V_GEN)rm -f src/version.tmp
+	$(AM_V_at)touch src/version.tmp
+# Be sure not to have `/' in Id.  The embedded date may be
+# separated by `/' instead of `-', what sed dislikes.
+	$(AM_V_at)\
+	Id=`sed -n '/^\$$Id/{s,/,-,g;p;q;}' $(top_srcdir)/ChangeLog`; \
+	sed -e "s/@ID@/$$Id/" $(srcdir)/src/version.cc.in >src/version.cc.tmp
+	$(AM_V_at)$(top_srcdir)/build-aux/bin/move-if-change \
+	  src/version.cc.tmp src/version.cc
+	$(AM_V_at)mv -f src/version.tmp src/version.stamp
+
+src/version.cc: src/version.stamp
+	$(AM_V_at)if test -f src/version.cc; then :; else \
+	  rm -f src/version.stamp; \
+	  $(MAKE) $(AM_MAKEFLAGS) src/version.stamp; \
+	fi
+
+
+## ------- ##
+## libtc.  ##
+## ------- ##
+
+lib_LTLIBRARIES = src/libtc.la
+src_libtc_la_SOURCES = src/version.hh
+nodist_src_libtc_la_SOURCES = src/version.cc
+src_libtc_la_LDFLAGS = $(BOOST_PROGRAM_OPTIONS_LDFLAGS)
+BUILT_SOURCES += $(nodist_src_libtc_la_SOURCES)
+CLEANFILES += $(nodist_src_libtc_la_SOURCES)
+src_libtc_la_LIBADD =				\
+  $(top_builddir)/lib/misc/libmisc.la		\
+  $(BOOST_PROGRAM_OPTIONS_LIBS)
+
+
+## ---- ##
+## tc.  ##
+## ---- ##
+
+bin_PROGRAMS = src/tc
+dist_src_tc_SOURCES =				\
+  src/doc.hh					\
+  $(TASKS)					\
+  src/common.cc src/common.hh			\
+  src/tc.cc
+
+src_tc_LDADD = src/libtc.la
+
+
+## --------- ##
+## Modules.  ##
+## --------- ##
+
+TASKS =
+include src/task/local.am
+include src/parse/local.am
+include src/object/local.am
