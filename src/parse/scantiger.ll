@@ -2,7 +2,7 @@
 
 %{
 #include <iostream>
-#include "parse.hh"
+#include "parsetiger.hh"
 yy::parser::location_type loc;
 
 #define YY_USER_ACTION    \

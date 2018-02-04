@@ -5,24 +5,25 @@ BISON = bison
 
 bin = tc
 
-trash = scan.o parse.cc parse.o scan.cc position.hh parse.hh stack.hh \
-        location.hh
+trash = scantiger.o parsetiger.cc parsetiger.o scantiger.cc position.hh \
+parsetiger.hh stack.hh location.hh
 
 testsuite_trash = error.log
 
 all: bison flex
-	$(CXX) src/scan.o src/parse.o -o $(bin)
+	$(CXX) src/parse/scantiger.o src/parse/parsetiger.o -o $(bin)
 
 flex:
-	$(FLEX) -o src/scan.cc src/scan.ll
-	$(CXX) -c src/scan.cc -o src/scan.o
+	$(FLEX) -o src/parse/scantiger.cc src/parse/scantiger.ll
+	$(CXX) -c src/parse/scantiger.cc -o src/parse/scantiger.o
 
 bison:
-	$(BISON) -o src/parse.cc src/parse.yy --defines=src/parse.hh
-	$(CXX) -c src/parse.cc -o src/parse.o
+	$(BISON) -o src/parse/parsetiger.cc src/parse/parsetiger.yy \
+--defines=src/parse/parsetiger.hh
+	$(CXX) -c src/parse/parsetiger.cc -o src/parse/parsetiger.o
 
 check:
 	./tests/test.sh
 
 clean:
-	$(RM) $(bin) $(addprefix src/, $(trash)) $(testsuite_trash)
+	$(RM) $(bin) $(addprefix src/parse/, $(trash)) $(testsuite_trash)
