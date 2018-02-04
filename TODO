@@ -8,10 +8,9 @@ Tiger Compiler : project steps and bugs
 
 == TC-1 ==
 
+[X] Merge given files
 [ ] Autotools
-
-[ ] Figure out how to create an AST with Flex/Bison
-[ ] Make AST
+[ ] tarball generation
 
 [ ] Testsuite ?
 
