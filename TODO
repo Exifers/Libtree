@@ -19,9 +19,9 @@ Notation:
 [X] tarball generation
 
 [/] complete all FIXME
-[ ] complete given code (few classes) 
+[ ] complete given code (few classes) -> then check --parse-debug
 
-[ ] Testsuite ?
+[ ] integrate homade testsuite in Autotools
 
 == TC-2 ==
 
