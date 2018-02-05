@@ -1,16 +1,15 @@
-                                                                // -*- C++ -*-
 %require "3.0"
 %language "C++"
-// Set the namespace name to `parse', instead of `yy'.
 %name-prefix "parse"
 %define api.value.type variant
 %define api.token.constructor
-
-  // FIXME: Some code was deleted here (Other directives: %skeleton "lalr1.cc" %expect 0 etc).
+%skeleton "lalr1.cc"
+  /* FIXME : solve remaining conflicts */
+%expect 1
 %error-verbose
 %defines
 %debug
-// Prefix all the tokens with TOK_ to avoid colisions.
+  /* Prefix all the tokens with TOK_ to avoid colisions. */
 %define api.token.prefix {TOK_}
 
 /* We use pointers to store the filename in the locations.  This saves
@@ -29,7 +28,7 @@
 %define filename_type {const std::string}
 %locations
 
-// The parsing context.
+  /* The parsing context. */
 %param { ::parse::TigerParser& tp }
 
 /*---------------------.
@@ -43,8 +42,8 @@
 #include <misc/symbol.hh>
 #include <parse/fwd.hh>
 
-  // Pre-declare parse::parse to allow a ``reentrant'' parsing within
-  // the parser.
+  /* Pre-declare parse::parse to allow a ``reentrant'' parsing within
+  ** the parser. */
   namespace parse
   {
     ast_type parse(Tweast& input);
@@ -53,7 +52,7 @@
 
 %code provides
 {
-  // Announce to Flex the prototype we want for lexing (member) function.
+  /* Announce to Flex the prototype we want for lexing (member) function. */
   # define YY_DECL_(Prefix)                               \
     ::parse::parser::symbol_type                          \
     (Prefix parselex)(::parse::TigerParser& tp)
@@ -83,7 +82,7 @@
   namespace
   {
 
-    /// Get the metavar from the specified map.
+    /* Get the metavar from the specified map. */
     template <typename T>
     T*
     metavar(parse::TigerParser& tp, unsigned key)
@@ -94,7 +93,7 @@
 
   }
 
-  /// Use our local scanner object.
+  /* Use our local scanner object. */
   inline
   ::parse::parser::symbol_type
   parselex(parse::TigerParser& tp)
@@ -103,7 +102,7 @@
   }
 }
 
-// Definition of the tokens, and their pretty-printing.
+  /* Definition of the tokens, and their pretty-printing. */
 %token AND          "&"
        ARRAY        "array"
        ASSIGN       ":="
@@ -160,6 +159,12 @@
 %left PLUS MINUS
 %left TIMES DIVIDE
 
+%right "array_of"
+%right "assign"
+%right "if_then"
+%right "if_then_else"
+%right "while"
+%right "for"
 
 %start program
 
@@ -185,7 +190,7 @@ exp:
   /* Variables, field, element of an array */
 | lvalue
   /* Function call */
-| ID LPAREN LPAREN
+| ID LPAREN RPAREN
 | ID LPAREN exp_comma_list RPAREN
   /* Method call */
 | method_body LPAREN RPAREN
@@ -324,7 +329,7 @@ ty:
   typeid
 | LBRACE tyfields RBRACE
 | ARRAY OF typeid
-| CLASS RBRACE classfields LBRACE
+| CLASS LBRACE classfields RBRACE
 | CLASS EXTENDS typeid LBRACE classfields RBRACE
 ;
 
@@ -338,5 +343,5 @@ ty:
 void
 parse::parser::error(const location_type& l, const std::string& m)
 {
-  // FIXME: Some code was deleted here.
+  std::cerr << l << ": " << m << std::endl;
 }
