@@ -130,6 +130,7 @@ INTEGER [0-9]+
   /* Additional */
 {STRING} { return TOKEN_VAL(STRING, yytext); }
 {ID} { return TOKEN_VAL(ID, yytext); }
+{SPACE} {}
 
 <<EOF>> return TOKEN(EOF);
 \n        { loc.lines(yyleng); }
