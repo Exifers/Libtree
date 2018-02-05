@@ -1,5 +1,11 @@
 Tiger Compiler : project steps and bugs
 
+Notation:
+[ ] not done yet
+[X] done
+[/] partially done
+[|] no need to be done anymore
+
 == TC-O ==
 [X] Lexer // remains -> bug list
 [X] Parser // remains -> bug list
@@ -9,10 +15,15 @@ Tiger Compiler : project steps and bugs
 == TC-1 ==
 
 [X] Merge given files
-[ ] Autotools
-[ ] tarball generation
+[X] Autotools
+[X] tarball generation
+
+[/] complete all FIXME
+[ ] complete given code (few classes) 
 
 [ ] Testsuite ?
+
+== TC-2 ==
 
 
 
@@ -25,10 +36,10 @@ Tiger Compiler : project steps and bugs
 
 == Bug List ==
 
-[ ] Lexer : see what ANSI-C means
-[ ] Lexer : add double quote escape on STRING type
-[ ] Lexer : add \num, \xnum, backslash and double quote
+[|] Lexer : see what ANSI-C means                        | 
+[|] Lexer : add double quote escape on STRING type       |> updated to given
+[|] Lexer : add \num, \xnum, backslash and double quote  |  code version
 [ ] Lexer : add comments
-[ ] Lexer : raise error on unknown character
+[ ] Lexer : raise error on unknown character
 
-[ ] Parser : fix the shift/reduce conflict
+[ ] Parser : fix the shift/reduce conflict (1 left)
