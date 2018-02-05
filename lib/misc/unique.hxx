@@ -13,35 +13,35 @@ namespace misc
 
   template <typename T, class C>
   unique<T, C>::unique(const data_type& s)
-  // FIXME: Some code was deleted here (Initializations).
+                       : obj_(s)
   {}
 
   template <typename T, class C>
   typename unique<T, C>::object_set_type&
   unique<T, C>::object_set_instance()
   {
-  // FIXME: Some code was deleted here (Classical Singleton pattern, a la Scott Meyers').
+    return std::set<obj_, C>;
   }
 
   template <typename T, class C>
   typename unique<T, C>::object_size_type
   unique<T, C>::object_map_size()
   {
-  // FIXME: Some code was deleted here.
+    return this.size;
   }
 
   template <typename T, class C>
   inline const typename unique<T, C>::data_type&
   unique<T, C>::get() const
   {
-  // FIXME: Some code was deleted here.
+    return obj_;
   }
 
   template <typename T, class C>
   inline
   unique<T, C>::operator const data_type&() const
   {
-  // FIXME: Some code was deleted here.
+    return obj_;
   }
 
   template <typename  T, class C>
