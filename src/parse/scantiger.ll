@@ -1,4 +1,3 @@
-                                                            /* -*- C++ -*- */
 %option c++
 %option nounput
 %option debug
@@ -70,8 +69,7 @@ INTEGER [0-9]+
  /* The rules.  */
 
 {int}         {
-                int val = 0;
-  // FIXME: Some code was deleted here (Decode, and check the value).
+                int val = std::atoi(yytext); /* returns 0 if it can't decode */
                 return TOKEN_VAL(INT, val);
               }
 

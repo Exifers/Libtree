@@ -4,7 +4,6 @@
 %define api.value.type variant
 %define api.token.constructor
 %skeleton "lalr1.cc"
-  /* FIXME : solve remaining conflicts */
 %expect 1
 %error-verbose
 %defines
