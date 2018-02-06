@@ -219,9 +219,9 @@ exp:
   } %prec "array_of"
 
 | ID LBRACE RBRACE { $$ = new ast::RecordExp(@$, new ast::NameTy(@$, $1)); }
-| ID LBRACE rec_init_list RBRACE
+| ID LBRACE rec_init_list RBRACE { } /* FIXME : list of (ID, exp) ?? */
   /* Object creation */
-| NEW ID
+| NEW ID { $$ = new ast::ObjectExp(@$, new ast::NameTy(@$, $2)); }
   /* Variables, field, element of an array */
 | lvalue
   /* Function call */

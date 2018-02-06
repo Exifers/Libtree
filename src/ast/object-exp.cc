@@ -9,7 +9,21 @@
 namespace ast
 {
 
-  // FIXME: Some code was deleted here.
+  ObjectExp::ObjectExp(const Location& location, NameTy* namety)
+  : Exp(location), namety_(namety) 
+  {}
+
+  void
+  ObjectExp::accept(ConstVisitor& v) const
+  {
+    v(*this);
+  }
+
+  void
+  ObjectExp::accept(Visitor& v)
+  {
+    v(*this);
+  }
 
 } // namespace ast
 

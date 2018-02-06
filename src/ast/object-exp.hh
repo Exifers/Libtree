@@ -10,11 +10,23 @@
 
 namespace ast
 {
-
   /// ObjectExp.
   class ObjectExp : public Exp
   {
-  // FIXME: Some code was deleted here.
+    public:
+    ObjectExp(const Location& location, NameTy* namety);
+    ObjectExp(const ObjectExp&) = delete;
+    ObjectExp& operator=(const ObjectExp&) = delete;
+    virtual ~ObjectExp() = default;
+
+    void accept(ConstVisitor& v) const override;
+    void accept(Visitor& v) override;
+
+    const NameTy& namety_get() const;
+    NameTy& namety_get();
+
+    protected:
+    NameTy* namety_;
   };
 
 } // namespace ast

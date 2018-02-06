@@ -46,5 +46,3 @@ Incomplete classes are tagged with a `*'.
   Field             (symbol name, NameTy type_name)
 
   FieldInit         (symbol name, Exp init)
-
-

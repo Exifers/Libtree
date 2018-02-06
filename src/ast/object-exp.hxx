@@ -9,8 +9,17 @@
 
 namespace ast
 {
-
-  // FIXME: Some code was deleted here.
+  inline const NameTy&
+  ObjectExp::namety_get() const
+  {
+    return *namety_;
+  }
+  
+  inline NameTy&
+  ObjectExp::namety_get()
+  {
+    return *namety_;
+  }
 
 } // namespace ast
 
