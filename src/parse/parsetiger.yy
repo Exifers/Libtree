@@ -246,9 +246,14 @@ exp:
     $$ = new ast::IfExp(@$, $2, $4, $6);
   } %prec "if_then_else"
 
-| WHILE exp DO exp                                        %prec "while"
-| FOR ID ASSIGN exp TO exp DO exp                         %prec "for"
-| BREAK
+| WHILE exp DO exp {
+    $$ = new ast::WhileExp(@$, $2, $4);
+  } %prec "while"
+
+| FOR ID ASSIGN exp TO exp DO exp {
+    $$ = new ast::ForExp(@$, new ast::VarDec(@$, $2, nullptr, $4), $6, $8);
+  } %prec "for"
+| BREAK { $$ = new ast::BreakExp(@$); }
 | LET decs IN exps END
 ;
 

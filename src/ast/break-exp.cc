@@ -8,8 +8,21 @@
 
 namespace ast
 {
+  BreakExp::BreakExp(const Location& location)
+  : Exp(location)
+  {}
 
-  // FIXME: Some code was deleted here.
+  void
+  BreakExp::accept(ConstVisitor& v) const
+  {
+    v(*this);
+  }
+
+  void
+  BreakExp::accept(Visitor& v)
+  {
+    v(*this);
+  }
 
 } // namespace ast
 
