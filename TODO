@@ -5,6 +5,7 @@ Notation:
 [X] done
 [/] partially done
 [|] no need to be done anymore
+[!] important to be done
 
 == TC-O ==
 [X] Lexer // remains -> bug list
@@ -21,7 +22,7 @@ Notation:
 [/] complete all FIXME
 [ ] complete given code (few classes) -> then check --parse-debug
 
-[ ] integrate homade testsuite in Autotools
+[!] integrate homemade testsuite in Autotools
 
 == TC-2 ==
 

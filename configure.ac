@@ -17,6 +17,9 @@ AC_INIT([Meric-de-bellefon Group Tiger Compiler], 1,
         [emmanuel.meric-de-bellefon-tc],
         [http://tiger.lrde.epita.fr])
 
+## Adding testsuite to the build
+EXTA_DIST = testsuite.at tests/ atlocal.in
+
 # Auxiliary files.
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([build-aux/m4])

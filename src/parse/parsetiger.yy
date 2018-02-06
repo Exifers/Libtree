@@ -3,8 +3,10 @@
 %name-prefix "parse"
 %define api.value.type variant
 %define api.token.constructor
-%skeleton "lalr1.cc"
+%skeleton "glr.cc"
+%glr-parser
 %expect 1
+%expect-rr 0
 %error-verbose
 %defines
 %debug
