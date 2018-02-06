@@ -219,7 +219,7 @@ exp:
   } %prec "array_of"
 
 | ID LBRACE RBRACE { $$ = new ast::RecordExp(@$, new ast::NameTy(@$, $1)); }
-| ID LBRACE rec_init_list RBRACE { } /* FIXME : list of (ID, exp) ?? */
+| ID LBRACE rec_init_list RBRACE { } /* FIXME : list of VarDec */
   /* Object creation */
 | NEW ID { $$ = new ast::ObjectExp(@$, new ast::NameTy(@$, $2)); }
   /* Variables, field, element of an array */
@@ -235,12 +235,19 @@ exp:
 | exp_binary_operations
 | LPAREN exps RPAREN
   /* Assignment */
-| lvalue ASSIGN exp                    %prec "assign"
+| lvalue ASSIGN exp                                       %prec "assign"
+
   /* Control structures */
-| IF exp THEN exp                      %prec "if_then"
-| IF exp THEN exp ELSE exp             %prec "if_then_else"
-| WHILE exp DO exp                     %prec "while"
-| FOR ID ASSIGN exp TO exp DO exp      %prec "for"
+| IF exp THEN exp {
+    $$ = new ast::IfExp(@$, $2, $4, nullptr);
+  } %prec "if_then"
+
+| IF exp THEN exp ELSE exp {
+    $$ = new ast::IfExp(@$, $2, $4, $6);
+  } %prec "if_then_else"
+
+| WHILE exp DO exp                                        %prec "while"
+| FOR ID ASSIGN exp TO exp DO exp                         %prec "for"
 | BREAK
 | LET decs IN exps END
 ;
