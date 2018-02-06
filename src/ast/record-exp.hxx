@@ -9,8 +9,16 @@
 
 namespace ast
 {
+  inline const NameTy&
+  RecordExp::namety_get() const
+  {
+    return *namety_;
+  }
 
-  // FIXME: Some code was deleted here.
-
+  inline NameTy&
+  RecordExp::namety_get()
+  {
+    return *namety_;
+  }
 } // namespace ast
 

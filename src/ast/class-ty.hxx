@@ -10,7 +10,6 @@
 namespace ast
 {
 
-
   inline const NameTy&
   ClassTy::super_get() const
   {
@@ -32,7 +31,6 @@ namespace ast
   {
     return *decs_;
   }
-
 
 } // namespace ast
 

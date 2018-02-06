@@ -46,6 +46,7 @@ Notation:
 [ ] Lexer : raise error on unknown character
 
 [ ] Parser : fix the shift/reduce conflict (1 left)
+[ ] Parser : 'let in print("hello") end' raises an error
 
 
 == Questions to Yaka ==

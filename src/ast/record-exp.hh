@@ -15,7 +15,21 @@ namespace ast
   /// RecordExp.
   class RecordExp : public Exp
   {
-  // FIXME: Some code was deleted here.
+    public:
+    RecordExp(const Location& location, NameTy* namety);
+    RecordExp(const RecordExp&) = delete;
+    RecordExp& operator=(const RecordExp&) = delete;
+
+    virtual ~RecordExp() = default;
+    
+    void accept(ConstVisitor& v) const override;
+    void accept(Visitor& v) override;
+
+    const NameTy& namety_get() const;
+    NameTy& namety_get();
+
+    private:
+    NameTy* namety_;
   };
 
 } // namespace ast

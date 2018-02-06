@@ -9,8 +9,21 @@
 
 namespace ast
 {
+  RecordExp::RecordExp(const Location& location,
+                     NameTy* namety)
+  : Exp(location), namety_(namety)
+  {}
+ 
+  void
+  RecordExp::accept(ConstVisitor& v) const
+  {
+    v(*this);
+  }
 
-  // FIXME: Some code was deleted here.
+  void
+  RecordExp::accept(Visitor& v)
+  {
+    v(*this);
+  }
 
 } // namespace ast
-

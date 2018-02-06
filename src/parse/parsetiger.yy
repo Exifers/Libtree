@@ -218,7 +218,7 @@ exp:
     $$ = new ast::ArrayExp(@$, new ast::NameTy(@$, $1), $3, $6);
   } %prec "array_of"
 
-| ID LBRACE RBRACE
+| ID LBRACE RBRACE { $$ = new ast::RecordExp(@$, new ast::NameTy(@$, $1)); }
 | ID LBRACE rec_init_list RBRACE
   /* Object creation */
 | NEW ID
