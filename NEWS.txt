@@ -1,3 +1,7 @@
+New in 1.64, 2018-02-01
+
+* General Maintenance
+
 New in 1.63, 2018-01-25
 
 * More C++17 features
@@ -6,7 +10,7 @@ New in 1.63, 2018-01-25
   - use class template argument deduction
   - use if(init; condition)
 
-* General Mainenance
+* General Maintenance
   - swap callee-save and caller-save order
   - add desugar implementation for ArrayExp during TC-O
   - replace enums with enum classes
