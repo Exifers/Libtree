@@ -195,12 +195,11 @@
 
 %type <ast::Exp*> exp
 %type <ast::DecsList*> decs
-  /* FIXME: Some code was deleted here (More %types). */
+
 
 %start program
 
 %%
-<<<<<<< HEAD
 
   /* Hint : non terminals are in lower case, terminals in upper case */
 
@@ -212,7 +211,7 @@ exp:
   /* Literals */
   NIL          {}
 | INT          { $$ = new ast::IntExp(@$, $1); }
-| STRING       {}
+| STRING       { $$ = new ast::StringExp(@$, $1); }
   /* Array and record creation */
 | ID LBRACK exp RBRACK OF exp              %prec "array_of"
 | ID LBRACE RBRACE
@@ -308,12 +307,12 @@ lvalue_follow:
 
 %token DECS "_decs";
 
-decs:
+decs: { $$ = new ast::DecsList(@$); }
   %empty
 | dec decs
 ;
 
-dec: { $$ = new ast::DecsList(@$); }
+dec: 
   /* Type declaration */
   TYPE ID EQ ty
   /* Class definition (alternative form) */
