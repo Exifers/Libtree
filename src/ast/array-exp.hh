@@ -14,7 +14,27 @@ namespace ast
   /// ArrayExp.
   class ArrayExp : public Exp
   {
-  // FIXME: Some code was deleted here.
+    public:
+    ArrayExp(const Location& location, NameTy* namety, Exp* size_exp, Exp* type_exp);
+    ArrayExp(const ArrayExp&) = delete;
+    ArrayExp& operator=(const ArrayExp&) = delete;
+
+    virtual ~ArrayExp() = default;
+    
+    void accept(ConstVisitor& v) const override;
+    void accept(Visitor& v) override;
+
+    const NameTy& namety_get() const;
+    NameTy& namety_get();
+    const Exp& size_exp_get() const;
+    Exp& size_exp_get();
+    const Exp& type_exp_get() const;
+    Exp& type_exp_get();
+
+    protected:
+    NameTy* namety_;
+    Exp* size_exp_;
+    Exp* type_exp_;
   };
 
 } // namespace ast

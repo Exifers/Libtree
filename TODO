@@ -26,10 +26,12 @@ Notation:
 
 == TC-2 ==
 
-
-
-
-
+[ ] Complete uncompleted node classes
+[ ] Build ast
+[ ] Make visitor
+[ ] Make pretty-print
+[ ] Tweast
+[ ] Test-suite
 
 
 
@@ -44,3 +46,12 @@ Notation:
 [ ] Lexer : raise error on unknown character
 
 [ ] Parser : fix the shift/reduce conflict (1 left)
+
+
+== Questions to Yaka ==
+
+* How to include the test-suite with autotools ?
+  - AC_TESTDIR and EXTRA_DIST have been tested in configure.ac
+
+* Since we have a glr do we have to remove all the '%prec' in parsetiger.yy ?
+  - There's warning about those during compilation

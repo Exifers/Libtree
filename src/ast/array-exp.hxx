@@ -9,8 +9,40 @@
 
 namespace ast
 {
+  inline const NameTy&
+  ArrayExp::namety_get() const
+  {
+    return *namety_;
+  }
 
-  // FIXME: Some code was deleted here.
+  inline NameTy&
+  ArrayExp::namety_get()
+  {
+    return *namety_;
+  }
 
+  inline const Exp&
+  ArrayExp::size_exp_get() const
+  {
+    return *size_exp_;
+  }
+
+  inline Exp&
+  ArrayExp::size_exp_get()
+  {
+    return *size_exp_;
+  }
+
+  inline const Exp&
+  ArrayExp::type_exp_get() const
+  {
+    return *type_exp_;
+  }
+
+  inline Exp&
+  ArrayExp::type_exp_get()
+  {
+    return *type_exp_;
+  }
 } // namespace ast
 

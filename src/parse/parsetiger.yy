@@ -209,11 +209,15 @@ program: exp   { tp.ast_ = $1; }
 
 exp:
   /* Literals */
-  NIL          {}
+  NIL          { $$ = new ast::NilExp(@$); }
 | INT          { $$ = new ast::IntExp(@$, $1); }
 | STRING       { $$ = new ast::StringExp(@$, $1); }
+
   /* Array and record creation */
-| ID LBRACK exp RBRACK OF exp              %prec "array_of"
+| ID LBRACK exp RBRACK OF exp  {
+    $$ = new ast::ArrayExp(@$, new ast::NameTy(@$, $1), $3, $6);
+  } %prec "array_of"
+
 | ID LBRACE RBRACE
 | ID LBRACE rec_init_list RBRACE
   /* Object creation */
