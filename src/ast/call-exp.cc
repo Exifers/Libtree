@@ -10,7 +10,21 @@
 namespace ast
 {
 
-  // FIXME: Some code was deleted here.
+  CallExp::CallExp(const Location& location,
+      NameTy* namety,
+      std::list<Exp*> exps)
+    : Exp(location), namety_(namety), exps_(exps) 
+  {}
+
+  void CallExp::accept(ConstVisitor& v) const
+  {
+    v(*this);
+  }
+
+  void CallExp::accept(Visitor& v)
+  {
+    v(*this);
+  }
 
 } // namespace ast
 

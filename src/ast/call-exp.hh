@@ -14,8 +14,25 @@ namespace ast
 
   /// CallExp.
   class CallExp : public Exp
-  {
-  // FIXME: Some code was deleted here.
+  { 
+    public:
+    CallExp(const Location& location, NameTy* namety, std::list<Exp*> exps);
+    CallExp(const ArrayExp&) = delete;
+    CallExp& operator=(const ArrayExp&) = delete;
+
+    virtual ~CallExp() = default;
+    
+    void accept(ConstVisitor& v) const override;
+    void accept(Visitor& v) override;
+
+    const NameTy& namety_get() const;
+    NameTy& namety_get();
+    const std::list<Exp*>& exps_get() const;
+    std::list<Exp*>& exps_get();
+
+    protected:
+    NameTy* namety_;
+    std::list<Exp*> exps_;
   };
 
 } // namespace ast
