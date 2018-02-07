@@ -2,6 +2,7 @@
 
 Tiger Abstract Syntax Tree nodes with their principal members.
 Incomplete classes are tagged with a `*'.
+Completed classes are tagged with a '-'.
 
 /Ast/               (Location location)
   /Dec/             (symbol name)
@@ -17,9 +18,9 @@ Incomplete classes are tagged with a `*'.
       SimpleVar     (symbol name)
       SubscriptVar  (Var var, Exp index)
 
-*   ArrayExp
+-   ArrayExp
 *   AssignExp
-*   BreakExp
+-   BreakExp
 *   CallExp
 *     MethodCallExp
     CastExp         (Exp exp, Ty ty)

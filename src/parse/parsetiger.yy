@@ -42,6 +42,7 @@
 #include <misc/separator.hh>
 #include <misc/symbol.hh>
 #include <parse/fwd.hh>
+#include <list>
 
   /* Pre-declare parse::parse to allow a ``reentrant'' parsing within
   ** the parser. */
@@ -225,8 +226,13 @@ exp:
   /* Variables, field, element of an array */
 | lvalue
   /* Function call */
-| ID LPAREN RPAREN
-| ID LPAREN exp_comma_list RPAREN
+| ID LPAREN RPAREN  {
+    $$ = new ast::CallExp(@$, new ast::NameTy(@$, $1), std::list<ast::Exp*>());
+  }
+| ID LPAREN exp_comma_list RPAREN {
+    /* FIXME trick to fill the list below */
+    $$ = new ast::CallExp(@$, new ast::NameTy(@$, $1), std::list<ast::Exp*>());
+  }
   /* Method call */
 | method_body LPAREN RPAREN
 | method_body LPAREN exp_comma_list RPAREN
@@ -254,7 +260,10 @@ exp:
     $$ = new ast::ForExp(@$, new ast::VarDec(@$, $2, nullptr, $4), $6, $8);
   } %prec "for"
 | BREAK { $$ = new ast::BreakExp(@$); }
-| LET decs IN exps END
+| LET decs IN exps END {
+    /* FIXME fill the list */
+    $$ = new ast::LetExp(@$, $2, std::list<ast::Exp*>());
+  }
 ;
 
 exps:
