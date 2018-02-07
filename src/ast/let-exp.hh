@@ -16,8 +16,7 @@ namespace ast
   class LetExp : public Exp
   {
     public:
-    /* FIXME adapt this code : */
-    LetExp(const Location& location, int value);
+    LetExp(const Location& location, DecsList* decs, std::list<Exp*> exps);
     LetExp(const LetExp&) = delete;
     LetExp& operator=(const LetExp&) = delete;
 
@@ -26,9 +25,14 @@ namespace ast
     void accept(ConstVisitor& v) const override;
     void accept(Visitor& v) override;
 
+    const DecsList& decs_get(void) const;
+    DecsList& decs_get(void);
+    const std::list<Exp*>& exps_get(void) const; 
+    std::list<Exp*>& exps_get(void);
+
     private:
-    DecsList decs_;
-    /* List of exp ???? */
+    DecsList* decs_;
+    std::list<Exp*> exps_;
   };
 
 } // namespace ast

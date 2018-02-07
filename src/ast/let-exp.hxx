@@ -9,8 +9,29 @@
 
 namespace ast
 {
+  inline const DecsList&
+  LetExp::decs_get(void) const
+  {
+    return *decs_;
+  }
 
-  // FIXME: Some code was deleted here.
+  inline DecsList&
+  LetExp::decs_get(void)
+  {
+    return *decs_;
+  }
+
+  inline const std::list<Exp*>&
+  LetExp::exps_get(void) const
+  {
+    return exps_;
+  }
+
+  inline std::list<Exp*>&
+  LetExp::exps_get(void)
+  {
+    return exps_;
+  }
 
 } // namespace ast
 

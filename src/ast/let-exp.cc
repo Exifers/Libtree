@@ -8,8 +8,18 @@
 
 namespace ast
 {
+  LetExp::LetExp(const Location& location, DecsList* decs, std::list<Exp*> exps)
+  : Exp(location), decs_(decs), exps_(exps)
+  {}
 
-  // FIXME: Some code was deleted here.
-
+  void
+  LetExp::accept(ConstVisitor& v) const
+  {
+    v(*this);
+  }
+  void
+  LetExp::accept(Visitor& v)
+  {
+    v(*this);
+  }
 } // namespace ast
-
