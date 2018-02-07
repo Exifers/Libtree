@@ -10,7 +10,20 @@
 namespace ast
 {
 
-  // FIXME: Some code was deleted here.
+  RecordTy::RecordTy(const Location& location, std::list<Field*> tyfields)
+  : Ty(location), tyfields_(tyfields)
+  {}
 
+  void
+  RecordTy::accept(ConstVisitor& v) const
+  {
+    v(*this);
+  }
+
+  void
+  RecordTy::accept(Visitor& v)
+  {
+    v(*this);
+  }
 } // namespace ast
 

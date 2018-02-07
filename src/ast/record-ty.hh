@@ -14,7 +14,23 @@ namespace ast
   /// RecordTy.
   class RecordTy : public Ty
   {
-  // FIXME: Some code was deleted here.
+    public:
+    RecordTy(const Location& location, std::list<Field*> tyfields);
+    RecordTy(const RecordTy&) = delete;
+    RecordTy& operator=(const RecordTy&) = delete;
+
+    virtual ~RecordTy();
+
+    void accept(ConstVisitor& v) const override;
+    void accept(Visitor& v) override;
+
+
+    const std::list<Field*>& tyfields_get() const;
+    std::list<Field*>& tyfields_get();
+
+
+    protected:
+    std::list<Field*> tyfields_;
   };
 
 } // namespace ast

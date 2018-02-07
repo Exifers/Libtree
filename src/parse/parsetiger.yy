@@ -387,7 +387,10 @@ vardec:
 
 ty:
   typeid
-| LBRACE tyfields RBRACE
+| LBRACE tyfields RBRACE {
+    /* FIXME fill the list */
+    $$ = new ast::RecordTy(@$, std::list<ast::Field*>());
+  }
 | ARRAY OF typeid
 | CLASS LBRACE classfields RBRACE
 | CLASS EXTENDS typeid LBRACE classfields RBRACE

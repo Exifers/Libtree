@@ -21,19 +21,19 @@ Completed classes are tagged with a '-'.
 -   ArrayExp
 *   AssignExp
 -   BreakExp
-*   CallExp
+-   CallExp
 *     MethodCallExp
     CastExp         (Exp exp, Ty ty)
     ForExp          (VarDec vardec, Exp hi, Exp body)
-*   IfExp
+-   IfExp
     IntExp          (int value)
-*   LetExp
+-   LetExp
     NilExp          ()
-*   ObjectExp
+-   ObjectExp
     OpExp           (Exp left, Oper oper, Exp right)
-*   RecordExp
+-   RecordExp
 *   SeqExp
-*   StringExp
+-   StringExp
     WhileExp        (Exp test, Exp body)
 
   /Ty/              ()

@@ -10,7 +10,17 @@
 namespace ast
 {
 
-  // FIXME: Some code was deleted here.
+  inline const std::list<Field*>&
+  RecordTy::tyfields_get() const
+  {
+    return tyfields_;
+  }
+
+  inline std::list<Field*>&
+  RecordTy::tyfields_get()
+  {
+    return tyfields_;
+  }
 
 } // namespace ast
 
