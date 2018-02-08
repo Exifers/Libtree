@@ -20,5 +20,17 @@ namespace ast
   {
     return *namety_;
   }
+
+  inline const std::list<VarDec*>&
+  RecordExp::fields_get() const
+  {
+    return fields_;
+  }
+
+  inline std::list<VarDec*>&
+  RecordExp::fields_get()
+  {
+    return fields_;
+  }
 } // namespace ast
 

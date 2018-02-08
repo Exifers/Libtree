@@ -10,8 +10,9 @@
 namespace ast
 {
   RecordExp::RecordExp(const Location& location,
-                     NameTy* namety)
-  : Exp(location), namety_(namety)
+                     NameTy* namety,
+                     std::list<VarDec*> fields)
+  : Exp(location), namety_(namety), fields_(fields)
   {}
  
   void

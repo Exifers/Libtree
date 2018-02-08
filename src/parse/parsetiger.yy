@@ -219,8 +219,15 @@ exp:
     $$ = new ast::ArrayExp(@$, new ast::NameTy(@$, $1), $3, $6);
   } %prec "array_of"
 
-| ID LBRACE RBRACE { $$ = new ast::RecordExp(@$, new ast::NameTy(@$, $1)); }
-| ID LBRACE rec_init_list RBRACE { } /* FIXME : list of VarDec */
+| ID LBRACE RBRACE {
+    $$ = new ast::RecordExp(@$, new ast::NameTy(@$, $1),
+        std::list<ast::VarDec*>());
+  }
+| ID LBRACE rec_init_list RBRACE { } {
+    /* FIXME fill the list */
+    $$ = new ast::RecordExp(@$, new ast::NameTy(@$, $1),
+        std::list<ast::VarDec*>());
+  }
   /* Object creation */
 | NEW ID { $$ = new ast::ObjectExp(@$, new ast::NameTy(@$, $2)); }
   /* Variables, field, element of an array */
@@ -387,10 +394,10 @@ vardec:
 
 ty:
   typeid
-| LBRACE tyfields RBRACE {
-    /* FIXME fill the list */
+| LBRACE tyfields RBRACE /* {
+    FIXME fill the list, and see why it doesn't compile 
     $$ = new ast::RecordTy(@$, std::list<ast::Field*>());
-  }
+  } */
 | ARRAY OF typeid
 | CLASS LBRACE classfields RBRACE
 | CLASS EXTENDS typeid LBRACE classfields RBRACE

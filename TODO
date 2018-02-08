@@ -48,6 +48,8 @@ Notation:
 [|] Parser : fix the shift/reduce conflict (1 left) -> one in the reference
 [!] Parser : 'let in print("hello") end' raises an error
 
+[ ] AST : add LBRACE tyfields RBRACE rule 
+
 
 == Questions to Yaka ==
 

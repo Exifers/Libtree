@@ -40,7 +40,7 @@ Completed classes are tagged with a '-'.
     ArrayTy         (NameTy base_type)
     ClassTy         (NameTy super, DecsList decs)
     NameTy          (symbol name)
-*   RecordTy
+-   RecordTy
 
   DecsList          (decs_type decs)
 
