@@ -12,8 +12,22 @@ namespace ast
 
   /// SeqExp.
   class SeqExp : public Exp
-  {
-  // FIXME: Some code was deleted here.
+  { 
+    public:
+    SeqExp(const Location& location, std::list<FieldInit*> lvalue);
+    SeqExp(const SeqExp&) = delete;
+    SeqExp& operator=(const SeqExp&) = delete;
+
+    virtual ~SeqExp() = default;
+    
+    void accept(ConstVisitor& v) const override;
+    void accept(Visitor& v) override;
+
+    const std::list<FieldInit*> lvalue_get() const;
+    std::list<FieldInit*> lvalue_get();
+
+    protected:
+    std::list<FieldInit*> lvalue_;
   };
 
 } // namespace ast

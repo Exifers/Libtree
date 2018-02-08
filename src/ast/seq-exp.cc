@@ -9,8 +9,22 @@
 
 namespace ast
 {
+  
+  SeqExp::SeqExp(const Location& location, std::list<FieldInit*> lvalue)
+  : Exp(location), lvalue_(lvalue)
+  {}
 
-  // FIXME: Some code was deleted here.
+  void
+  SeqExp::accept(ConstVisitor& v) const
+  {
+    v(*this);
+  }
+
+  void
+  SeqExp::accept(Visitor& v)
+  {
+    v(*this);
+  }
 
 } // namespace ast
 

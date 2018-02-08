@@ -9,8 +9,16 @@
 
 namespace ast
 {
+  inline const std::list<FieldInit*>
+  SeqExp::lvalue_get() const
+  {
+    return lvalue_;
+  }
 
-  // FIXME: Some code was deleted here.
-
+  inline std::list<FieldInit*>
+  SeqExp::lvalue_get()
+  {
+    return lvalue_;
+  }
 } // namespace ast
 
