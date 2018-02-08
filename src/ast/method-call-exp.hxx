@@ -9,8 +9,17 @@
 
 namespace ast
 {
+  inline const std::list<FieldInit*>
+  MethodCallExp::lvalue_get() const
+  {
+    return lvalue_;
+  }
 
-  // FIXME: Some code was deleted here.
+  inline std::list<FieldInit*>
+  MethodCallExp::lvalue_get()
+  {
+    return lvalue_;
+  }
 
 } // namespace ast
 

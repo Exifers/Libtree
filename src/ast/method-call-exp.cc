@@ -8,8 +8,23 @@
 
 namespace ast
 {
+  MethodCallExp::MethodCallExp(const Location& location, NameTy* namety,
+      std::list<Exp*> exps,
+      std::list<FieldInit*> lvalue)
+  : CallExp(location, namety, exps), lvalue_(lvalue)
+  {}
+  
+  void
+  MethodCallExp::accept(ConstVisitor& v) const
+  {
+    v(*this);
+  }
 
-  // FIXME: Some code was deleted here.
+  void
+  MethodCallExp::accept(Visitor& v)
+  {
+    v(*this);
+  }
 
 } // namespace ast
 

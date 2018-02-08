@@ -22,7 +22,23 @@ namespace ast
 
   class MethodCallExp : public CallExp
   {
-  // FIXME: Some code was deleted here.
+    public:
+    MethodCallExp(const Location& location, NameTy* namety,
+        std::list<Exp*> exps,
+        std::list<FieldInit*> lvalue);
+    MethodCallExp(const ArrayExp&) = delete;
+    MethodCallExp& operator=(const ArrayExp&) = delete;
+
+    virtual ~MethodCallExp() = default;
+    
+    void accept(ConstVisitor& v) const override;
+    void accept(Visitor& v) override;
+
+    const std::list<FieldInit*> lvalue_get() const;
+    std::list<FieldInit*> lvalue_get();
+
+    protected:
+    std::list<FieldInit*> lvalue_;
   };
 
 } // namespace ast
