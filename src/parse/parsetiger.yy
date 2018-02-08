@@ -42,7 +42,6 @@
 #include <misc/separator.hh>
 #include <misc/symbol.hh>
 #include <parse/fwd.hh>
-#include <list>
 
   /* Pre-declare parse::parse to allow a ``reentrant'' parsing within
   ** the parser. */
@@ -220,13 +219,11 @@ exp:
   } %prec "array_of"
 
 | ID LBRACE RBRACE {
-    $$ = new ast::RecordExp(@$, new ast::NameTy(@$, $1),
-        std::list<ast::VarDec*>());
+    $$ = new ast::RecordExp(@$, new ast::NameTy(@$, $1), std::list<ast::VarDec*>());
   }
-| ID LBRACE rec_init_list RBRACE { } {
-    /* FIXME fill the list */
-    $$ = new ast::RecordExp(@$, new ast::NameTy(@$, $1),
-        std::list<ast::VarDec*>());
+| ID LBRACE rec_init_list RBRACE {
+    /* FIXME fill the list */ 
+    $$ = new ast::RecordExp(@$, new ast::NameTy(@$, $1), std::list<ast::VarDec*>());
   }
   /* Object creation */
 | NEW ID { $$ = new ast::ObjectExp(@$, new ast::NameTy(@$, $2)); }
@@ -236,29 +233,31 @@ exp:
     $$ = new ast::SeqExp(@$, std::list<ast::FieldInit*>());
   }
   /* Function call */
-| ID LPAREN RPAREN  {
+| ID LPAREN RPAREN { 
     $$ = new ast::CallExp(@$, new ast::NameTy(@$, $1), std::list<ast::Exp*>());
   }
 | ID LPAREN exp_comma_list RPAREN {
-    /* FIXME trick to fill the list below */
+    /* FIXME fill the list */
     $$ = new ast::CallExp(@$, new ast::NameTy(@$, $1), std::list<ast::Exp*>());
   }
   /* Method call */
-| method_body LPAREN RPAREN {
-    /*
-    $$ = new ast::MethodCallExp(@$, nullptr, std::list<ast::Exp*>(), $1); 
-    */
-  }
-| method_body LPAREN exp_comma_list RPAREN {
-    /* FIXME: fill the list */
-    /*
-    $$ = new ast::MethodCallExp(@$, nullptr, std::list<ast::Exp*>(), $1);
-    */
-  }
+| method_body LPAREN RPAREN
+| method_body LPAREN exp_comma_list RPAREN
   /* Operations */
 | MINUS exp
 
-| binary_op { }
+| exp PLUS exp { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::add, $3); }
+| exp MINUS exp { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::sub, $3); }
+| exp TIMES exp { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::mul, $3); }
+| exp DIVIDE exp { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::div, $3); }
+| exp EQ exp { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::eq, $3); }
+| exp NE exp { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::ne, $3); }
+| exp LT exp { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::lt, $3); }
+| exp LE exp { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::le, $3); }
+| exp GT exp { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::gt, $3); }
+| exp GE exp  { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::ge, $3); }
+| exp AND exp
+| exp OR exp
 
 | LPAREN exps RPAREN
   /* Assignment */
@@ -281,10 +280,7 @@ exp:
     $$ = new ast::ForExp(@$, new ast::VarDec(@$, $2, nullptr, $4), $6, $8);
   } %prec "for"
 | BREAK { $$ = new ast::BreakExp(@$); }
-| LET decs IN exps END {
-    /* FIXME fill the list */
-    $$ = new ast::LetExp(@$, $2, std::list<ast::Exp*>());
-  }
+| LET decs IN exps END
 ;
 
 exps:
@@ -297,36 +293,7 @@ exp_semicolon_list:
 | exp SEMI exp_semicolon_list
 ;
 
-binary_op:
-  /*
-  exp PLUS exp { $$ = new ast::OpExp(@$, $1, ast::Oper::add, $3); }
-| exp MINUS exp { $$ = new ast::OpExp(@$, $1, ast::Oper::sub, $3); }
-| exp TIMES exp { $$ = new ast::OpExp(@$, $1, ast::Oper::mul, $3); }
-| exp DIVIDE exp { $$ = new ast::OpExp(@$, $1, ast::Oper::div, $3); }
-| exp EQ exp { $$ = new ast::OpExp(@$, $1, ast::Oper::eq, $3); }
-| exp NE exp { $$ = new ast::OpExp(@$, $1, ast::Oper::ne, $3); }
-| exp LT exp { $$ = new ast::OpExp(@$, $1, ast::Oper::lt, $3); }
-| exp LE exp { $$ = new ast::OpExp(@$, $1, ast::Oper::le, $3); }
-| exp GT exp { $$ = new ast::OpExp(@$, $1, ast::Oper::gt, $3); } 
-| exp GE exp { $$ = new ast::OpExp(@$, $1, ast::Oper::ge, $3); } 
-| exp AND exp { }
-| exp OR exp { }
-  */
-  exp PLUS exp { }
-| exp MINUS exp { }
-| exp TIMES exp { }
-| exp DIVIDE exp { }
-| exp EQ exp { }
-| exp NE exp { }
-| exp LT exp { }
-| exp LE exp { }
-| exp GT exp { }
-| exp GE exp { }
-| exp AND exp { }
-| exp OR exp { }
-
-  /* FIXME: fill the list */
-method_body: { /* $$ = new std::list<ast::FieldInit*>(); */ }
+method_body:
   ID method_spec
 ;
 
@@ -422,10 +389,7 @@ vardec:
 
 ty:
   typeid
-| LBRACE tyfields RBRACE /* {
-    FIXME fill the list, and see why it doesn't compile 
-    $$ = new ast::RecordTy(@$, std::list<ast::Field*>());
-  } */
+| LBRACE tyfields RBRACE
 | ARRAY OF typeid
 | CLASS LBRACE classfields RBRACE
 | CLASS EXTENDS typeid LBRACE classfields RBRACE
