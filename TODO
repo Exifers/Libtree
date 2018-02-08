@@ -26,8 +26,8 @@ Notation:
 
 == TC-2 ==
 
-[ ] Complete uncompleted node classes
-[ ] Build ast
+[/] Complete uncompleted node classes
+[/] Build ast
 [ ] Make visitor
 [ ] Make pretty-print
 [ ] Tweast
@@ -46,7 +46,8 @@ Notation:
 [ ] Lexer : raise error on unknown character
 
 [|] Parser : fix the shift/reduce conflict (1 left) -> one in the reference
-[!] Parser : 'let in print("hello") end' raises an error
+[!] Parser : 'let in print("hello") end' raises an error -> the lexer
+             keeps reading beyond end of file
 
 [ ] AST : add LBRACE tyfields RBRACE rule 
 
@@ -63,3 +64,4 @@ Notation:
   of some nodes ?
   - to store stuff like 'id exp {, exp}'
 
+* How to stop the lexer to read after EOF token ? -> see bug list
