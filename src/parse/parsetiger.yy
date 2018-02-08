@@ -179,6 +179,9 @@
        WHILE        "while"
        EOF 0        "end of file"
 
+%nterm <std::list<ast::Exp*>> exps
+%nterm <std::list<ast::Exp*>> exp_semicolon_list
+
   /* TODO check operator priority on these from subject */
 %left AND OR
 %left EQ NE
@@ -280,17 +283,17 @@ exp:
     $$ = new ast::ForExp(@$, new ast::VarDec(@$, $2, nullptr, $4), $6, $8);
   } %prec "for"
 | BREAK { $$ = new ast::BreakExp(@$); }
-| LET decs IN exps END
+| LET decs IN exps END { $$ = new ast::LetExp(@$, $2, $4); }
 ;
 
 exps:
-  %empty
-| exp_semicolon_list
+  %empty { $$ = std::list<ast::Exp*>(); }
+| exp_semicolon_list { $$ = $1; }
 ;
 
 exp_semicolon_list:
-  exp
-| exp SEMI exp_semicolon_list
+  exp {  }
+| exp SEMI exp_semicolon_list { }
 ;
 
 method_body:
