@@ -42,7 +42,15 @@ namespace misc
   template <typename U>
   variant<T, Ts...>::operator const U&() const
   {
-  // FIXME: Some code was deleted here.
+    try
+    {
+      std::get<U>(*this);
+    }
+    catch(std::bad_variant_access& e)
+    {
+      std::cout << e.what() << '\n';
+    }
+    return std::get<U>(*this);
   }
 
   template <typename T, typename... Ts>
