@@ -129,12 +129,19 @@ INTEGER [0-9]+
 {STRING} { return TOKEN_VAL(STRING, yytext); }
 {ID} { return TOKEN_VAL(ID, yytext); }
 {SPACE} {}
+"/*"        { BEGIN(SC_COMMENT); }
+<SC_COMMENT>"*/"    { BEGIN(INITIAL); }
+<SC_COMMENT>([^*]|\n)+|.
+<SC_COMMENT><<EOF>> {
+            std::cerr << "unexpected end of file in a comment" << std::endl;
+            std::exit(2);
+                    }
 
 <<EOF>> return TOKEN(EOF);
 \n        { loc.lines(yyleng); }
 .         {
             std::cerr << "Unexpected character : " << yytext << std::endl;
-            std::exit(2); /* TODO check subject for exit status */
+            std::exit(2);
           }
 
 %%

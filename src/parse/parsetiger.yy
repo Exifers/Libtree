@@ -3,7 +3,7 @@
 %name-prefix "parse"
 %define api.value.type variant
 %define api.token.constructor
-%skeleton "glr.cc"
+%skeleton "lalr1.cc"
 %glr-parser
 %expect 1
 %expect-rr 0
@@ -345,4 +345,5 @@ void
 parse::parser::error(const location_type& l, const std::string& m)
 {
   std::cerr << l << ": " << m << std::endl;
+  exit(3);
 }
