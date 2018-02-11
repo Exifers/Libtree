@@ -10,6 +10,8 @@
 #include <misc/variant.hh>
 #include <type_traits>
 
+#include <iostream>
+
 namespace misc
 {
 
