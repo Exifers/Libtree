@@ -12,6 +12,8 @@ namespace ast
 {
 
   /// StringExp.
+  /** This is a leaf node and represents a basic string as returned by the lexer
+  **  . */
   class StringExp : public Exp
   {
     public:

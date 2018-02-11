@@ -13,6 +13,8 @@ namespace ast
 {
 
   /// RecordExp.
+  /** Stores a record expression as 'namety { fields }' where fields is a list
+  **  of VarDec syntaxically coma separated. */
   class RecordExp : public Exp
   {
     public:

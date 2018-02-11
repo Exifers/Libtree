@@ -12,6 +12,9 @@ namespace ast
 {
 
   /// ArrayExp.
+  /** Stores everything needed to declare an array as 'namety [size_exp] of 
+  **  type_exp'.
+  */
   class ArrayExp : public Exp
   {
     public:

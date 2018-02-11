@@ -31,7 +31,6 @@ namespace ast
     void operator()(const SubscriptVar& e) override;
     void operator()(const CastVar& e) override;
     void operator()(const CastExp& e) override;
-  // FIXME: Some code was deleted here.
     /// \}
 
   private:

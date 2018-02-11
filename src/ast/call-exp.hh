@@ -13,6 +13,9 @@ namespace ast
 {
 
   /// CallExp.
+  /** Represents a function call, with the following pattern 'namety ( exps ) '.
+  **  exps is a list of expressions nodes.
+  */
   class CallExp : public Exp
   { 
     public:

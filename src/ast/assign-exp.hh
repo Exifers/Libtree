@@ -14,7 +14,6 @@ namespace ast
   /// AssignExp.
   class AssignExp : public Exp
   {
-    // FIXME : some code was deleted here
   };
 
 } // namespace ast

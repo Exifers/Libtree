@@ -11,6 +11,8 @@ namespace ast
 {
 
   /// BreakExp.
+  /** Represents just a single 'break' expression.
+  */
   class BreakExp : public Exp
   {
     public:

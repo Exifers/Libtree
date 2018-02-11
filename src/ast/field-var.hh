@@ -14,7 +14,6 @@ namespace ast
   /// FieldVar.
   class FieldVar : public Var
   {
-  // FIXME: Some code was deleted here.
   };
 
 } // namespace ast

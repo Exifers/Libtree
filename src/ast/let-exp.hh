@@ -13,6 +13,9 @@ namespace ast
 {
 
   /// LetExp.
+  /** Represents a let in end statement with the following pattern : 'let decs
+  **  in exps end'.
+  */
   class LetExp : public Exp
   {
     public:

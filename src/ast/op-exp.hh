@@ -12,6 +12,8 @@ namespace ast
 {
 
   /// OpExp.
+  /** Represents a binary operation, as 'left oper right'.\a oper can be
+  **  arithmetical operations (+ - * /) or comparisons (=, <=, <>, ...). */
   class OpExp : public Exp
   {
 

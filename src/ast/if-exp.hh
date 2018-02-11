@@ -12,6 +12,9 @@ namespace ast
 {
 
   /// IfExp.
+  /** Represents an if statement with the following pattern : 'if condition then
+  **  content'.
+  */
   class IfExp : public Exp
   {
      public:

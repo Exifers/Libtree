@@ -11,6 +11,7 @@
 namespace ast
 {
   /// ObjectExp.
+  /** Represents the declaration of a new object, as 'new namety'. */
   class ObjectExp : public Exp
   {
     public:
