@@ -67,6 +67,30 @@
 %token <int>            INT    "integer"
 
 
+/*--------------------------------.
+| Support for the non-terminals.  |
+`--------------------------------*/
+
+%code requires
+{
+# include <ast/fwd.hh>
+// Provide the declarations of the following classes for the
+// %destructor clauses below to work properly.
+# include <ast/exp.hh>
+# include <ast/var.hh>
+# include <ast/ty.hh>
+# include <ast/name-ty.hh>
+# include <ast/field.hh>
+# include <ast/field-init.hh>
+# include <ast/function-dec.hh>
+# include <ast/type-dec.hh>
+# include <ast/var-dec.hh>
+# include <ast/any-decs.hh>
+# include <ast/decs-list.hh>
+}
+
+  // FIXME: Some code was deleted here (Printers and destructors).
+
 
 /*-----------------------------------------.
 | Code output in the implementation file.  |
@@ -79,6 +103,8 @@
 # include <parse/tweast.hh>
 # include <misc/separator.hh>
 # include <misc/symbol.hh>
+# include <ast/all.hh>
+# include <ast/libast.hh>
 
   namespace
   {
@@ -153,6 +179,9 @@
        WHILE        "while"
        EOF 0        "end of file"
 
+%nterm <std::list<ast::Exp*>> exps
+%nterm <std::list<ast::Exp*>> exp_semicolon_list
+
   /* TODO check operator priority on these from subject */
 %left AND OR
 %left EQ NE
@@ -167,73 +196,104 @@
 %right "while"
 %right "for"
 
+%type <ast::Exp*> exp
+%type <ast::DecsList*> decs
+
+
 %start program
 
 %%
 
   /* Hint : non terminals are in lower case, terminals in upper case */
 
-program: exp   {}
-       | decs  {}
+program: exp   { tp.ast_ = $1; }
+       | decs  { tp.ast_ = $1; }
        ;
 
 exp:
   /* Literals */
-  NIL          {}
-| INT          {}
-| STRING       {}
+  NIL          { $$ = new ast::NilExp(@$); }
+| INT          { $$ = new ast::IntExp(@$, $1); }
+| STRING       { $$ = new ast::StringExp(@$, $1); }
+
   /* Array and record creation */
-| ID LBRACK exp RBRACK OF exp              %prec "array_of"
-| ID LBRACE RBRACE
-| ID LBRACE rec_init_list RBRACE
+| ID LBRACK exp RBRACK OF exp  {
+    $$ = new ast::ArrayExp(@$, new ast::NameTy(@$, $1), $3, $6);
+  } %prec "array_of"
+
+| ID LBRACE RBRACE {
+    $$ = new ast::RecordExp(@$, new ast::NameTy(@$, $1), std::list<ast::VarDec*>());
+  }
+| ID LBRACE rec_init_list RBRACE {
+    /* FIXME fill the list */ 
+    $$ = new ast::RecordExp(@$, new ast::NameTy(@$, $1), std::list<ast::VarDec*>());
+  }
   /* Object creation */
-| NEW ID
+| NEW ID { $$ = new ast::ObjectExp(@$, new ast::NameTy(@$, $2)); }
   /* Variables, field, element of an array */
-| lvalue
+| lvalue {
+    /* FIXME fill the list */
+    $$ = new ast::SeqExp(@$, std::list<ast::FieldInit*>());
+  }
   /* Function call */
-| ID LPAREN RPAREN
-| ID LPAREN exp_comma_list RPAREN
+| ID LPAREN RPAREN { 
+    $$ = new ast::CallExp(@$, new ast::NameTy(@$, $1), std::list<ast::Exp*>());
+  }
+| ID LPAREN exp_comma_list RPAREN {
+    /* FIXME fill the list */
+    $$ = new ast::CallExp(@$, new ast::NameTy(@$, $1), std::list<ast::Exp*>());
+  }
   /* Method call */
 | method_body LPAREN RPAREN
 | method_body LPAREN exp_comma_list RPAREN
   /* Operations */
 | MINUS exp
-| exp_binary_operations
+
+| exp PLUS exp { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::add, $3); }
+| exp MINUS exp { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::sub, $3); }
+| exp TIMES exp { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::mul, $3); }
+| exp DIVIDE exp { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::div, $3); }
+| exp EQ exp { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::eq, $3); }
+| exp NE exp { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::ne, $3); }
+| exp LT exp { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::lt, $3); }
+| exp LE exp { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::le, $3); }
+| exp GT exp { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::gt, $3); }
+| exp GE exp  { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::ge, $3); }
+| exp AND exp
+| exp OR exp
+
 | LPAREN exps RPAREN
   /* Assignment */
-| lvalue ASSIGN exp                    %prec "assign"
+| lvalue ASSIGN exp                                       %prec "assign"
+
   /* Control structures */
-| IF exp THEN exp                      %prec "if_then"
-| IF exp THEN exp ELSE exp             %prec "if_then_else"
-| WHILE exp DO exp                     %prec "while"
-| FOR ID ASSIGN exp TO exp DO exp      %prec "for"
-| BREAK
-| LET decs IN exps END
+| IF exp THEN exp {
+    $$ = new ast::IfExp(@$, $2, $4, nullptr);
+  } %prec "if_then"
+
+| IF exp THEN exp ELSE exp {
+    $$ = new ast::IfExp(@$, $2, $4, $6);
+  } %prec "if_then_else"
+
+| WHILE exp DO exp {
+    $$ = new ast::WhileExp(@$, $2, $4);
+  } %prec "while"
+
+| FOR ID ASSIGN exp TO exp DO exp {
+    $$ = new ast::ForExp(@$, new ast::VarDec(@$, $2, nullptr, $4), $6, $8);
+  } %prec "for"
+| BREAK { $$ = new ast::BreakExp(@$); }
+| LET decs IN exps END { $$ = new ast::LetExp(@$, $2, $4); }
 ;
 
 exps:
-  %empty
-| exp_semicolon_list
+  %empty { $$ = std::list<ast::Exp*>(); }
+| exp_semicolon_list { $$ = $1; }
 ;
 
 exp_semicolon_list:
-  exp
-| exp SEMI exp_semicolon_list
-;
-
-exp_binary_operations:
-  exp PLUS exp
-| exp MINUS exp
-| exp TIMES exp
-| exp DIVIDE exp
-| exp EQ exp
-| exp NE exp
-| exp LT exp
-| exp LE exp
-| exp GT exp
-| exp GE exp 
-| exp AND exp
-| exp OR exp
+  exp {  }
+| exp SEMI exp_semicolon_list { }
 ;
 
 method_body:
@@ -271,14 +331,18 @@ lvalue_follow:
 | LBRACK exp RBRACK lvalue_follow
 ;
 
+/*---------------.
+| Declarations.  |
+`---------------*/
+
 %token DECS "_decs";
 
-decs:
+decs: { $$ = new ast::DecsList(@$); }
   %empty
 | dec decs
 ;
 
-dec:
+dec: 
   /* Type declaration */
   TYPE ID EQ ty
   /* Class definition (alternative form) */
@@ -334,10 +398,6 @@ ty:
 | CLASS EXTENDS typeid LBRACE classfields RBRACE
 ;
 
-
-/*---------------.
-| Declarations.  |
-`---------------*/
 
 %%
 

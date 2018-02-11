@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <iostream>
 
+#include <ast/tasks.hh>
 #include <common.hh>
 #include <misc/file-library.hh>
 #include <object/tasks.hh>
@@ -44,6 +45,7 @@ namespace parse::tasks
       if (!result.first)
         task_error().exit();
 
+  // FIXME: Some code was deleted here.
   }
 
   void

@@ -12,7 +12,7 @@ AC_PREREQ([2.64])
 ## Package set up.  ##
 ## ---------------- ##
 
-AC_INIT([Meric-de-bellefon Group Tiger Compiler], 1,
+AC_INIT([Meric-de-bellefon Group Tiger Compiler], 2,
         [emmanuel.meric-de-bellefon@epita.fr],
         [emmanuel.meric-de-bellefon-tc],
         [http://tiger.lrde.epita.fr])
