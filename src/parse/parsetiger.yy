@@ -225,14 +225,12 @@ exp:
     $$ = new ast::RecordExp(@$, new ast::NameTy(@$, $1), std::list<ast::VarDec*>());
   }
 | ID LBRACE rec_init_list RBRACE {
-    /* FIXME fill the list */ 
     $$ = new ast::RecordExp(@$, new ast::NameTy(@$, $1), std::list<ast::VarDec*>());
   }
   /* Object creation */
 | NEW ID { $$ = new ast::ObjectExp(@$, new ast::NameTy(@$, $2)); }
   /* Variables, field, element of an array */
 | lvalue {
-    /* FIXME fill the list */
     $$ = new ast::SeqExp(@$, std::list<ast::FieldInit*>());
   }
   /* Function call */
@@ -240,7 +238,6 @@ exp:
     $$ = new ast::CallExp(@$, new ast::NameTy(@$, $1), std::list<ast::Exp*>());
   }
 | ID LPAREN exp_comma_list RPAREN {
-    /* FIXME fill the list */
     $$ = new ast::CallExp(@$, new ast::NameTy(@$, $1), std::list<ast::Exp*>());
   }
   /* Method call */
