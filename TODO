@@ -22,7 +22,7 @@ Notation:
 [/] complete all FIXME
 [ ] complete given code (few classes) -> then check --parse-debug
 
-[!] integrate homemade testsuite in Autotools
+[X] integrate homemade testsuite in Autotools
 
 == TC-2 ==
 
@@ -54,14 +54,12 @@ Notation:
 
 == Questions to Yaka ==
 
-* How to include the test-suite with autotools ?
-  - AC_TESTDIR and EXTRA_DIST have been tested in configure.ac
-
 * Since we have a glr do we have to remove all the '%prec' in parsetiger.yy ?
   - There's warning about those during compilation
 
 * Is it a good idea to make lists of Expr, or lists of VarDec as attributes 
   of some nodes ?
   - to store stuff like 'id exp {, exp}'
+  -> use vector instead (from assignements, only vector and maps are used)
 
 * How to stop the lexer to read after EOF token ? -> see bug list
