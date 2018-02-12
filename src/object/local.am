@@ -3,6 +3,7 @@ EXTRA_DIST += %D%/tiger_object.i
 
 src_libtc_la_SOURCES += %D%/libobject.hh %D%/libobject.cc
 
+src_libtc_la_SOURCES += %D%/binder.hh %D%/binder.cc
 
 
 
@@ -12,6 +13,8 @@ src_libtc_la_SOURCES += %D%/libobject.hh %D%/libobject.cc
 check_PROGRAMS += %D%/test-parse
 %C%_test_parse_LDADD = src/libtc.la
 
+check_PROGRAMS += %D%/test-bind
+%C%_test_bind_LDADD = src/libtc.la
 
 
 

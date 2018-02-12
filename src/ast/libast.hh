@@ -16,6 +16,7 @@ namespace ast
 {
 
   extern const misc::xalloc<bool> escapes_display;
+  extern const misc::xalloc<bool> bindings_display;
 
   /// Output \a a on \a ostr.
   std::ostream& operator<<(std::ostream& ostr, const Ast& tree);

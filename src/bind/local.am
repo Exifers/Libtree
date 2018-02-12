@@ -1,0 +1,18 @@
+## bind module.
+EXTRA_DIST += %D%/tiger_bind.i
+
+src_libtc_la_SOURCES +=					\
+  %D%/binder.hh %D%/binder.hxx %D%/binder.cc		\
+  %D%/libbind.hh %D%/libbind.cc
+src_libtc_la_SOURCES +=					\
+  %D%/renamer.hh %D%/renamer.hxx %D%/renamer.cc
+
+
+TASKS += %D%/tasks.hh %D%/tasks.cc
+
+## ------- ##
+## Tests.  ##
+## ------- ##
+
+check_PROGRAMS += %D%/test-bind
+%C%_test_bind_LDADD = src/libtc.la

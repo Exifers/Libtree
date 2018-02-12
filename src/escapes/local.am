@@ -1,0 +1,9 @@
+## escape module.
+
+EXTRA_DIST += %D%/tiger_escapes.i
+
+src_libtc_la_SOURCES +=				\
+  %D%/libescapes.hh %D%/libescapes.cc		\
+  %D%/escapes-visitor.hh %D%/escapes-visitor.cc
+
+TASKS += %D%/tasks.hh %D%/tasks.cc
