@@ -1,19 +1,28 @@
-#/bin/bash
+#/bin/sh
 
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-NC='\033[0m'
+RED='\33[31m'
+GREEN='\33[32m'
+NC='\33[0m'
 
 bin=$(find . -name "tc")
 
-if [ "./tc" = "$bin" ] ; then
-  echo "Found ./tc binary"
+if [ ! -z $bin ] ; then
+  printf "Found ./tc binary as $bin\n"
 else
-  echo "tc binary not found, compiling ..."
+  printf "tc binary not found, compiling ...\n"
+  mkdir _build
+  cd _build
+  ../configure
   make
+  cd ..
+  bin=$(find . -name "tc")
+  if [ -z $bin ] ; then
+    printf "Could not find tc binary\n"
+    exit -1
+  fi
 fi
 
-echo "Running testsuite ..."
+printf "Running testsuite ...\n"
 
 rm -f error.log
 
@@ -22,18 +31,18 @@ nb_errors=0
 nb_tests=$(find tests/grammar -name "*.tig" | wc -l)
 
 for file in $tests; do
-  ret=$(./tc < $file 2>>error.log ; echo $?)
+  ret=$($bin < $file 2>> error.log ; printf $?)
   if [ "$ret" -ne "0" ]; then
-    echo "${RED}Test have failed : $file (return status: $ret)${NC}"
-    echo "^ from test at : $file" >> error.log
+    printf "${RED}Test have failed : $file (return status: $ret)${NC}\n"
+    printf "^ from test at : $file\n" >> error.log
     nb_errors=$((nb_errors + 1))
   fi
 done
 
 if [ "$nb_errors" -ne 0 ]; then
-  echo "${RED}$nb_errors${NC}/$nb_tests error(s) found"
-  echo "See error.log for more information"
+  printf "${RED}$nb_errors${NC}/$nb_tests error(s) found\n"
+  printf "See error.log for more information\n"
 else
-  echo "${GREEN}$nb_tests tests have been performed"
-  echo "No error has been found${NC}"
+  printf "${GREEN}$nb_tests tests have been performed\n"
+  printf "No error has been found${NC}\n"
 fi
