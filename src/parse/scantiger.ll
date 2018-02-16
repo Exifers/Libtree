@@ -52,7 +52,6 @@ YY_FLEX_NAMESPACE_BEGIN
 /* Abbreviations.  */
 int             [0-9]+
 SPACE [ \t]
-STRING "\""[^"\""]*"\""
 ID ([a-zA-Z][0-9a-zA-Z_]*|"_main")
 INTEGER [0-9]+
 
@@ -132,7 +131,6 @@ INTEGER [0-9]+
 ":=" { return TOKEN(ASSIGN); }
 
   /* Additional */
-{STRING} { return TOKEN_VAL(STRING, yytext); }
 {ID} { return TOKEN_VAL(ID, yytext); }
 {SPACE} {}
 "/*"        { BEGIN(SC_COMMENT); }
@@ -142,6 +140,16 @@ INTEGER [0-9]+
             std::cerr << "unexpected end of file in a comment" << std::endl;
             std::exit(2);
                     }
+"\""        { BEGIN(SC_STRING); }
+<SC_STRING>[^\"]    {
+    return TOKEN_VAL(STRING, yytext);
+    (BEGIN(INITIAL); 
+     }
+<SC_STRING><<EOF>>  {
+    std::cerr << "unexpected end of file in a string" << std::endl;
+    std::exit(2);
+}
+
 
 <<EOF>> return TOKEN(EOF);
 \n        { loc.lines(yyleng); }
