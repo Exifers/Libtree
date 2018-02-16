@@ -7,6 +7,7 @@
 
 #include <misc/contract.hh>
 #include <misc/unique.hh>
+#include <iostream>
 
 namespace misc
 {
@@ -34,7 +35,7 @@ namespace misc
   inline const typename unique<T, C>::data_type&
   unique<T, C>::get() const
   {
-    return *this;
+    return *obj_;
   }
 
   template <typename T, class C>

@@ -24,8 +24,6 @@
 #include <parse/parsetiger.hh>
 #include <parse/tiger-parser.hh>
 
-  // FIXME: Some code was deleted here.
-
 // Convenient shortcuts.
 #define TOKEN_VAL(Type, Value)                  \
   parser::make_ ## Type(Value, tp.location_)
@@ -63,6 +61,7 @@ INTEGER [0-9]+
   // FIXME: Some code was deleted here (Local variables).
 
   // Each time yylex is called.
+  std::cout << "token" << std::endl;
   tp.location_.step();
 %}
 

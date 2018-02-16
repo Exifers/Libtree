@@ -60,7 +60,6 @@
   # define YY_DECL YY_DECL_(yyFlexLexer::)
 }
 
-%printer { yyo << $$; } <int> <std::string> <misc::symbol>;
 
 %token <std::string>    STRING "string"
 %token <misc::symbol>   ID     "identifier"
@@ -89,8 +88,9 @@
 # include <ast/decs-list.hh>
 }
 
-  // FIXME: Some code was deleted here (Printers and destructors).
-
+  /* Printers and destructors */
+%destructor { delete $$; } <ast::Exp*>
+%printer { debug_stream () << $$; } <int> <string>
 
 /*-----------------------------------------.
 | Code output in the implementation file.  |
@@ -339,7 +339,7 @@ decs: { $$ = new ast::DecsList(@$); }
 | dec decs
 ;
 
-dec: 
+dec:
   /* Type declaration */
   TYPE ID EQ ty
   /* Class definition (alternative form) */

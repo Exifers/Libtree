@@ -320,6 +320,7 @@ namespace task
     // FIXME: should be the only one to call resolve_dependency.
     for (const Task* t : task_order_)
       {
+        std::cout << "Executing tasks" << std::endl;
         std::string pref(t->module_name_get());
         if (!pref.empty())
           pref = pref[0] + std::string(": ");
