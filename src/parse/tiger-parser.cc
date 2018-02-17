@@ -105,9 +105,10 @@ namespace parse
     std::cout << "ward3" << std::endl;
 
     scanner_->scan_open_(*in);
-    parser parser(*this);
 
+    parser parser(*this);
     parser.parse();
+
     /* close the scanner */
     scanner_->scan_close_();
 

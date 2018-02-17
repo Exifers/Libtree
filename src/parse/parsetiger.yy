@@ -5,7 +5,7 @@
 %define api.token.constructor
 %skeleton "glr.cc"
 %glr-parser
-%expect 1
+%expect 2
 %expect-rr 0
 %error-verbose
 %defines
@@ -210,11 +210,17 @@ program: exp   { tp.ast_ = $1; }
        | decs  { tp.ast_ = $1; }
        ;
 
+%token CAST "_cast";
+%token EXP "_exp";
+
 exp:
   /* Literals */
   NIL          { $$ = new ast::NilExp(@$); }
 | INT          { $$ = new ast::IntExp(@$, $1); }
 | STRING       { $$ = new ast::StringExp(@$, $1); }
+
+| CAST LPAREN exp COMMA ty RPAREN
+| EXP LPAREN INT RPAREN
 
   /* Array and record creation */
 | ID LBRACK exp RBRACK OF exp  {
@@ -234,7 +240,7 @@ exp:
     $$ = new ast::SeqExp(@$, std::list<ast::FieldInit*>());
   }
   /* Function call */
-| ID LPAREN RPAREN { 
+| ID LPAREN RPAREN {
     $$ = new ast::CallExp(@$, new ast::NameTy(@$, $1), std::list<ast::Exp*>());
   }
 | ID LPAREN exp_comma_list RPAREN {
@@ -318,8 +324,12 @@ rec_init_list:
 | ID EQ exp COMMA rec_init_list
 ;
 
+%token LVALUE "_lvalue";
+
 lvalue:
   ID lvalue_follow
+| CAST LPAREN lvalue COMMA ty RPAREN
+| LVALUE LPAREN INT RPAREN
 ;
 
 lvalue_follow:
@@ -333,10 +343,12 @@ lvalue_follow:
 `---------------*/
 
 %token DECS "_decs";
+%token NAMETY "_namety";
 
 decs: { $$ = new ast::DecsList(@$); }
   %empty
 | dec decs
+| DECS LPAREN INT RPAREN decs
 ;
 
 dec:
@@ -380,6 +392,7 @@ tyfields_tail:
 
 typeid:
   ID
+| NAMETY LPAREN INT RPAREN
 ;
 
 vardec:
@@ -394,7 +407,6 @@ ty:
 | CLASS LBRACE classfields RBRACE
 | CLASS EXTENDS typeid LBRACE classfields RBRACE
 ;
-
 
 %%
 

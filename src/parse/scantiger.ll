@@ -61,7 +61,7 @@ INTEGER [0-9]+
   // FIXME: Some code was deleted here (Local variables).
 
   // Each time yylex is called.
-  std::cout << "token" << std::endl;
+  std::cout << "token : " << yytext << std::endl;
   tp.location_.step();
 %}
 
@@ -71,6 +71,13 @@ INTEGER [0-9]+
                 int val = std::atoi(yytext); /* returns 0 if it can't decode */
                 return TOKEN_VAL(INT, val);
               }
+
+  /* Additional lexical specifications */
+"_cast" { return TOKEN(CAST); }
+"_decs" { return TOKEN(DECS); }
+"_exp" { return TOKEN(EXP); }
+"_lvalue" { return TOKEN(LVALUE); }
+"_namety" { return TOKEN(NAMETY); }
 
   /* keywords */
 "array" { return TOKEN(ARRAY); }
