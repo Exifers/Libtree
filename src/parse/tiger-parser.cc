@@ -103,7 +103,7 @@ namespace parse
     parser parser(*this);
     try
     {
-      parser.set_debug_level(std::stoi(getenv("PARSE")));
+      parser.set_debug_level((bool) getenv("PARSE"));
     }
     catch(...)
     {

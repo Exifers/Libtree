@@ -60,7 +60,7 @@ INTEGER [0-9]+
 %{
   try
   {
-    yy_flex_debug = std::stoi(getenv("SCAN"));
+    yy_flex_debug = (bool) getenv("SCAN");
   }
   catch(...)
   {
