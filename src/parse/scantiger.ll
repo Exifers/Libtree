@@ -143,7 +143,7 @@ INTEGER [0-9]+
 "\""        { BEGIN(SC_STRING); }
 <SC_STRING>[^\"]    {
     return TOKEN_VAL(STRING, yytext);
-    (BEGIN(INITIAL); 
+    BEGIN(INITIAL); 
      }
 <SC_STRING><<EOF>>  {
     std::cerr << "unexpected end of file in a string" << std::endl;
