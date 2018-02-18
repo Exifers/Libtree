@@ -6,32 +6,32 @@ NC='\33[0m'
 
 bin=$(find . -name "tc")
 
-if [ ! -z $bin ] ; then
+if [ ! -z $bin ]; then
   printf "Found ./tc binary as $bin\n"
 else
-  printf "tc binary not found, compiling ...\n"
-  mkdir _build
-  cd _build
-  ../configure
-  make
-  cd ..
-  bin=$(find . -name "tc")
-  if [ -z $bin ] ; then
-    printf "Could not find tc binary\n"
-    exit -1
-  fi
+  printf "Cannot find tc binary"
+  exit 1
 fi
 
 printf "Running testsuite ...\n"
 
 rm -f error.log
 
-tests=$(find tests/grammar -name "*.tig")
+srch_dir='.'
+tests=$(find $srch_dir/tests/ -name "*.tig")
+if [ -z "$tests" ]; then
+  srch_dir='..'
+  tests=$(find ../tests/ -name "*.tig")
+  if [ -z "$tests" ] ; then
+    printf "Cannot find tests to perform"
+    exit 2
+  fi
+fi
 nb_errors=0
-nb_tests=$(find tests/grammar -name "*.tig" | wc -l)
+nb_tests=$(find $srch_dir/tests/ -name "*.tig" | wc -l)
 
 for file in $tests; do
-  ret=$($bin < $file 2>> error.log ; printf $?)
+  ret=$($bin $file 2>> error.log 1>/dev/null ; printf $?)
   if [ "$ret" -ne "0" ]; then
     printf "${RED}Test have failed : $file (return status: $ret)${NC}\n"
     printf "^ from test at : $file\n" >> error.log
