@@ -8,10 +8,13 @@ Notation:
 [!] important to be done
 
 == TC-O ==
-[X] Lexer // remains -> bug list
-[X] Parser // remains -> bug list
+[X] Lexer
+[X] Parser
 
-[/] Testsuite // upon test 17 out of 50 has been completed
+[X] debug mode triggered by env variable (lexer)
+[X] debug mode triggered by env variable (parser)
+
+[/] Testsuite
 
 == TC-1 ==
 
@@ -43,11 +46,12 @@ Notation:
 [|] Lexer : add double quote escape on STRING type       |> updated to given
 [|] Lexer : add \num, \xnum, backslash and double quote  |  code version
 [X] Lexer : add comments
-[ ] Lexer : raise error on unknown character
+[X] Lexer : raise error on unknown character
 
 [|] Parser : fix the shift/reduce conflict (1 left) -> one in the reference
-[!] Parser : 'let in print("hello") end' raises an error -> the lexer
+[X] Parser : 'let in print("hello") end' raises an error -> the lexer
              keeps reading beyond end of file
+             --> fixed by including meta variables
 
 [ ] AST : add LBRACE tyfields RBRACE rule
 
@@ -61,5 +65,3 @@ Notation:
   of some nodes ?
   - to store stuff like 'id exp {, exp}'
   -> use vector instead (from assignements, only vector and maps are used)
-
-* How to stop the lexer to read after EOF token ? -> see bug list
