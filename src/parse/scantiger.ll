@@ -9,6 +9,7 @@
 #include <climits>
 #include <regex>
 #include <string>
+#include <cstdlib>
 
 #include <boost/lexical_cast.hpp>
 
@@ -57,10 +58,9 @@ INTEGER [0-9]+
 
 %%
 %{
-  // FIXME: Some code was deleted here (Local variables).
+  yy_flex_debug = std::stoi(getenv("SCAN"));
 
   // Each time yylex is called.
-  std::cout << "token : " << yytext << std::endl;
   tp.location_.step();
 %}
 
@@ -141,9 +141,9 @@ INTEGER [0-9]+
             std::exit(2);
                     }
 "\""        { BEGIN(SC_STRING); }
-<SC_STRING>[^\"]    {
+<SC_STRING>"\""    {
     return TOKEN_VAL(STRING, yytext);
-    BEGIN(INITIAL); 
+    BEGIN(INITIAL);
      }
 <SC_STRING><<EOF>>  {
     std::cerr << "unexpected end of file in a string" << std::endl;
