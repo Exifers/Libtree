@@ -39,17 +39,17 @@ Notation:
 
 == Bug List ==
 
-[|] Lexer : see what ANSI-C means                        | 
+[|] Lexer : see what ANSI-C means                        |
 [|] Lexer : add double quote escape on STRING type       |> updated to given
 [|] Lexer : add \num, \xnum, backslash and double quote  |  code version
-[ ] Lexer : add comments
+[X] Lexer : add comments
 [ ] Lexer : raise error on unknown character
 
 [|] Parser : fix the shift/reduce conflict (1 left) -> one in the reference
 [!] Parser : 'let in print("hello") end' raises an error -> the lexer
              keeps reading beyond end of file
 
-[ ] AST : add LBRACE tyfields RBRACE rule 
+[ ] AST : add LBRACE tyfields RBRACE rule
 
 
 == Questions to Yaka ==
@@ -57,7 +57,7 @@ Notation:
 * Since we have a glr do we have to remove all the '%prec' in parsetiger.yy ?
   - There's warning about those during compilation
 
-* Is it a good idea to make lists of Expr, or lists of VarDec as attributes 
+* Is it a good idea to make lists of Expr, or lists of VarDec as attributes
   of some nodes ?
   - to store stuff like 'id exp {, exp}'
   -> use vector instead (from assignements, only vector and maps are used)
