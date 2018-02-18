@@ -5,6 +5,7 @@
 
 #include <cstdlib>
 #include <fstream>
+#include <string>
 
 #include <parse/parsetiger.hh>
 #include <parse/scantiger.hh>
@@ -71,15 +72,10 @@ namespace parse
        `location_.initialize()'.  As for other symbols, the
        corresponding string will be deallocated at the end of the
        program.  */
-    std::cout << "ward 1" << std::endl;
     misc::symbol filename(fn == nullptr ? ""
                           : *fn == "-" ? "standard input"
                           : *fn);
-    std::cout << "ward 1.5" << std::endl;
-    &filename.get();
-    std::cout << "ward 1.6" << std::endl;
     location_.initialize(&filename.get());
-    std::cout << "ward 2" << std::endl;
 
     std::shared_ptr<std::istream> in;
     if (fn == nullptr)
@@ -102,11 +98,17 @@ namespace parse
       }
 
     /* Initialize the scanner and parser, then parse and close. */
-    std::cout << "ward3" << std::endl;
-
     scanner_->scan_open_(*in);
 
     parser parser(*this);
+    try
+    {
+      parser.set_debug_level(std::stoi(getenv("PARSE")));
+    }
+    catch(...)
+    {
+      parser.set_debug_level(0);
+    }
     parser.parse();
 
     /* close the scanner */

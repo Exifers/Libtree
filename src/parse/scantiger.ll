@@ -58,7 +58,14 @@ INTEGER [0-9]+
 
 %%
 %{
-  yy_flex_debug = std::stoi(getenv("SCAN"));
+  try
+  {
+    yy_flex_debug = std::stoi(getenv("SCAN"));
+  }
+  catch(...)
+  {
+    yy_flex_debug = 0;
+  }
 
   // Each time yylex is called.
   tp.location_.step();
