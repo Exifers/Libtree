@@ -198,9 +198,10 @@
 
 %type <ast::Exp*> exp
 %type <ast::DecsList*> decs
-
+%type <std::list<misc::variant<ast::SimpleVar*, ast::Exp*>>> lvalue
 
 %start program
+
 
 %%
 
@@ -267,7 +268,9 @@ exp:
 
 | LPAREN exps RPAREN
   /* Assignment */
-| lvalue ASSIGN exp                                       %prec "assign"
+| lvalue ASSIGN exp {
+    $$ = new ast::AssignExp(@$, $1, $3);
+  } %prec "assign"
 
   /* Control structures */
 | IF exp THEN exp {
@@ -327,7 +330,9 @@ rec_init_list:
 %token LVALUE "_lvalue";
 
 lvalue:
-  ID lvalue_follow
+  ID lvalue_follow {
+    $$ = std::list<misc::variant<ast::SimpleVar*, ast::Exp*>>();
+  }
 | CAST LPAREN lvalue COMMA ty RPAREN
 | LVALUE LPAREN INT RPAREN
 ;
