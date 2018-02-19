@@ -14,21 +14,29 @@ namespace misc
 
   template <typename T, class C>
   unique<T, C>::unique(const data_type& s)
-                       : obj_(&s)
-  {}
+    : obj_(&s)
+  {
+    object_set_instance().insert(s);
+  }
 
   template <typename T, class C>
   typename unique<T, C>::object_set_type&
   unique<T, C>::object_set_instance()
   {
-    return object_set_type();
+    static object_set_type& set;
+    if (!set)
+    {
+      // creating empty set
+      set = object_set_type();
+    }
+    return set;
   }
 
   template <typename T, class C>
   typename unique<T, C>::object_size_type
   unique<T, C>::object_map_size()
   {
-    return object_size_type::size_type.size;
+    return object_set_instance().size();
   }
 
   template <typename T, class C>
@@ -42,7 +50,7 @@ namespace misc
   inline
   unique<T, C>::operator const data_type&() const
   {
-    return *this;
+    return *obj_;
   }
 
   template <typename  T, class C>
