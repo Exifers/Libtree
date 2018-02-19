@@ -199,6 +199,7 @@
 %type <ast::Exp*> exp
 %type <ast::DecsList*> decs
 %type <std::list<misc::variant<ast::SimpleVar*, ast::Exp*>>> lvalue
+%type <std::list<ast::VarDec*>> rec_init_list
 
 %start program
 
@@ -232,7 +233,7 @@ exp:
     $$ = new ast::RecordExp(@$, new ast::NameTy(@$, $1), std::list<ast::VarDec*>());
   }
 | ID LBRACE rec_init_list RBRACE {
-    $$ = new ast::RecordExp(@$, new ast::NameTy(@$, $1), std::list<ast::VarDec*>());
+    $$ = new ast::RecordExp(@$, new ast::NameTy(@$, $1), $3);
   }
   /* Object creation */
 | NEW ID { $$ = new ast::ObjectExp(@$, new ast::NameTy(@$, $2)); }
@@ -298,8 +299,15 @@ exps:
 ;
 
 exp_semicolon_list:
-  exp {  }
-| exp SEMI exp_semicolon_list { }
+  exp {
+    auto l = std::list<ast::Exp*>();
+    l.push_front($1);
+    $$ = l;
+  }
+| exp SEMI exp_semicolon_list {
+    $3.push_front($1);
+    $$ = $3;
+  }
 ;
 
 method_body:
@@ -323,8 +331,18 @@ exp_comma_list:
 ;
 
 rec_init_list:
-  ID EQ exp
-| ID EQ exp COMMA rec_init_list
+  ID EQ exp {
+    auto field = new ast::VarDec(@$, $1, nullptr, $3);
+    auto l = std::list<ast::VarDec*>();
+    l.push_front(field);
+    $$ = l;
+  }
+| ID EQ exp COMMA rec_init_list {
+    auto field = new ast::VarDec(@$, $1, nullptr, $3);
+    auto l = $5;
+    l.push_front(field);
+    $$ = l;
+  }
 ;
 
 %token LVALUE "_lvalue";
