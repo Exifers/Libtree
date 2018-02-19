@@ -16,6 +16,11 @@ check_PROGRAMS =
 dist_TESTS = tests/
 dist_noinst_DATA =
 
+check: testsuite
+
+testsuite:
+	$(srcdir)/tests/test.sh
+
 # Our tests should be run only if the sources are updated: they are
 # self contained, and two runs in a row cannot differ.
 RECHECK_LOGS =
