@@ -23,12 +23,7 @@ namespace misc
   typename unique<T, C>::object_set_type&
   unique<T, C>::object_set_instance()
   {
-    static object_set_type& set;
-    if (!set)
-    {
-      // creating empty set
-      set = object_set_type();
-    }
+    static object_set_type set;
     return set;
   }
 
