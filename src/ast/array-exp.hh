@@ -12,7 +12,7 @@ namespace ast
 {
 
   /// ArrayExp.
-  /** Stores everything needed to declare an array as 'namety [size_exp] of 
+  /** Stores everything needed to declare an array as 'namety [size_exp] of
   **  type_exp'.
   */
   class ArrayExp : public Exp
@@ -23,7 +23,7 @@ namespace ast
     ArrayExp& operator=(const ArrayExp&) = delete;
 
     virtual ~ArrayExp() = default;
-    
+
     void accept(ConstVisitor& v) const override;
     void accept(Visitor& v) override;
 

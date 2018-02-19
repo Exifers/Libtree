@@ -8,12 +8,37 @@
 #include <ast/exp.hh>
 #include <ast/var.hh>
 
+#include <misc/variant.hh>
+
 namespace ast
 {
 
   /// AssignExp.
   class AssignExp : public Exp
   {
+    using lvalue_type = std::list<misc::variant<SimpleVar*, Exp*>>;
+
+    public:
+    AssignExp(const Location& location,
+              lvalue_type lvalue,
+              Exp *exp);
+
+    AssignExp(const AssignExp&) = delete;
+    AssignExp& operator=(const AssignExp&) = delete;
+
+    virtual ~AssignExp() = default;
+
+    void accept(ConstVisitor& v) const override;
+    void accept(Visitor& v) override;
+
+    const lvalue_type& lvalue_get() const;
+    lvalue_type& lvalue_get();
+    const Exp& exp_get() const;
+    Exp& exp_get();
+
+    protected:
+    lvalue_type lvalue_;
+    Exp *exp_;
   };
 
 } // namespace ast

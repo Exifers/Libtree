@@ -9,8 +9,25 @@
 
 namespace ast
 {
+  inline const AssignExp::lvalue_type& AssignExp::lvalue_get() const
+  {
+    return lvalue_;
+  }
 
-  // FIXME: Some code was deleted here.
+  inline AssignExp::lvalue_type& AssignExp::lvalue_get()
+  {
+    return lvalue_;
+  }
+
+  inline const Exp& AssignExp::exp_get() const
+  {
+    return *exp_;
+  }
+
+  inline Exp& AssignExp::exp_get()
+  {
+    return *exp_;
+  }
 
 } // namespace ast
 

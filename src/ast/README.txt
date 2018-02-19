@@ -19,7 +19,7 @@ Completed classes are tagged with a '-'.
       SubscriptVar  (Var var, Exp index)
 
 -   ArrayExp
-*   AssignExp
+-   AssignExp
 -   BreakExp
 -   CallExp
 *     MethodCallExp
@@ -32,7 +32,7 @@ Completed classes are tagged with a '-'.
 -   ObjectExp
     OpExp           (Exp left, Oper oper, Exp right)
 -   RecordExp
-*   SeqExp
+-   SeqExp
 -   StringExp
     WhileExp        (Exp test, Exp body)
 

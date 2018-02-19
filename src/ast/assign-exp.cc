@@ -8,8 +8,19 @@
 
 namespace ast
 {
+    AssignExp::AssignExp(const Location& location,
+                         lvalue_type lvalue,
+                         Exp *exp)
+      : Exp(location), lvalue_(lvalue), exp_(exp)
+    {}
 
-  // FIXME: Some code was deleted here.
+    void AssignExp::accept(ConstVisitor& v) const
+    {
+      v(*this);
+    }
+    void AssignExp::accept(Visitor& v)
+    {
+      v(*this);
+    }
 
 } // namespace ast
-
