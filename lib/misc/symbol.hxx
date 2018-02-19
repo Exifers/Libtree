@@ -27,7 +27,7 @@ namespace misc
   inline bool
   symbol::operator!=(const symbol& rhs) const
   {
-    return !operator == (rhs);
+    return !operator==(rhs);
   }
 
   inline std::ostream&
