@@ -65,3 +65,6 @@ Notation:
   of some nodes ?
   - to store stuff like 'id exp {, exp}'
   -> use vector instead (from assignements, only vector and maps are used)
+
+* How to implement the flyweight design pattern (misc::unique), because we
+  can't set the _obj pointer to point inside a std::set ?
