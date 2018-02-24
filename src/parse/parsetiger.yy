@@ -198,8 +198,9 @@
 
 %type <ast::Exp*> exp
 %type <ast::DecsList*> decs
-%type <std::list<misc::variant<ast::SimpleVar*, ast::Exp*>>> lvalue
-%type <std::list<ast::VarDec*>> rec_init_list
+%type <ast::Var*> lvalue
+%type <std::list<ast::FieldInit*>> rec_init_list
+%type <std::list<ast::Exp*>> exp_comma_list
 
 %start program
 
@@ -230,7 +231,8 @@ exp:
   } %prec "array_of"
 
 | ID LBRACE RBRACE {
-    $$ = new ast::RecordExp(@$, new ast::NameTy(@$, $1), std::list<ast::VarDec*>());
+    $$ = new ast::RecordExp(@$, new ast::NameTy(@$, $1),
+        std::list<ast::FieldInit*>());
   }
 | ID LBRACE rec_init_list RBRACE {
     $$ = new ast::RecordExp(@$, new ast::NameTy(@$, $1), $3);
@@ -239,14 +241,14 @@ exp:
 | NEW ID { $$ = new ast::ObjectExp(@$, new ast::NameTy(@$, $2)); }
   /* Variables, field, element of an array */
 | lvalue {
-    $$ = new ast::SeqExp(@$, std::list<ast::FieldInit*>());
+    $$ = $1;
   }
   /* Function call */
 | ID LPAREN RPAREN {
-    $$ = new ast::CallExp(@$, new ast::NameTy(@$, $1), std::list<ast::Exp*>());
+    $$ = new ast::CallExp(@$, $1, std::list<ast::Exp*>());
   }
 | ID LPAREN exp_comma_list RPAREN {
-    $$ = new ast::CallExp(@$, new ast::NameTy(@$, $1), std::list<ast::Exp*>());
+    $$ = new ast::CallExp(@$, $1, $3);
   }
   /* Method call */
 | method_body LPAREN RPAREN
