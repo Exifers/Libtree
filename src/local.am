@@ -60,5 +60,6 @@ src_tc_LDADD = src/libtc.la
 
 TASKS =
 include src/task/local.am
+include src/ast/local.am
 include src/parse/local.am
 include src/object/local.am

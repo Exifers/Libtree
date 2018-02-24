@@ -1,0 +1,29 @@
+ast_basedir = src/ast/
+ast_srcdir = $(srcdir)/%D%
+# Don't use ast_srcdir in the include, otherwise Automake can't resolve it.
+include $(srcdir)/%D%/ast-nodes.mk
+
+EXTRA_DIST += %D%/tiger_ast.i
+
+
+src_libtc_la_SOURCES +=					\
+  %D%/location.hh					\
+  %D%/all.hh						\
+  %D%/any-decs.hh %D%/any-decs.hxx			\
+  %D%/decs.hh %D%/decs.hxx				\
+  %D%/fwd.hh						\
+  %D%/visitor.hh					\
+  $(AST_NODES)						\
+  %D%/default-visitor.hh %D%/default-visitor.hxx	\
+  %D%/non-object-visitor.hh %D%/non-object-visitor.hxx	\
+  %D%/object-visitor.hh %D%/object-visitor.hxx		\
+  %D%/pretty-printer.hh %D%/pretty-printer.cc		\
+  %D%/visitor.hxx					\
+  %D%/libast.hh %D%/libast.cc
+
+dist_noinst_DATA += %D%/README.txt
+
+check_PROGRAMS += %D%/test-ast
+%C%_test_ast_LDADD = src/libtc.la
+
+TASKS += %D%/tasks.hh %D%/tasks.cc

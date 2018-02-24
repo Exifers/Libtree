@@ -5,6 +5,7 @@
 
 #include <cstdlib>
 #include <fstream>
+#include <string>
 
 #include <parse/parsetiger.hh>
 #include <parse/scantiger.hh>
@@ -97,12 +98,21 @@ namespace parse
       }
 
     /* Initialize the scanner and parser, then parse and close. */
-
     scanner_->scan_open_(*in);
+
     parser parser(*this);
-    
+    try
+    {
+      parser.set_debug_level((bool) getenv("PARSE"));
+    }
+    catch(...)
+    {
+      parser.set_debug_level(0);
+    }
     parser.parse();
-    
+
+    /* close the scanner */
+    scanner_->scan_close_();
 
     ast_type res = ast_;
     ast_ = static_cast<ast::Exp*>(nullptr);

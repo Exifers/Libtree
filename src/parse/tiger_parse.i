@@ -5,6 +5,7 @@
 %include "std_string.i"
 %include "std_pair.i"
 
+%import ast/tiger_ast.i
 
 %{
 #  include <sstream>

@@ -9,6 +9,7 @@
 #include <climits>
 #include <regex>
 #include <string>
+#include <cstdlib>
 
 #include <boost/lexical_cast.hpp>
 
@@ -23,8 +24,6 @@
 #include <misc/symbol.hh>
 #include <parse/parsetiger.hh>
 #include <parse/tiger-parser.hh>
-
-  // FIXME: Some code was deleted here.
 
 // Convenient shortcuts.
 #define TOKEN_VAL(Type, Value)                  \
@@ -54,13 +53,19 @@ YY_FLEX_NAMESPACE_BEGIN
 /* Abbreviations.  */
 int             [0-9]+
 SPACE [ \t]
-STRING "\""[^"\""]*"\""
 ID ([a-zA-Z][0-9a-zA-Z_]*|"_main")
 INTEGER [0-9]+
 
 %%
 %{
-  // FIXME: Some code was deleted here (Local variables).
+  try
+  {
+    yy_flex_debug = (bool) getenv("SCAN");
+  }
+  catch(...)
+  {
+    yy_flex_debug = 0;
+  }
 
   // Each time yylex is called.
   tp.location_.step();
@@ -72,6 +77,13 @@ INTEGER [0-9]+
                 int val = std::atoi(yytext); /* returns 0 if it can't decode */
                 return TOKEN_VAL(INT, val);
               }
+
+  /* Additional lexical specifications */
+"_cast" { return TOKEN(CAST); }
+"_decs" { return TOKEN(DECS); }
+"_exp" { return TOKEN(EXP); }
+"_lvalue" { return TOKEN(LVALUE); }
+"_namety" { return TOKEN(NAMETY); }
 
   /* keywords */
 "array" { return TOKEN(ARRAY); }
@@ -126,15 +138,31 @@ INTEGER [0-9]+
 ":=" { return TOKEN(ASSIGN); }
 
   /* Additional */
-{STRING} { return TOKEN_VAL(STRING, yytext); }
 {ID} { return TOKEN_VAL(ID, yytext); }
 {SPACE} {}
+"/*"        { BEGIN(SC_COMMENT); }
+<SC_COMMENT>"*/"    { BEGIN(INITIAL); }
+<SC_COMMENT>([^*]|\n)+|.
+<SC_COMMENT><<EOF>> {
+            std::cerr << "unexpected end of file in a comment" << std::endl;
+            std::exit(2);
+                    }
+"\""        { BEGIN(SC_STRING); }
+<SC_STRING>"\""    {
+    return TOKEN_VAL(STRING, yytext);
+    BEGIN(INITIAL);
+     }
+<SC_STRING><<EOF>>  {
+    std::cerr << "unexpected end of file in a string" << std::endl;
+    std::exit(2);
+}
+
 
 <<EOF>> return TOKEN(EOF);
 \n        { loc.lines(yyleng); }
 .         {
             std::cerr << "Unexpected character : " << yytext << std::endl;
-            std::exit(2); /* TODO check subject for exit status */
+            std::exit(2);
           }
 
 %%

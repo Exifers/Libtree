@@ -8,10 +8,13 @@ Notation:
 [!] important to be done
 
 == TC-O ==
-[X] Lexer // remains -> bug list
-[X] Parser // remains -> bug list
+[X] Lexer
+[X] Parser
 
-[/] Testsuite // upon test 17 out of 50 has been completed
+[X] debug mode triggered by env variable (lexer)
+[X] debug mode triggered by env variable (parser)
+
+[/] Testsuite
 
 == TC-1 ==
 
@@ -22,14 +25,16 @@ Notation:
 [/] complete all FIXME
 [ ] complete given code (few classes) -> then check --parse-debug
 
-[!] integrate homemade testsuite in Autotools
+[X] integrate homemade testsuite in Autotools
 
 == TC-2 ==
 
-
-
-
-
+[/] Complete uncompleted node classes
+[/] Build ast
+[ ] Make visitor
+[ ] Make pretty-print
+[ ] Tweast
+[ ] Test-suite
 
 
 
@@ -37,10 +42,28 @@ Notation:
 
 == Bug List ==
 
-[|] Lexer : see what ANSI-C means                        | 
+[|] Lexer : see what ANSI-C means                        |
 [|] Lexer : add double quote escape on STRING type       |> updated to given
 [|] Lexer : add \num, \xnum, backslash and double quote  |  code version
-[ ] Lexer : add comments
-[ ] Lexer : raise error on unknown character
+[X] Lexer : add comments
+[X] Lexer : raise error on unknown character
 
-[ ] Parser : fix the shift/reduce conflict (1 left)
+[|] Parser : fix the shift/reduce conflict (1 left) -> one in the reference
+[X] Parser : 'let in print("hello") end' raises an error -> the lexer
+             keeps reading beyond end of file
+             --> fixed by including meta variables
+
+[ ] AST : add LBRACE tyfields RBRACE rule
+
+
+== Questions to Yaka ==
+
+* Since we have a glr do we have to remove all the '%prec' in parsetiger.yy ?
+  - There's warning about those during compilation
+
+* Is it ok to use std::list instead of std::vector ?
+
+* How to implement the flyweight design pattern (misc::unique), because we
+  can't set the _obj pointer to point inside a std::set ?
+
+* How to bind the test-suite to autotools smoothly ?
