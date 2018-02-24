@@ -201,6 +201,7 @@
 %type <ast::Var*> lvalue
 %type <std::list<ast::FieldInit*>> rec_init_list
 %type <std::list<ast::Exp*>> exp_comma_list
+%type <ast::Var*> method_body
 
 %start program
 
@@ -251,8 +252,13 @@ exp:
     $$ = new ast::CallExp(@$, $1, $3);
   }
   /* Method call */
-| method_body LPAREN RPAREN
-| method_body LPAREN exp_comma_list RPAREN
+| method_body LPAREN RPAREN {
+    $$ = new ast::MethodCallExp(@$, misc::symbol(), std::list<ast::Exp*>(),
+        $1);
+  }
+| method_body LPAREN exp_comma_list RPAREN {
+    $$ = new ast::MethodCallExp(@$, misc::symbol(), $3, $1);
+  }
   /* Operations */
 | MINUS exp
 
@@ -269,7 +275,8 @@ exp:
 | exp AND exp
 | exp OR exp
 
-| LPAREN exps RPAREN
+| LPAREN exps RPAREN { $$ = new ast::SeqExp(@$, $2); }
+
   /* Assignment */
 | lvalue ASSIGN exp {
     $$ = new ast::AssignExp(@$, $1, $3);
@@ -334,13 +341,13 @@ exp_comma_list:
 
 rec_init_list:
   ID EQ exp {
-    auto field = new ast::VarDec(@$, $1, nullptr, $3);
-    auto l = std::list<ast::VarDec*>();
+    auto field = new ast::FieldInit(@$, $1, $3);
+    auto l = std::list<ast::FieldInit*>();
     l.push_front(field);
     $$ = l;
   }
 | ID EQ exp COMMA rec_init_list {
-    auto field = new ast::VarDec(@$, $1, nullptr, $3);
+    auto field = new ast::FieldInit(@$, $1, $3);
     auto l = $5;
     l.push_front(field);
     $$ = l;
@@ -351,12 +358,10 @@ rec_init_list:
 
 lvalue:
   ID lvalue_follow {
-    $$ = std::list<misc::variant<ast::SimpleVar*, ast::Exp*>>();
   }
 | CAST LPAREN lvalue COMMA ty RPAREN
 | LVALUE LPAREN INT RPAREN {
-    $$ = metavar<std::list<misc::variant<ast::SimpleVar*, ast::Exp*>>>(tp,
-        (unsigned) $3);
+    $$ = metavar<ast::Var>(tp, (unsigned) $3);
   }
 ;
 
