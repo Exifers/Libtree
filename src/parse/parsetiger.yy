@@ -222,7 +222,7 @@ exp:
 | STRING       { $$ = new ast::StringExp(@$, $1); }
 
 | CAST LPAREN exp COMMA ty RPAREN
-| EXP LPAREN INT RPAREN
+| EXP LPAREN INT RPAREN { $$ = metavar<ast::Exp>(tp, (unsigned) $3); }
 
   /* Array and record creation */
 | ID LBRACK exp RBRACK OF exp  {
@@ -352,7 +352,10 @@ lvalue:
     $$ = std::list<misc::variant<ast::SimpleVar*, ast::Exp*>>();
   }
 | CAST LPAREN lvalue COMMA ty RPAREN
-| LVALUE LPAREN INT RPAREN
+| LVALUE LPAREN INT RPAREN {
+    $$ = metavar<std::list<misc::variant<ast::SimpleVar*, ast::Exp*>>>(tp,
+        (unsigned) $3);
+  }
 ;
 
 lvalue_follow:
@@ -371,7 +374,9 @@ lvalue_follow:
 decs: { $$ = new ast::DecsList(@$); }
   %empty
 | dec decs
-| DECS LPAREN INT RPAREN decs
+| DECS LPAREN INT RPAREN decs {
+    $$ = metavar<ast::DecsList>(tp, (unsigned) $3);
+  }
 ;
 
 dec:
