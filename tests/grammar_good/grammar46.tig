@@ -1,0 +1,6 @@
+let
+	var a := 0
+in
+	while a > 42 do
+		break
+end
