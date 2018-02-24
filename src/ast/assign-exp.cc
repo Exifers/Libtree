@@ -9,7 +9,7 @@
 namespace ast
 {
     AssignExp::AssignExp(const Location& location,
-                         lvalue_type lvalue,
+                         Var *lvalue,
                          Exp *exp)
       : Exp(location), lvalue_(lvalue), exp_(exp)
     {}

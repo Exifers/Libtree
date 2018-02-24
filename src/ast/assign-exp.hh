@@ -16,11 +16,9 @@ namespace ast
   /// AssignExp.
   class AssignExp : public Exp
   {
-    using lvalue_type = std::list<misc::variant<SimpleVar*, Exp*>>;
-
     public:
     AssignExp(const Location& location,
-              lvalue_type lvalue,
+              Var *lvalue,
               Exp *exp);
 
     AssignExp(const AssignExp&) = delete;
@@ -31,13 +29,13 @@ namespace ast
     void accept(ConstVisitor& v) const override;
     void accept(Visitor& v) override;
 
-    const lvalue_type& lvalue_get() const;
-    lvalue_type& lvalue_get();
+    const Var& lvalue_get() const;
+    Var& lvalue_get();
     const Exp& exp_get() const;
     Exp& exp_get();
 
     protected:
-    lvalue_type lvalue_;
+    Var *lvalue_;
     Exp *exp_;
   };
 

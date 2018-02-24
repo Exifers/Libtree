@@ -9,14 +9,14 @@
 
 namespace ast
 {
-  inline const AssignExp::lvalue_type& AssignExp::lvalue_get() const
+  inline const Var& AssignExp::lvalue_get() const
   {
-    return lvalue_;
+    return *lvalue_;
   }
 
-  inline AssignExp::lvalue_type& AssignExp::lvalue_get()
+  inline Var& AssignExp::lvalue_get()
   {
-    return lvalue_;
+    return *lvalue_;
   }
 
   inline const Exp& AssignExp::exp_get() const

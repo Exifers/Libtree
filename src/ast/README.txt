@@ -14,7 +14,7 @@ Completed classes are tagged with a '-'.
   /Exp/             ()
     /Var/           ()
       CastVar       (Var var, Ty ty)
-*     FieldVar      // with pointer to the next one on lvalue
+-     FieldVar      // with pointer to the previous one on lvalue
       SimpleVar     (symbol name)
       SubscriptVar  (Var var, Exp index)
 

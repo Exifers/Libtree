@@ -18,7 +18,8 @@ namespace ast
   class ArrayExp : public Exp
   {
     public:
-    ArrayExp(const Location& location, NameTy* namety, Exp* size_exp, Exp* type_exp);
+    ArrayExp(const Location& location, NameTy* namety, Exp* size_exp,
+        Exp* type_exp);
     ArrayExp(const ArrayExp&) = delete;
     ArrayExp& operator=(const ArrayExp&) = delete;
 
