@@ -1,0 +1,7 @@
+let
+	var toto := 1
+	function toto() : int = 1
+in
+	toto();
+	toto;
+end

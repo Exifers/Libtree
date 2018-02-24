@@ -1,0 +1,6 @@
+let
+	var a := 81
+	var list := int_array[5] of 0
+in
+	list
+end

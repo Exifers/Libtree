@@ -1,0 +1,6 @@
+let
+	type toto = array of int
+	var tata := toto[1000] of 0
+in
+	tata
+end

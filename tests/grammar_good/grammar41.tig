@@ -1,0 +1,5 @@
+let
+	function toto() : int 1
+in
+	toto() = toto()
+end

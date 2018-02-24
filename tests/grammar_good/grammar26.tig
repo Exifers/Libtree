@@ -1,0 +1,7 @@
+let
+	arr = array of int
+        var a : arr := arr [10] of 0
+in
+        arr[5];
+	arr[1];
+end
