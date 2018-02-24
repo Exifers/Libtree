@@ -9,7 +9,20 @@
 namespace ast
 {
 
-  // FIXME: Some code was deleted here.
+  FieldVar::FieldVar(const Location& location,
+    const misc::symbol& name, Var *var)
+    : Var(location), name_(name), var_(var)
+  {}
+
+  void FieldVar::accept(ConstVisitor& v) const
+  {
+    v(*this);
+  }
+
+  void FieldVar::accept(Visitor& v)
+  {
+    v(*this);
+  }
 
 } // namespace ast
 

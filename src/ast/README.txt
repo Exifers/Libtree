@@ -14,7 +14,7 @@ Completed classes are tagged with a '-'.
   /Exp/             ()
     /Var/           ()
       CastVar       (Var var, Ty ty)
-*     FieldVar
+*     FieldVar      // with pointer to the next one on lvalue
       SimpleVar     (symbol name)
       SubscriptVar  (Var var, Exp index)
 
@@ -40,10 +40,10 @@ Completed classes are tagged with a '-'.
     ArrayTy         (NameTy base_type)
     ClassTy         (NameTy super, DecsList decs)
     NameTy          (symbol name)
--   RecordTy
+-   RecordTy        // list of tyfields, ie list of Field
 
   DecsList          (decs_type decs)
 
-  Field             (symbol name, NameTy type_name)
+  Field             (symbol name, NameTy type_name) // ie tyField
 
-  FieldInit         (symbol name, Exp init)
+  FieldInit         (symbol name, Exp init) // ie record creation field
