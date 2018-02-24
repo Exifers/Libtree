@@ -14,12 +14,12 @@ namespace ast
 
   /// RecordExp.
   /** Stores a record expression as 'namety { fields }' where fields is a list
-  **  of VarDec syntaxically coma separated. */
+  **  of FieldInit syntaxically coma separated. */
   class RecordExp : public Exp
   {
     public:
       RecordExp(const Location& location, NameTy* namety,
-          std::list<VarDec*> fields);
+          std::list<FieldInit*> fields);
       RecordExp(const RecordExp&) = delete;
       RecordExp& operator=(const RecordExp&) = delete;
 
@@ -30,12 +30,12 @@ namespace ast
 
       const NameTy& namety_get() const;
       NameTy& namety_get();
-      const std::list<VarDec*>& fields_get() const;
-      std::list<VarDec*>& fields_get();
+      const std::list<FieldInit*>& fields_get() const;
+      std::list<FieldInit*>& fields_get();
 
     private:
       NameTy* namety_;
-      std::list<VarDec*> fields_;
+      std::list<FieldInit*> fields_;
   };
 
 } // namespace ast

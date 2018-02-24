@@ -11,7 +11,6 @@ namespace ast
 {
 
   /// SeqExp.
-  /** Represents a sequence expression, as a list of FieldInit for an lvalue. */
   class SeqExp : public Exp
   {
     public:

@@ -21,13 +21,13 @@ namespace ast
     return *namety_;
   }
 
-  inline const std::list<VarDec*>&
+  inline const std::list<FieldInit*>&
   RecordExp::fields_get() const
   {
     return fields_;
   }
 
-  inline std::list<VarDec*>&
+  inline std::list<FieldInit*>&
   RecordExp::fields_get()
   {
     return fields_;
