@@ -11,9 +11,9 @@ namespace ast
 {
 
   CallExp::CallExp(const Location& location,
-      NameTy* namety,
+      misc::symbol name,
       std::list<Exp*> exps)
-    : Exp(location), namety_(namety), exps_(exps) 
+    : Exp(location), name_(name), exps_(exps) 
   {}
 
   void CallExp::accept(ConstVisitor& v) const

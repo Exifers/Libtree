@@ -8,10 +8,11 @@
 
 namespace ast
 {
-  MethodCallExp::MethodCallExp(const Location& location, NameTy* namety,
+  MethodCallExp::MethodCallExp(const Location& location,
+      misc::symbol name,
       std::list<Exp*> exps,
-      std::list<FieldInit*> lvalue)
-  : CallExp(location, namety, exps), lvalue_(lvalue)
+      Var *lvalue)
+  : CallExp(location, name, exps), lvalue_(lvalue)
   {}
   
   void

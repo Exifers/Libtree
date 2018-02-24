@@ -23,9 +23,9 @@ namespace ast
   class MethodCallExp : public CallExp
   {
     public:
-    MethodCallExp(const Location& location, NameTy* namety,
+    MethodCallExp(const Location& location, misc::symbol name,
         std::list<Exp*> exps,
-        std::list<FieldInit*> lvalue);
+        Var *lvalue);
     MethodCallExp(const ArrayExp&) = delete;
     MethodCallExp& operator=(const ArrayExp&) = delete;
 
@@ -34,11 +34,12 @@ namespace ast
     void accept(ConstVisitor& v) const override;
     void accept(Visitor& v) override;
 
-    const std::list<FieldInit*> lvalue_get() const;
-    std::list<FieldInit*> lvalue_get();
+    const Var& lvalue_get() const;
+    Var& lvalue_get();
 
     protected:
-    std::list<FieldInit*> lvalue_;
+    Var *lvalue_;
+    MethodDec *def_ = nullptr;
   };
 
 } // namespace ast

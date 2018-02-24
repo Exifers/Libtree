@@ -19,23 +19,24 @@ namespace ast
   class CallExp : public Exp
   { 
     public:
-    CallExp(const Location& location, NameTy* namety, std::list<Exp*> exps);
-    CallExp(const ArrayExp&) = delete;
-    CallExp& operator=(const ArrayExp&) = delete;
+    CallExp(const Location& location, misc::symbol name, std::list<Exp*> exps);
+    CallExp(const CallExp&) = delete;
+    CallExp& operator=(const CallExp&) = delete;
 
     virtual ~CallExp() = default;
     
     void accept(ConstVisitor& v) const override;
     void accept(Visitor& v) override;
 
-    const NameTy& namety_get() const;
-    NameTy& namety_get();
+    const misc::symbol& name_get() const;
+    misc::symbol& name_get();
     const std::list<Exp*>& exps_get() const;
     std::list<Exp*>& exps_get();
 
     protected:
-    NameTy* namety_;
+    misc::symbol name_;
     std::list<Exp*> exps_;
+    FunctionDec *def_ = nullptr;
   };
 
 } // namespace ast

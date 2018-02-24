@@ -10,16 +10,16 @@
 namespace ast
 {
 
-  inline const NameTy&
-  CallExp::namety_get() const
+  inline const misc::symbol&
+  CallExp::name_get() const
   {
-    return *namety_;
+    return name_;
   }
 
-  inline NameTy&
-  CallExp::namety_get()
+  inline misc::symbol&
+  CallExp::name_get()
   {
-    return *namety_;
+    return name_;
   }
 
   inline const std::list<Exp*>&
@@ -35,4 +35,3 @@ namespace ast
   }
 
 } // namespace ast
-

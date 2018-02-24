@@ -9,16 +9,16 @@
 
 namespace ast
 {
-  inline const std::list<FieldInit*>
+  inline const Var&
   MethodCallExp::lvalue_get() const
   {
-    return lvalue_;
+    return *lvalue_;
   }
 
-  inline std::list<FieldInit*>
+  inline Var&
   MethodCallExp::lvalue_get()
   {
-    return lvalue_;
+    return *lvalue_;
   }
 
 } // namespace ast
