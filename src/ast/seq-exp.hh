@@ -14,7 +14,7 @@ namespace ast
   class SeqExp : public Exp
   {
     public:
-    SeqExp(const Location& location, std::list<FieldInit*> lvalue);
+    SeqExp(const Location& location, std::list<Exp*> exps);
     SeqExp(const SeqExp&) = delete;
     SeqExp& operator=(const SeqExp&) = delete;
 
@@ -23,11 +23,11 @@ namespace ast
     void accept(ConstVisitor& v) const override;
     void accept(Visitor& v) override;
 
-    const std::list<FieldInit*> lvalue_get() const;
-    std::list<FieldInit*> lvalue_get();
+    const std::list<Exp*> exps_get() const;
+    std::list<Exp*> exps_get();
 
     protected:
-    std::list<FieldInit*> lvalue_;
+    std::list<Exp*> exps_;
   };
 
 } // namespace ast

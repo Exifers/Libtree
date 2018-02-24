@@ -9,16 +9,16 @@
 
 namespace ast
 {
-  inline const std::list<FieldInit*>
-  SeqExp::lvalue_get() const
+  inline const std::list<Exp*>
+  SeqExp::exps_get() const
   {
-    return lvalue_;
+    return exps_;
   }
 
-  inline std::list<FieldInit*>
-  SeqExp::lvalue_get()
+  inline std::list<Exp*>
+  SeqExp::exps_get()
   {
-    return lvalue_;
+    return exps_;
   }
 } // namespace ast
 

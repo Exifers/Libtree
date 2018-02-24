@@ -10,8 +10,8 @@
 namespace ast
 {
   
-  SeqExp::SeqExp(const Location& location, std::list<FieldInit*> lvalue)
-  : Exp(location), lvalue_(lvalue)
+  SeqExp::SeqExp(const Location& location, std::list<Exp*> exps)
+  : Exp(location), exps_(exps)
   {}
 
   void
