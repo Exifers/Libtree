@@ -24,10 +24,8 @@ namespace ast
     void accept(ConstVisitor& v) const override;
     void accept(Visitor& v) override;
 
-
     const std::list<Field*>& tyfields_get() const;
     std::list<Field*>& tyfields_get();
-
 
     protected:
     std::list<Field*> tyfields_;

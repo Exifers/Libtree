@@ -19,7 +19,7 @@ namespace ast
     public:
 
     StringExp(const Location& location, std::string value);
-    StringExp(const IntExp&) = delete;
+    StringExp(const StringExp&) = delete;
     StringExp& operator=(const StringExp&) = delete;
     // Destroy a StringExp node.
     virtual ~StringExp() = default;

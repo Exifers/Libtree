@@ -9,8 +9,10 @@
 
 namespace ast
 {
-
-  // FIXME: Some code was deleted here.
+  inline std::string StringExp::value_get() const
+  {
+    return value_;
+  }
 
 } // namespace ast
 
