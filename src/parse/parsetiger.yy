@@ -179,9 +179,6 @@
        WHILE        "while"
        EOF 0        "end of file"
 
-%nterm <std::list<ast::Exp*>> exps
-%nterm <std::list<ast::Exp*>> exp_semicolon_list
-
   /* TODO check operator priority on these from subject */
 %left AND OR
 %left EQ NE
@@ -196,15 +193,16 @@
 %right "while"
 %right "for"
 
+%type <std::list<ast::Exp*>> exps
 %type <ast::Exp*> exp
 %type <ast::DecsList*> decs
 %type <ast::Var*> lvalue
 %type <std::list<ast::FieldInit*>> rec_init_list
 %type <std::list<ast::Exp*>> exp_comma_list
 %type <ast::Var*> method_body
+%type <std::list<ast::Exp*>> exp_semicolon_list
 
 %start program
-
 
 %%
 
@@ -260,7 +258,7 @@ exp:
     $$ = new ast::MethodCallExp(@$, misc::symbol(), $3, $1);
   }
   /* Operations */
-| MINUS exp
+| MINUS exp { $$ = new ast::OpExp(@$, nullptr, ast::OpExp::Oper::sub, $2); }
 
 | exp PLUS exp { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::add, $3); }
 | exp MINUS exp { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::sub, $3); }
@@ -335,8 +333,15 @@ method_spec_tail:
 ;
 
 exp_comma_list:
-  exp
-| exp COMMA exp_comma_list
+  exp {
+    auto l = std::list<ast::Exp*>();
+    l.push_front($1);
+    $$ = l;
+  }
+| exp COMMA exp_comma_list {
+    $3.push_front($1);
+    $$ = $3;
+  }
 ;
 
 rec_init_list:
@@ -358,6 +363,7 @@ rec_init_list:
 
 lvalue:
   ID lvalue_follow {
+    auto simvar = new ast::SimpleVar(@$, $1);
   }
 | CAST LPAREN lvalue COMMA ty RPAREN
 | LVALUE LPAREN INT RPAREN {
