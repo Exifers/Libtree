@@ -196,11 +196,17 @@
 %type <std::list<ast::Exp*>> exps
 %type <ast::Exp*> exp
 %type <ast::DecsList*> decs
+%type <ast::Dec*> dec
 %type <ast::Var*> lvalue
 %type <std::list<ast::FieldInit*>> rec_init_list
 %type <std::list<ast::Exp*>> exp_comma_list
 %type <ast::Var*> method_body
 %type <std::list<ast::Exp*>> exp_semicolon_list
+%type <ast::Ty*> ty
+%type <ast::DecsList*> classfields
+%type <ast::NameTy*> typeid
+%type <ast::Dec*> vardec
+%type <ast::VarDecs*> tyfields
 
 %start program
 
@@ -384,9 +390,15 @@ lvalue_follow:
 %token DECS "_decs";
 %token NAMETY "_namety";
 
-decs: { $$ = new ast::DecsList(@$); }
-  %empty
-| dec decs
+decs:
+  %empty { $$ = new ast::DecsList(@$, std::list<ast::Decs*>()); }
+| dec decs {
+    /*
+    auto decslist = $2;
+    decslist->push_front($1);
+    $$ = decslist;
+    */
+  }
 | DECS LPAREN INT RPAREN decs {
     $$ = metavar<ast::DecsList>(tp, (unsigned) $3);
   }
@@ -394,19 +406,28 @@ decs: { $$ = new ast::DecsList(@$); }
 
 dec:
   /* Type declaration */
-  TYPE ID EQ ty
+  TYPE ID EQ ty { $$ = new ast::TypeDec(@$, $2, $4); }
   /* Class definition (alternative form) */
-| CLASS ID LBRACE classfields RBRACE
-| CLASS ID EXTENDS typeid LBRACE classfields RBRACE
+| CLASS ID LBRACE classfields RBRACE {
+    $$ = new ast::TypeDec(@$, $2, new ast::ClassTy(@$, nullptr, $4)); }
+| CLASS ID EXTENDS typeid LBRACE classfields RBRACE {
+    $$ = new ast::TypeDec(@$, $2, new ast::ClassTy(@$, $4, $6));
+  }
   /* Variable declaration */
-| vardec
+| vardec { $$ = $1; }
   /* Function declaration */
-| FUNCTION ID LPAREN tyfields RPAREN EQ exp
-| FUNCTION ID LPAREN tyfields RPAREN COLON typeid EQ exp
+| FUNCTION ID LPAREN tyfields RPAREN EQ exp {
+    $$ = new ast::FunctionDec(@$, $2, $4, nullptr, $7);
+  }
+| FUNCTION ID LPAREN tyfields RPAREN COLON typeid EQ exp {
+    $$ = new ast::FunctionDec(@$, $2, $4, $7, $9);
+  }
   /* Primitive declaration */
 | PRIMITIVE ID LPAREN tyfields RPAREN
 | PRIMITIVE ID LPAREN tyfields RPAREN COLON typeid
   /* Importing a set of declaration */
+  /* If this rule is executed, that means the import hasn't been done by
+  ** the lexer, and this is an error, but we leave it there for consistency. */
 | IMPORT STRING
 ;
 
@@ -437,8 +458,8 @@ typeid:
 ;
 
 vardec:
-  VAR ID ASSIGN exp
-| VAR ID COLON typeid ASSIGN exp
+  VAR ID ASSIGN exp { $$ = new ast::VarDec(@$, $2, nullptr, $4); }
+| VAR ID COLON typeid ASSIGN exp { $$ = new ast::VarDec(@$, $2, $4, $6); }
 ;
 
 ty:

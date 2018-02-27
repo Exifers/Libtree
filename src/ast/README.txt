@@ -41,6 +41,8 @@ Completed classes are tagged with a '-'.
     ClassTy         (NameTy super, DecsList decs)
     NameTy          (symbol name)
 -   RecordTy        // list of tyfields, ie list of Field
+  /Decs/
+    AnyDecs
 
   DecsList          (decs_type decs)
 
