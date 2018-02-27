@@ -205,8 +205,9 @@
 %type <ast::Ty*> ty
 %type <ast::DecsList*> classfields
 %type <ast::NameTy*> typeid
-%type <ast::Dec*> vardec
+%type <ast::VarDec*> vardec
 %type <ast::VarDecs*> tyfields
+%type <ast::Decs*> classfield
 
 %start program
 
@@ -423,8 +424,12 @@ dec:
     $$ = new ast::FunctionDec(@$, $2, $4, $7, $9);
   }
   /* Primitive declaration */
-| PRIMITIVE ID LPAREN tyfields RPAREN
-| PRIMITIVE ID LPAREN tyfields RPAREN COLON typeid
+| PRIMITIVE ID LPAREN tyfields RPAREN {
+    $$ = new ast::FunctionDec(@$, $2, $4, nullptr, nullptr);
+  }
+| PRIMITIVE ID LPAREN tyfields RPAREN COLON typeid {
+    $$ = new ast::FunctionDec(@$, $2, $4, $7, nullptr);
+  }
   /* Importing a set of declaration */
   /* If this rule is executed, that means the import hasn't been done by
   ** the lexer, and this is an error, but we leave it there for consistency. */
@@ -432,14 +437,32 @@ dec:
 ;
 
 classfields:
-  %empty
-| classfield classfields
+  %empty { $$ = new ast::DecsList(@$, std::list<ast::Decs*>()); }
+| classfield classfields {
+    auto decslist = $2; 
+    decslist->push_front($1);
+    $$ = decslist;
+  }
 ;
 
 classfield:
-  vardec
-| METHOD ID LPAREN tyfields RPAREN EQ exp
-| METHOD ID LPAREN tyfields RPAREN COLON typeid EQ exp
+  vardec {
+    auto vect = std::make_shared<std::vector<ast::VarDec*>>();
+    vect->push_back($1);
+    $$ = new ast::VarDecs(@$, vect.get());
+  }
+| METHOD ID LPAREN tyfields RPAREN EQ exp {
+    auto methodDec = std::make_shared<ast::MethodDec>(@$, $2, $4, nullptr, $7);
+    auto vect = std::make_shared<std::vector<ast::MethodDec*>>();
+    vect->push_back(methodDec.get());
+    $$ = new ast::MethodDecs(@$, vect.get());
+  }
+| METHOD ID LPAREN tyfields RPAREN COLON typeid EQ exp {
+    auto methodDec = std::make_shared<ast::MethodDec>(@$, $2, $4, $7, $9);
+    auto vect = std::make_shared<std::vector<ast::MethodDec*>>();
+    vect->push_back(methodDec.get());
+    $$ = new ast::MethodDecs(@$, vect.get());
+  }
 ;
 
 tyfields:
