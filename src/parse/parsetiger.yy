@@ -411,15 +411,39 @@ lvalue:
 ;
 
 lvalue_fv:
-         ID DOT ID
-| lvalue_fv DOT ID
-| lvalue_sc DOT ID
+         ID DOT ID {
+    auto sv = new ast::SimpleVar(@$, $1);
+    auto fv = new ast::FieldVar(@$, $3, sv);
+    $$ = fv;
+  }
+| lvalue_fv DOT ID {
+    auto fv = $1;
+    auto fv2 = new ast::FieldVar(@$, $3, fv);
+    $$ = fv2;
+  }
+| lvalue_sc DOT ID {
+    auto sc = $1;
+    auto fv = new ast::FieldVar(@$, $3, sc);
+    $$ = fv;
+  }
 ;
 
 lvalue_sc:
-         ID LBRACK exp RBRACK
-| lvalue_fv LBRACK exp RBRACK
-| lvalue_sc LBRACK exp RBRACK
+         ID LBRACK exp RBRACK {
+    auto sv = new ast::SimpleVar(@$, $1);
+    auto sc = new ast::SubscriptVar(@$, sv, $3);
+    $$ = sc;
+  }
+| lvalue_fv LBRACK exp RBRACK {
+    auto fv = $1;
+    auto sc = new ast::SubscriptVar(@$, fv, $3);
+    $$ = sc;
+  }
+| lvalue_sc LBRACK exp RBRACK {
+    auto sc = $1;
+    auto sc2 = new ast::SubscriptVar(@$, sc, $3);
+    $$ = sc2;
+  }
 ;
 
 /*---------------.
