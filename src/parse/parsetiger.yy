@@ -5,7 +5,7 @@
 %define api.token.constructor
 %skeleton "glr.cc"
 %glr-parser
-%expect 2
+%expect 5
 %expect-rr 0
 %error-verbose
 %defines
@@ -185,6 +185,7 @@
 %left LT LE GT GE
 %left PLUS MINUS
 %left TIMES DIVIDE
+%left DOT
 
 %right "array_of"
 %right "assign"
@@ -208,6 +209,8 @@
 %type <ast::VarDec*> vardec
 %type <ast::VarDecs*> tyfields
 %type <ast::Decs*> classfield
+%type <ast::FieldVar*> lvalue_fv
+%type <ast::SubscriptVar*> lvalue_sc
 
 %start program
 
@@ -369,19 +372,54 @@ rec_init_list:
 %token LVALUE "_lvalue";
 
 lvalue:
-  ID lvalue_follow {
-    auto simvar = new ast::SimpleVar(@$, $1);
+  ID { $$ = new ast::SimpleVar(@$, $1); }
+|        ID DOT ID {
+    auto sv = new ast::SimpleVar(@$, $1);
+    auto fv = new ast::FieldVar(@$, $3, sv);
+    $$ = fv;
   }
+| lvalue_fv DOT ID {
+    auto fv = $1;
+    auto fv2 = new ast::FieldVar(@$, $3, fv);
+    $$ = fv2;
+  }
+| lvalue_sc DOT ID {
+    auto sc = $1;
+    auto fv = new ast::FieldVar(@$, $3, sc);
+    $$ = fv;
+  }
+|        ID LBRACK exp RBRACK {
+    auto sv = new ast::SimpleVar(@$, $1);
+    auto sc = new ast::SubscriptVar(@$, sv, $3);
+    $$ = sc;
+  }
+| lvalue_fv LBRACK exp RBRACK {
+    auto fv = $1;
+    auto sc = new ast::SubscriptVar(@$, fv, $3);
+    $$ = sc;
+  }
+| lvalue_sc LBRACK exp RBRACK {
+    auto sc = $1;
+    auto sc2 = new ast::SubscriptVar(@$, sc, $3);
+    $$ = sc2;
+  }
+
 | CAST LPAREN lvalue COMMA ty RPAREN
 | LVALUE LPAREN INT RPAREN {
     $$ = metavar<ast::Var>(tp, (unsigned) $3);
   }
 ;
 
-lvalue_follow:
-  %empty
-| DOT ID lvalue_follow
-| LBRACK exp RBRACK lvalue_follow
+lvalue_fv:
+         ID DOT ID
+| lvalue_fv DOT ID
+| lvalue_sc DOT ID
+;
+
+lvalue_sc:
+         ID LBRACK exp RBRACK
+| lvalue_fv LBRACK exp RBRACK
+| lvalue_sc LBRACK exp RBRACK
 ;
 
 /*---------------.
@@ -439,7 +477,7 @@ dec:
 classfields:
   %empty { $$ = new ast::DecsList(@$, std::list<ast::Decs*>()); }
 | classfield classfields {
-    auto decslist = $2; 
+    auto decslist = $2;
     decslist->push_front($1);
     $$ = decslist;
   }

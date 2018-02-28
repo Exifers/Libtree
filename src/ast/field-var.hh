@@ -13,6 +13,7 @@ namespace ast
   /// FieldVar.
   class FieldVar : public Var
   {
+  public:
     FieldVar(const Location& location, const misc::symbol& name, Var *var);
     FieldVar(const FieldVar&) = delete;
     FieldVar& operator=(const FieldVar&) = delete;
@@ -26,6 +27,8 @@ namespace ast
 
     const Var& var_get() const;
     Var& var_get();
+    
+
 
   protected:
     misc::symbol name_;
