@@ -37,7 +37,7 @@ namespace ast
   void
   GenDefaultVisitor<Const>::operator()(const_t<FieldVar>& e)
   {
-  // FIXME: Some code was deleted here.
+    e.var_get().accept(*this);
   }
 
   template <template <typename> class Const>
@@ -75,7 +75,10 @@ namespace ast
   void
   GenDefaultVisitor<Const>::operator()(const_t<CallExp>& e)
   {
-  // FIXME: Some code was deleted here.
+    // note : we skip symbols (they don't have any accept method)
+    auto l = e.exps_get();
+    for (auto it = l.begin(); it != l.end(); it++)
+      (*it)->accept(*this);
   }
 
   template <template <typename> class Const>
@@ -90,28 +93,36 @@ namespace ast
   void
   GenDefaultVisitor<Const>::operator()(const_t<RecordExp>& e)
   {
-  // FIXME: Some code was deleted here.
+    e.namety_get().accept(*this);
+    auto l = e.fields_get();
+    for (auto it = l.begin(); it != l.end(); it++)
+      (*it)->accept(*this);
   }
 
   template <template <typename> class Const>
   void
   GenDefaultVisitor<Const>::operator()(const_t<SeqExp>& e)
   {
-  // FIXME: Some code was deleted here.
+    auto l = e.exps_get();
+    for (auto it = l.begin(); it != l.end(); it++)
+      (*it)->accept(*this);
   }
 
   template <template <typename> class Const>
   void
   GenDefaultVisitor<Const>::operator()(const_t<AssignExp>& e)
   {
-  // FIXME: Some code was deleted here.
+    e.lvalue_get().accept(*this);
+    e.exp_get().accept(*this);
   }
 
   template <template <typename> class Const>
   void
   GenDefaultVisitor<Const>::operator()(const_t<IfExp>& e)
   {
-  // FIXME: Some code was deleted here.
+    e.condition_get().accept(*this);
+    e.content_get().accept(*this);
+    e.else_content_get().accept(*this);
   }
 
   template <template <typename> class Const>
@@ -140,14 +151,19 @@ namespace ast
   void
   GenDefaultVisitor<Const>::operator()(const_t<LetExp>& e)
   {
-  // FIXME: Some code was deleted here.
+    e.decs_get().accept(*this);
+    auto l = e.exps_get();
+    for (auto it = l.begin(); it != l.end(); it++)
+      (*it)->accept(*this);
   }
 
   template <template <typename> class Const>
   void
   GenDefaultVisitor<Const>::operator()(const_t<ArrayExp>& e)
   {
-  // FIXME: Some code was deleted here.
+    e.namety_get().accept(*this);
+    e.size_exp_get().accept(*this);
+    e.type_exp_get().accept(*this);
   }
 
   template <template <typename> class Const>
@@ -169,7 +185,9 @@ namespace ast
   void
   GenDefaultVisitor<Const>::operator()(const_t<DecsList>& e)
   {
-  // FIXME: Some code was deleted here.
+     auto l = e.decs_get();
+     for (auto it = l.begin(); it != l.end(); it++)
+       (*it)->accept(*this);
   }
 
   template <template <typename> class Const>
@@ -228,7 +246,9 @@ namespace ast
   void
   GenDefaultVisitor<Const>::operator()(const_t<FunctionDec>& e)
   {
-  // FIXME: Some code was deleted here.
+    e.formals_get().accept(*this);
+    e.result_get()->accept(*this);
+    e.body_get()->accept(*this);
   }
 
   template <template <typename> class Const>
@@ -254,7 +274,9 @@ namespace ast
   void
   GenDefaultVisitor<Const>::operator()(const_t<RecordTy>& e)
   {
-  // FIXME: Some code was deleted here.
+    auto l = e.tyfields_get();
+    for (auto it = l.begin(); it != l.end(); it++)
+      (*it)->accept(*this);
   }
 
   template <template <typename> class Const>

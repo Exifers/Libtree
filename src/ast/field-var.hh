@@ -27,7 +27,6 @@ namespace ast
 
     const Var& var_get() const;
     Var& var_get();
-    
 
 
   protected:

@@ -34,4 +34,3 @@ namespace ast
 } // namespace ast
 
 #include <ast/record-ty.hxx>
-

@@ -17,14 +17,14 @@ namespace ast
   **  exps is a list of expressions nodes.
   */
   class CallExp : public Exp
-  { 
+  {
     public:
     CallExp(const Location& location, misc::symbol name, std::list<Exp*> exps);
     CallExp(const CallExp&) = delete;
     CallExp& operator=(const CallExp&) = delete;
 
     virtual ~CallExp() = default;
-    
+
     void accept(ConstVisitor& v) const override;
     void accept(Visitor& v) override;
 

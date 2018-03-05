@@ -30,7 +30,7 @@ namespace ast
 
     const DecsList& decs_get(void) const;
     DecsList& decs_get(void);
-    const std::list<Exp*>& exps_get(void) const; 
+    const std::list<Exp*>& exps_get(void) const;
     std::list<Exp*>& exps_get(void);
 
     private:
