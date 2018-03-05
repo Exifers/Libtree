@@ -208,9 +208,12 @@
 %type <ast::NameTy*> typeid
 %type <ast::VarDec*> vardec
 %type <ast::VarDecs*> tyfields
+%type <ast::VarDecs*> tyfields_tail
 %type <ast::Decs*> classfield
 %type <ast::FieldVar*> lvalue_fv
 %type <ast::SubscriptVar*> lvalue_sc
+%type <std::list<ast::Field*>> tyfields2
+%type <std::list<ast::Field*>> tyfields_tail2
 
 %start program
 
@@ -388,7 +391,7 @@ lvalue:
     auto fv = new ast::FieldVar(@$, $3, sc);
     $$ = fv;
   }
-|        ID LBRACK exp RBRACK {
+| ID LBRACK exp RBRACK {
     auto sv = new ast::SimpleVar(@$, $1);
     auto sc = new ast::SubscriptVar(@$, sv, $3);
     $$ = sc;
@@ -456,11 +459,6 @@ lvalue_sc:
 decs:
   %empty { $$ = new ast::DecsList(@$, std::list<ast::Decs*>()); }
 | dec decs {
-    /*
-    auto decslist = $2;
-    decslist->push_front($1);
-    $$ = decslist;
-    */
   }
 | DECS LPAREN INT RPAREN decs {
     $$ = metavar<ast::DecsList>(tp, (unsigned) $3);
@@ -528,18 +526,54 @@ classfield:
 ;
 
 tyfields:
-  %empty
-| ID COLON typeid tyfields_tail
+  %empty {
+    auto v = new std::vector<ast::VarDec*>();
+    $$ = new ast::VarDecs(@$, v);
+  }
+| ID COLON typeid tyfields_tail {
+    auto vardec = new ast::VarDec(@$, $1, $3, nullptr);
+    auto vardecs = $4;
+    vardecs->push_front(*vardec);
+    $$ = vardecs;
+  }
 ;
 
 tyfields_tail:
-  %empty
-| COMMA ID COLON typeid tyfields_tail
+  %empty {
+    auto v = new std::vector<ast::VarDec*>();
+    $$ = new ast::VarDecs(@$, v);
+  }
+| COMMA ID COLON typeid tyfields_tail {
+    auto vardec = new ast::VarDec(@$, $2, $4, nullptr);
+    auto vardecs = $5;
+    vardecs->push_front(*vardec);
+    $$ = vardecs;
+  }
+;
+
+tyfields2:
+  %empty { $$ = std::list<ast::Field*>(); }
+| ID COLON typeid tyfields_tail2 {
+    auto l = $4;
+    l.push_front(new ast::Field(@$, $1, $3));
+    $$ = l;
+  }
+;
+
+tyfields_tail2:
+  %empty { $$ = std::list<ast::Field*>(); }
+| ID COLON typeid tyfields_tail2 {
+    auto l = $4;
+    l.push_front(new ast::Field(@$, $1, $3));
+    $$ = l;
+  }
 ;
 
 typeid:
-  ID
-| NAMETY LPAREN INT RPAREN
+  ID { $$ = new ast::NameTy(@$, $1); }
+| NAMETY LPAREN INT RPAREN {
+    $$ = metavar<ast::NameTy>(tp, (unsigned) $3);
+  }
 ;
 
 vardec:
@@ -548,11 +582,13 @@ vardec:
 ;
 
 ty:
-  typeid
-| LBRACE tyfields RBRACE
-| ARRAY OF typeid
-| CLASS LBRACE classfields RBRACE
-| CLASS EXTENDS typeid LBRACE classfields RBRACE
+  typeid { $$ = $1; }
+| LBRACE tyfields2 RBRACE { $$ = new ast::RecordTy(@$, $2); }
+| ARRAY OF typeid { $$ = new ast::ArrayTy(@$, $3); }
+| CLASS LBRACE classfields RBRACE { $$ = new ast::ClassTy(@$, nullptr, $3); }
+| CLASS EXTENDS typeid LBRACE classfields RBRACE {
+    $$ = new ast::ClassTy(@$, $3, $5);
+  }
 ;
 
 %%

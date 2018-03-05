@@ -19,7 +19,7 @@ namespace ast
     RecordTy(const RecordTy&) = delete;
     RecordTy& operator=(const RecordTy&) = delete;
 
-    virtual ~RecordTy();
+    ~RecordTy() = default;
 
     void accept(ConstVisitor& v) const override;
     void accept(Visitor& v) override;
