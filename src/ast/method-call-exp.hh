@@ -30,7 +30,7 @@ namespace ast
     MethodCallExp& operator=(const ArrayExp&) = delete;
 
     virtual ~MethodCallExp() = default;
-    
+
     void accept(ConstVisitor& v) const override;
     void accept(Visitor& v) override;
 

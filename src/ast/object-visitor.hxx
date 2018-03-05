@@ -30,35 +30,40 @@ namespace ast
   void
   GenObjectVisitor<Const>::operator()(const_t<ClassTy>& e)
   {
-  // FIXME: Some code was deleted here.
+    e.super_get().accept(*this);
+    e.decs_get().accept(*this);
   }
 
   template <template <typename> class Const>
   void
   GenObjectVisitor<Const>::operator()(const_t<MethodDecs>& e)
   {
-  // FIXME: Some code was deleted here.
+    auto v = e.decs_get();
+    for (auto it = v.begin(); it != v.end(); it++)
+      (*it)->accept(*this);
   }
 
   template <template <typename> class Const>
   void
   GenObjectVisitor<Const>::operator()(const_t<MethodDec>& e)
   {
-  // FIXME: Some code was deleted here.
+    e.formals_get().accept(*this);
+    e.result_get()->accept(*this);
+    e.body_get()->accept(*this);
   }
 
   template <template <typename> class Const>
   void
   GenObjectVisitor<Const>::operator()(const_t<MethodCallExp>& e)
   {
-  // FIXME: Some code was deleted here.
+    e.lvalue_get().accept(*this);
   }
 
   template <template <typename> class Const>
   void
   GenObjectVisitor<Const>::operator()(const_t<ObjectExp>& e)
   {
-  // FIXME: Some code was deleted here.
+    e.namety_get().accept(*this);
   }
 
 
