@@ -14,8 +14,49 @@
 
 namespace misc
 {
+  template <typename Key, typename Data>
+  void scoped_map<Key, Data>::put(const Key& key, const Data& value)
+  {
+    auto cur = stack_.back();
+    cur[key] = value;
+  }
 
-  // FIXME: Some code was deleted here.
+  template <typename Key, typename Data>
+  Data scoped_map<Key, Data>::get(const Key& key) const
+  {
+    auto cur = stack_.back();
+    try
+    {
+      return cur[key];
+    }
+    catch(...)
+    {
+      if (std::is_pointer<Data>::value)
+      {
+        Data p = nullptr;
+        return p;
+      }
+      else
+      {
+        throw std::range_error("No such key was found in map");
+      }
+    }
+  }
+
+  template <typename Key, typename Data>
+  std::ostream& scoped_map<Key, Data>::dump(std::ostream& ostr)
+  {
+  }
+
+  template <typename Key, typename Data>
+  void scoped_map<Key, Data>::scope_begin()
+  {
+  }
+
+  template <typename Key, typename Data>
+  void scoped_map<Key, Data>::scope_end()
+  {
+  }
 
   template <typename Key, typename Data>
   inline std::ostream&
