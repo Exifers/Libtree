@@ -32,7 +32,6 @@
 #define TOKEN(Type)                             \
   parser::make_ ## Type(tp.location_)
 
-
 // Flex uses `0' for end of file.  0 is not a token_type.
 #define yyterminate() return TOKEN(EOF)
 
@@ -45,15 +44,17 @@
                 << misc::escape(yytext) << "'\n";       \
   } while (false)
 
+std::string grown_string = std::string();
+
 YY_FLEX_NAMESPACE_BEGIN
 %}
 
 %x SC_COMMENT SC_STRING
 
 /* Abbreviations.  */
-int             [0-9]+
-SPACE [ \t]
-ID ([a-zA-Z][0-9a-zA-Z_]*|"_main")
+int     [0-9]+
+SPACE   [ \t]
+ID      ([a-zA-Z][0-9a-zA-Z_]*|"_main")
 INTEGER [0-9]+
 
 %%
@@ -75,7 +76,10 @@ INTEGER [0-9]+
 
 {int}         {
                 int val = std::atoi(yytext); /* returns 0 if it can't decode */
-                return TOKEN_VAL(INT, val);
+                if (val <= 2147483647 && val >= -2147483648)
+                  return TOKEN_VAL(INT, val);
+                else
+                  std::exit(2);
               }
 
   /* Additional lexical specifications */
@@ -139,24 +143,53 @@ INTEGER [0-9]+
 
   /* Additional */
 {ID} { return TOKEN_VAL(ID, yytext); }
+
 {SPACE} {}
-"/*"        { BEGIN(SC_COMMENT); }
+
+"/*"                { BEGIN(SC_COMMENT); }
 <SC_COMMENT>"*/"    { BEGIN(INITIAL); }
 <SC_COMMENT>([^*]|\n)+|.
 <SC_COMMENT><<EOF>> {
-            std::cerr << "unexpected end of file in a comment" << std::endl;
-            std::exit(2);
+                      std::cerr << "unexpected end of file in a comment"
+                          << std::endl;
+                      std::exit(2);
                     }
-"\""        { BEGIN(SC_STRING); }
-<SC_STRING>"\""    {
-    return TOKEN_VAL(STRING, yytext);
-    BEGIN(INITIAL);
-     }
-<SC_STRING><<EOF>>  {
-    std::cerr << "unexpected end of file in a string" << std::endl;
-    std::exit(2);
-}
 
+"\""       { grown_string.clear(); BEGIN(SC_STRING); }
+<SC_STRING>{
+             "\"" {
+               BEGIN(INITIAL);
+               return TOKEN_VAL(STRING, grown_string);
+             }
+
+             \\x[0-9a-fA-F]{2} {
+               grown_string.append(1, strtol(yytext + 2, 0, 16));
+             }
+
+             \\[0-7]+ {
+               auto n = strtol(yytext + 1, 0, 8);
+               if (n < 0 || n > 255)
+               {
+                 std::cerr << "octal value in string not in range"
+                    << std::endl;
+                 std::exit(2);
+               }
+             }
+
+             . {
+               grown_string.append(yytext);
+             }
+
+             "\\\"" {
+               grown_string.append("\\\"");
+             }
+
+             <<EOF>> {
+               std::cerr << "Unexpected end of file : unterminated string"
+                   << std::endl;
+               std::exit(2);
+             }
+           }
 
 <<EOF>> return TOKEN(EOF);
 \n        { loc.lines(yyleng); }
