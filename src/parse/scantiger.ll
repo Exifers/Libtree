@@ -45,6 +45,7 @@
   } while (false)
 
 std::string grown_string = std::string();
+int comment_depth = 0;
 
 YY_FLEX_NAMESPACE_BEGIN
 %}
@@ -146,14 +147,21 @@ INTEGER [0-9]+
 
 {SPACE} {}
 
-"/*"                { BEGIN(SC_COMMENT); }
-<SC_COMMENT>"*/"    { BEGIN(INITIAL); }
-<SC_COMMENT>([^*]|\n)+|.
-<SC_COMMENT><<EOF>> {
-                      std::cerr << "unexpected end of file in a comment"
-                          << std::endl;
-                      std::exit(2);
-                    }
+"/*"        { comment_depth = 1; BEGIN(SC_COMMENT); }
+<SC_COMMENT>{
+              "/*" { comment_depth++; }
+
+              <<EOF>> {
+                std::cerr << "Unterminated comment" << std::endl;
+                std::exit(2);
+              }
+
+              "*/" {
+                comment_depth--;
+                if (comment_depth == 0)
+                  BEGIN(INITIAL);
+              }
+            }
 
 "\""       { grown_string.clear(); BEGIN(SC_STRING); }
 <SC_STRING>{
