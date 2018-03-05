@@ -46,16 +46,21 @@ namespace misc
   template <typename Key, typename Data>
   std::ostream& scoped_map<Key, Data>::dump(std::ostream& ostr)
   {
+    ostr << stack_;
+    return ostr;
   }
 
   template <typename Key, typename Data>
   void scoped_map<Key, Data>::scope_begin()
   {
+    auto cur_cpy = stack_.back();
+    stack_.push_back(cur_cpy);
   }
 
   template <typename Key, typename Data>
   void scoped_map<Key, Data>::scope_end()
   {
+    stack_.pop_back();
   }
 
   template <typename Key, typename Data>
