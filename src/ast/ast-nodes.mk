@@ -10,6 +10,7 @@ AST_NODES =  \
   src/ast/class-ty.hh src/ast/class-ty.hxx src/ast/class-ty.cc \
   src/ast/dec.hh src/ast/dec.hxx src/ast/dec.cc \
   src/ast/decs-list.hh src/ast/decs-list.hxx src/ast/decs-list.cc \
+  src/ast/escapable.hh src/ast/escapable.hxx src/ast/escapable.cc \
   src/ast/exp.hh src/ast/exp.hxx src/ast/exp.cc \
   src/ast/field.hh src/ast/field.hxx src/ast/field.cc \
   src/ast/field-init.hh src/ast/field-init.hxx src/ast/field-init.cc \

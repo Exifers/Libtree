@@ -9,9 +9,11 @@
 namespace ast
 {
 
+
   VarDec::VarDec(const Location& location, const misc::symbol& name,
                  NameTy* type_name, Exp* init)
     : Dec(location, name)
+    , Escapable()
     , type_name_(type_name)
     , init_(init)
   {}

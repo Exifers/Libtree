@@ -29,6 +29,7 @@ noinst_LTLIBRARIES = %D%/libmisc.la
   %D%/variant.hh %D%/variant.hxx %D%/vector.hh %D%/vector.hxx   \
   %D%/xalloc.hh %D%/xalloc.hxx
 
+%C%_libmisc_la_SOURCES += %D%/scoped-map.hh %D%/scoped-map.hxx
 
 %C%_libmisc_la_LDFLAGS = $(BOOST_SYSTEM_LDFLAGS) $(BOOST_FILESYSTEM_LDFLAGS)
 %C%_libmisc_la_LIBADD  = $(BOOST_SYSTEM_LIBS)    $(BOOST_FILESYSTEM_LIBS)

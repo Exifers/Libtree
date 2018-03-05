@@ -66,5 +66,4 @@ namespace ast
     e.namety_get().accept(*this);
   }
 
-
 } // namespace ast

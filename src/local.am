@@ -62,4 +62,6 @@ TASKS =
 include src/task/local.am
 include src/ast/local.am
 include src/parse/local.am
+include src/bind/local.am
+include src/escapes/local.am
 include src/object/local.am

@@ -49,3 +49,8 @@ Completed classes are tagged with a '-'.
   Field             (symbol name, NameTy type_name) // ie tyField
 
   FieldInit         (symbol name, Exp init) // ie record creation field
+
+Some of these classes also inherit from other classes.
+
+/Escapable/
+  VarDec            (NameTy type_name, Exp init)
