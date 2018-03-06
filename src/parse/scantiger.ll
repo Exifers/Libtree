@@ -71,6 +71,7 @@ INTEGER [0-9]+
 
   // Each time yylex is called.
   tp.location_.step();
+  tp.location_.columns(yyleng);
 %}
 
  /* The rules.  */
@@ -203,7 +204,7 @@ INTEGER [0-9]+
            }
 
 <<EOF>> return TOKEN(EOF);
-\n        { loc.lines(yyleng); }
+\n        { tp.location_.lines(yyleng); }
 .         {
             tp.error_ << misc::error::error_type::scan
                 << "Unexpected character : " << yytext
