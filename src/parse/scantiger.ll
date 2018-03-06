@@ -162,6 +162,8 @@ INTEGER [0-9]+
                 if (comment_depth == 0)
                   BEGIN(INITIAL);
               }
+
+              . {}
             }
 
 "\""       { grown_string.clear(); BEGIN(SC_STRING); }
