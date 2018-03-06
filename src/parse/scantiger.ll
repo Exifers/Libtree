@@ -152,8 +152,9 @@ INTEGER [0-9]+
               "/*" { comment_depth++; }
 
               <<EOF>> {
-                std::cerr << "Unterminated comment" << std::endl;
-                std::exit(2);
+                tp.error_ << misc::error::error_type::scan
+                    << "Unterminated comment" << std::endl
+                    << &misc::error::exit;
               }
 
               "*/" {
@@ -178,9 +179,9 @@ INTEGER [0-9]+
                auto n = strtol(yytext + 1, 0, 8);
                if (n < 0 || n > 255)
                {
-                 std::cerr << "octal value in string not in range"
-                    << std::endl;
-                 std::exit(2);
+                 tp.error_ << misc::error::error_type::scan
+                     << "octal value in string not in range" << std::endl
+                     << &misc::error::exit;
                }
              }
 
@@ -193,17 +194,18 @@ INTEGER [0-9]+
              }
 
              <<EOF>> {
-               std::cerr << "Unexpected end of file : unterminated string"
-                   << std::endl;
-               std::exit(2);
+               tp.error_ << misc::error::error_type::scan
+                   << "Unexpected end of file : unterminated string"
+                   << std::endl << &misc::error::exit;
              }
            }
 
 <<EOF>> return TOKEN(EOF);
 \n        { loc.lines(yyleng); }
 .         {
-            std::cerr << "Unexpected character : " << yytext << std::endl;
-            std::exit(2);
+            tp.error_ << misc::error::error_type::scan
+                << "Unexpected character : " << yytext
+                << std::endl << &misc::error::exit;
           }
 
 %%

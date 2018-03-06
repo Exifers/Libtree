@@ -90,6 +90,7 @@
 
   /* Printers and destructors */
 %destructor { delete $$; } <ast::Exp*>
+%destructor { delete $$; } <ast::DecsList*>
 %printer { debug_stream () << $$; } <int> <string>
 
 /*-----------------------------------------.
@@ -596,6 +597,7 @@ ty:
 void
 parse::parser::error(const location_type& l, const std::string& m)
 {
-  std::cerr << l << ": " << m << std::endl;
+  tp.error_ << misc::error::error_type::parse << l << ": " << m
+      << std::endl << &misc::error::exit;
   exit(3);
 }
