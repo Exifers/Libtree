@@ -9,6 +9,8 @@
 #include <ast/all.hh>
 #include <ast/default-visitor.hh>
 
+#include <iostream>
+
 namespace ast
 {
 
@@ -69,7 +71,8 @@ namespace ast
   template <template <typename> class Const>
   void
   GenDefaultVisitor<Const>::operator()(const_t<StringExp>&)
-  {}
+  {
+  }
 
   template <template <typename> class Const>
   void

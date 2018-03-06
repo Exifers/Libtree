@@ -59,7 +59,20 @@ namespace bind
     const misc::error& error_get() const;
 
     /* The visiting methods. */
+    void operator()(ast::FunctionDec& e) override;
+    void operator()(ast::MethodDec& e) override;
+    void operator()(ast::TypeDec& e) override;
+    void operator()(ast::VarDec& e) override;
+    void operator()(ast::ArrayExp& e) override;
+    void operator()(ast::AssignExp& e) override;
+    void operator()(ast::CallExp& e) override;
+    void operator()(ast::MethodCallExp& e) override;
     void operator()(ast::LetExp& e) override;
+    void operator()(ast::ObjectExp& e) override;
+    void operator()(ast::RecordExp& e) override;
+    void operator()(ast::SeqExp& e) override;
+    void operator()(ast::VarDecs& e) override;
+    void operator()(ast::MethodDecs& e) override;
   // FIXME: Some code was deleted here.
 
     // ---------------- //
@@ -156,6 +169,7 @@ namespace bind
     misc::error error_;
 
   // FIXME: Some code was deleted here (More members).
+  // [ one stack of maps per namespace :D ]
   };
 
 }

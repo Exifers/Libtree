@@ -3,6 +3,7 @@
 Tiger Abstract Syntax Tree nodes with their principal members.
 Incomplete classes are tagged with a `*'.
 Completed classes are tagged with a '-'.
+Classes containing a pointer to a definition are tagged with '+'.
 
 /Ast/               (Location location)
   /Dec/             (symbol name)
@@ -15,14 +16,14 @@ Completed classes are tagged with a '-'.
     /Var/           ()
       CastVar       (Var var, Ty ty)
 -     FieldVar      // with pointer to the previous one on lvalue
-      SimpleVar     (symbol name)
+ +    SimpleVar     (symbol name)
       SubscriptVar  (Var var, Exp index)
 
 -   ArrayExp
 -   AssignExp
 -   BreakExp
--   CallExp
-*     MethodCallExp
+-+  CallExp
+*+    MethodCallExp
     CastExp         (Exp exp, Ty ty)
     ForExp          (VarDec vardec, Exp hi, Exp body)
 -   IfExp

@@ -45,7 +45,8 @@ namespace parse::tasks
       if (!result.first)
         task_error().exit();
 
-  // FIXME: Some code was deleted here.
+      ast::DecsList* l = std::get<0>(result);
+      ast::tasks::the_program.reset(l);
   }
 
   void
