@@ -271,8 +271,7 @@ exp:
   }
   /* Method call */
 | lvalue_dot_id LPAREN RPAREN {
-    $$ = new ast::MethodCallExp(@$, misc::symbol(), std::list<ast::Exp*>(),
-        $1);
+    $$ = new ast::MethodCallExp(@$, misc::symbol(), std::list<ast::Exp*>(), $1);
   }
 | lvalue_dot_id LPAREN exp_comma_list RPAREN {
     $$ = new ast::MethodCallExp(@$, misc::symbol(), $3, $1);
@@ -634,5 +633,4 @@ parse::parser::error(const location_type& l, const std::string& m)
 {
   tp.error_ << misc::error::error_type::parse << l << ": " << m
       << std::endl << &misc::error::exit;
-  exit(3);
 }
