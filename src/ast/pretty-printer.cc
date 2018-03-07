@@ -15,27 +15,27 @@
 namespace ast
 {
 
-  // Anonymous namespace: these functions are private to this file.
-  namespace
-  {
-    /// Output \a e on \a ostr.
-    inline
+// Anonymous namespace: these functions are private to this file.
+namespace
+{
+  /// Output \a e on \a ostr.
+  inline
     std::ostream&
     operator<<(std::ostream& ostr, const Escapable& e)
     {
       if (escapes_display(ostr)
-  // FIXME: Some code was deleted here.
-          )
+          // FIXME: Some code was deleted here.
+         )
         ostr << "/* escaping */ ";
 
       return ostr;
     }
 
-    /// \brief Output \a e on \a ostr.
-    ///
-    /// Used to factor the output of the name declared,
-    /// and its possible additional attributes.
-    inline
+  /// \brief Output \a e on \a ostr.
+  ///
+  /// Used to factor the output of the name declared,
+  /// and its possible additional attributes.
+  inline
     std::ostream&
     operator<<(std::ostream& ostr, const Dec& e)
     {
@@ -44,13 +44,13 @@ namespace ast
         ostr << " /* " << &e << " */";
       return ostr;
     }
-  }
+}
 
 
 
-  PrettyPrinter::PrettyPrinter(std::ostream& ostr)
-    : ostr_(ostr)
-  {}
+PrettyPrinter::PrettyPrinter(std::ostream& ostr)
+  : ostr_(ostr)
+{}
 
 
   void
@@ -64,15 +64,15 @@ namespace ast
   void
   PrettyPrinter::operator()(const FieldVar& e)
   {
-  // FIXME: Some code was deleted here.
+    // FIXME: Some code was deleted here.
   }
 
-  /* Foo[10]. */
+/* Foo[10]. */
   void
   PrettyPrinter::operator()(const SubscriptVar& e)
   {
     ostr_ << e.var_get() << '[' << misc::incindent << e.index_get()
-          << misc::decindent << ']';
+      << misc::decindent << ']';
   }
 
   void
@@ -168,6 +168,115 @@ namespace ast
       ostr_ << std::endl;
     }
     ostr_ << " )";
+  }
+
+  void
+  PrettyPrinter::operator()(const OpExp& e)
+  {
+    auto o = e.oper_get();
+    ostr_ << e.left_get();
+    ostr_ << " ";
+    switch( (int) o)
+    {
+      case (int) OpExp::Oper::add:
+        ostr_ << "+";
+        break;
+      case (int) OpExp::Oper::sub:
+        ostr_ << "-";
+        break;
+      case (int) OpExp::Oper::mul:
+        ostr_ << "*";
+        break;
+      case (int) OpExp::Oper::div:
+        ostr_ << "/";
+        break;
+      case (int) OpExp::Oper::eq:
+        ostr_ << "";
+        break;
+      case (int) OpExp::Oper::ne:
+        ostr_ << "<>";
+        break;
+      case (int) OpExp::Oper::lt:
+        ostr_ << "<";
+        break;
+      case (int) OpExp::Oper::le:
+        ostr_ << "<=";
+        break;
+      case (int) OpExp::Oper::gt:
+        ostr_ << ">";
+        break;
+      case (int) OpExp::Oper::ge:
+        ostr_ << ">=";
+        break;
+      default:
+        break;
+    }
+    ostr_ << " " << e.right_get();
+  }
+
+  void
+  PrettyPrinter::operator()(const SeqExp& e)
+  {
+    ostr_ << "( ";
+    auto l = e.exps_get();
+    for (auto it = l.begin(); it != l.end(); it++)
+    {
+      ostr_ << **it;
+      ostr_ << ";" << std::endl;
+    }
+    ostr_ << " )";
+  }
+
+  void
+  PrettyPrinter::operator()(const AssignExp& e)
+  {
+    ostr_ << e.lvalue_get() << " := " << e.exp_get();
+  }
+
+  void
+  PrettyPrinter::operator()(const IfExp& e)
+  {
+    ostr_ <<  "if " << e.condition_get() << " then " << std::endl
+      << e.content_get();
+    try
+    {
+      const Exp& else_content = e.else_content_get();
+      ostr_ << " else " << else_content;
+    }
+    catch(...)
+    {}
+  }
+
+  void
+  PrettyPrinter::operator()(const WhileExp& e)
+  {
+    ostr_ << "while " << e.test_get() << " do " << std::endl
+      << e.body_get();
+  }
+
+  void
+  PrettyPrinter::operator()(const ForExp& e)
+  {
+    ostr_ << "for " << " to " << e.hi_get() << " do "
+      << e.body_get();
+  }
+
+  void
+  PrettyPrinter::operator()(const BreakExp& e)
+  {
+    ostr_ << "break";
+  }
+
+  void
+  PrettyPrinter::operator()(const VarDec& e)
+  {
+    ostr_ << "var " << e.name_get();
+    if (e.type_name_get() == nullptr)
+    {
+    }
+    else
+    {
+    }
   }
 
 } // namespace ast

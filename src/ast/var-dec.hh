@@ -58,4 +58,3 @@ namespace ast
 } // namespace ast
 
 #include <ast/var-dec.hxx>
-
