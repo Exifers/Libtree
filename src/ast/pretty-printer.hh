@@ -32,6 +32,15 @@ namespace ast
     void operator()(const CastVar& e) override;
     void operator()(const CastExp& e) override;
     void operator()(const LetExp& e) override;
+    void operator()(const NilExp& e) override;
+    void operator()(const IntExp& e) override;
+    void operator()(const StringExp& e) override;
+    void operator()(const ArrayExp& e) override;
+    void operator()(const RecordExp& e) override;
+    void operator()(const ObjectExp& e) override;
+    void operator()(const CallExp& e) override;
+    void operator()(const MethodCallExp& e) override; 
+
     /// \}
 
   private:

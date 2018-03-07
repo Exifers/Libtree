@@ -90,9 +90,84 @@ namespace ast
   void
   PrettyPrinter::operator()(const LetExp& e)
   {
-    ostr_ << "let";
+    ostr_ << "let" << std::endl << e.decs_get() << "in" << std::endl;
+    auto l = e.exps_get();
+    for (auto it = l.begin(); it != l.end(); it++)
+    {
+      ostr_ << **it;
+      ostr_ << std::endl;
+    }
+    ostr_ << "end";
   }
 
-  // FIXME: Some code was deleted here.
+  void
+  PrettyPrinter::operator()(const NilExp& e)
+  {
+    ostr_ << "nil";
+  }
+
+  void
+  PrettyPrinter::operator()(const IntExp& e)
+  {
+    ostr_ << e.value_get();
+  }
+
+  void
+  PrettyPrinter::operator()(const StringExp& e)
+  {
+    ostr_ << e.value_get();
+  }
+
+  void
+  PrettyPrinter::operator()(const ArrayExp& e)
+  {
+    ostr_ << e.namety_get() << "[ " << e.size_exp_get()
+      << " ] of " << e.type_exp_get();
+  }
+
+  void
+  PrettyPrinter::operator()(const RecordExp& e)
+  {
+    ostr_ << e.namety_get() << "[ ";
+    auto l = e.fields_get();
+    for (auto it = l.begin(); it != l.end(); it++)
+    {
+      ostr_ << **it;
+      ostr_ << std::endl;
+    }
+    ostr_ << " ]";
+  }
+
+  void
+  PrettyPrinter::operator()(const ObjectExp& e)
+  {
+    ostr_ << "new " << e.namety_get();
+  }
+
+  void
+  PrettyPrinter::operator()(const CallExp& e)
+  {
+    ostr_ << e.name_get() << "( ";
+    auto l = e.exps_get();
+    for (auto it = l.begin(); it != l.end(); it++)
+    {
+      ostr_ << **it;
+      ostr_ << std::endl;
+    }
+    ostr_ << " )";
+  }
+
+  void
+  PrettyPrinter::operator()(const MethodCallExp& e)
+  {
+    ostr_ << e.lvalue_get() << "( ";
+    auto l = e.exps_get();
+    for (auto it = l.begin(); it != l.end(); it++)
+    {
+      ostr_ << **it;
+      ostr_ << std::endl;
+    }
+    ostr_ << " )";
+  }
 
 } // namespace ast
