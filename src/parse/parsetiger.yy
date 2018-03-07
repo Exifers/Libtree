@@ -5,7 +5,7 @@
 %define api.token.constructor
 %skeleton "glr.cc"
 %glr-parser
-%expect 5
+%expect 10
 %expect-rr 0
 %error-verbose
 %defines
@@ -215,6 +215,12 @@
 %type <ast::SubscriptVar*> lvalue_sc
 %type <std::list<ast::Field*>> tyfields2
 %type <std::list<ast::Field*>> tyfields_tail2
+%type <ast::TypeDecs*> typ_decs
+%type <ast::VarDecs*> var_decs
+%type <ast::FunctionDecs*> fun_decs
+%type <ast::TypeDec*> typ_dec
+%type <ast::VarDec*> var_dec
+%type <ast::FunctionDec*> fun_dec
 
 %start program
 
@@ -459,14 +465,54 @@ lvalue_sc:
 
 decs:
   %empty { $$ = new ast::DecsList(@$, std::list<ast::Decs*>()); }
-| dec decs {
-  }
+| fun_decs decs { $2->push_front($1); $$ = $2; }
+| typ_decs decs { $2->push_front($1); $$ = $2; }
+| var_decs decs { $2->push_front($1); $$ = $2; }
 | DECS LPAREN INT RPAREN decs {
     $$ = metavar<ast::DecsList>(tp, (unsigned) $3);
   }
 ;
 
-dec:
+fun_decs:
+  fun_dec {
+    auto vect = new std::vector<ast::FunctionDec*>();
+    vect->push_back($1);
+    $$ = new ast::FunctionDecs(@$, vect);
+  }
+| fun_dec fun_decs {
+    auto v = $2;
+    v->push_front(*$1);
+    $$ = $2;
+  }
+;
+
+typ_decs:
+  typ_dec {
+    auto vect = new std::vector<ast::TypeDec*>();
+    vect->push_back($1);
+    $$ = new ast::TypeDecs(@$, vect);
+  }
+| typ_dec typ_decs {
+    auto v = $2;
+    v->push_front(*$1);
+    $$ = $2;
+  }
+;
+
+var_decs:
+  var_dec {
+    auto vect = new std::vector<ast::VarDec*>();
+    vect->push_back($1);
+    $$ = new ast::VarDecs(@$, vect);
+  }
+| var_dec var_decs {
+    auto v = $2;
+    v->push_front(*$1);
+    $$ = $2;
+  }
+;
+
+typ_dec:
   /* Type declaration */
   TYPE ID EQ ty { $$ = new ast::TypeDec(@$, $2, $4); }
   /* Class definition (alternative form) */
@@ -475,10 +521,16 @@ dec:
 | CLASS ID EXTENDS typeid LBRACE classfields RBRACE {
     $$ = new ast::TypeDec(@$, $2, new ast::ClassTy(@$, $4, $6));
   }
+;
+
+var_dec:
   /* Variable declaration */
-| vardec { $$ = $1; }
+  vardec { $$ = $1; }
+;
+
+fun_dec:
   /* Function declaration */
-| FUNCTION ID LPAREN tyfields RPAREN EQ exp {
+  FUNCTION ID LPAREN tyfields RPAREN EQ exp {
     $$ = new ast::FunctionDec(@$, $2, $4, nullptr, $7);
   }
 | FUNCTION ID LPAREN tyfields RPAREN COLON typeid EQ exp {
@@ -491,10 +543,6 @@ dec:
 | PRIMITIVE ID LPAREN tyfields RPAREN COLON typeid {
     $$ = new ast::FunctionDec(@$, $2, $4, $7, nullptr);
   }
-  /* Importing a set of declaration */
-  /* If this rule is executed, that means the import hasn't been done by
-  ** the lexer, and this is an error, but we leave it there for consistency. */
-| IMPORT STRING
 ;
 
 classfields:

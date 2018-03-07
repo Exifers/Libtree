@@ -87,6 +87,12 @@ namespace ast
     ostr_ << "_cast(" << e.exp_get() << ", " << e.ty_get() << ')';
   }
 
+  void
+  PrettyPrinter::operator()(const LetExp& e)
+  {
+    ostr_ << "let";
+  }
+
   // FIXME: Some code was deleted here.
 
 } // namespace ast
