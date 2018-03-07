@@ -5,7 +5,7 @@
 %define api.token.constructor
 %skeleton "glr.cc"
 %glr-parser
-%expect 10
+%expect 1
 %expect-rr 0
 %error-verbose
 %defines
@@ -181,28 +181,26 @@
        EOF 0        "end of file"
 
   /* TODO check operator priority on these from subject */
+
+%nonassoc THEN DO OF
+%nonassoc ELSE
+%nonassoc ASSIGN
+
 %left AND OR
 %left EQ NE
 %left LT LE GT GE
 %left PLUS MINUS
 %left TIMES DIVIDE
-%left DOT
 
-%right "array_of"
-%right "assign"
-%right "if_then"
-%right "if_then_else"
-%right "while"
-%right "for"
+%nonassoc DECS
+%nonassoc FUNCTION VAR TYPE CLASS PRIMITIVE METHOD
 
 %type <std::list<ast::Exp*>> exps
 %type <ast::Exp*> exp
 %type <ast::DecsList*> decs
-%type <ast::Dec*> dec
 %type <ast::Var*> lvalue
 %type <std::list<ast::FieldInit*>> rec_init_list
 %type <std::list<ast::Exp*>> exp_comma_list
-%type <ast::Var*> method_body
 %type <std::list<ast::Exp*>> exp_semicolon_list
 %type <ast::Ty*> ty
 %type <ast::DecsList*> classfields
@@ -221,6 +219,8 @@
 %type <ast::TypeDec*> typ_dec
 %type <ast::VarDec*> var_dec
 %type <ast::FunctionDec*> fun_dec
+%type <ast::FieldVar*> lvalue_dot_id
+%type <ast::SubscriptVar*> lvalue_br_exp
 
 %start program
 
@@ -247,7 +247,7 @@ exp:
   /* Array and record creation */
 | ID LBRACK exp RBRACK OF exp  {
     $$ = new ast::ArrayExp(@$, new ast::NameTy(@$, $1), $3, $6);
-  } %prec "array_of"
+  }
 
 | ID LBRACE RBRACE {
     $$ = new ast::RecordExp(@$, new ast::NameTy(@$, $1),
@@ -270,11 +270,11 @@ exp:
     $$ = new ast::CallExp(@$, $1, $3);
   }
   /* Method call */
-| method_body LPAREN RPAREN {
+| lvalue_dot_id LPAREN RPAREN {
     $$ = new ast::MethodCallExp(@$, misc::symbol(), std::list<ast::Exp*>(),
         $1);
   }
-| method_body LPAREN exp_comma_list RPAREN {
+| lvalue_dot_id LPAREN exp_comma_list RPAREN {
     $$ = new ast::MethodCallExp(@$, misc::symbol(), $3, $1);
   }
   /* Operations */
@@ -298,24 +298,24 @@ exp:
   /* Assignment */
 | lvalue ASSIGN exp {
     $$ = new ast::AssignExp(@$, $1, $3);
-  } %prec "assign"
+  }
 
   /* Control structures */
 | IF exp THEN exp {
     $$ = new ast::IfExp(@$, $2, $4, nullptr);
-  } %prec "if_then"
+  }
 
 | IF exp THEN exp ELSE exp {
     $$ = new ast::IfExp(@$, $2, $4, $6);
-  } %prec "if_then_else"
+  }
 
 | WHILE exp DO exp {
     $$ = new ast::WhileExp(@$, $2, $4);
-  } %prec "while"
+  }
 
 | FOR ID ASSIGN exp TO exp DO exp {
     $$ = new ast::ForExp(@$, new ast::VarDec(@$, $2, nullptr, $4), $6, $8);
-  } %prec "for"
+  }
 | BREAK { $$ = new ast::BreakExp(@$); }
 | LET decs IN exps END { $$ = new ast::LetExp(@$, $2, $4); }
 ;
@@ -335,21 +335,6 @@ exp_semicolon_list:
     $3.push_front($1);
     $$ = $3;
   }
-;
-
-method_body:
-  ID method_spec
-;
-
-method_spec:
-  DOT ID method_spec_tail
-| LBRACK exp RBRACK DOT ID method_spec_tail
-;
-
-method_spec_tail:
-  %empty
-| DOT ID method_spec_tail
-| LBRACK exp RBRACK DOT ID method_spec_tail
 ;
 
 exp_comma_list:
@@ -383,7 +368,16 @@ rec_init_list:
 
 lvalue:
   ID { $$ = new ast::SimpleVar(@$, $1); }
-|        ID DOT ID {
+| lvalue_dot_id { $$ = $1; }
+| lvalue_br_exp { $$ = $1; }
+| CAST LPAREN lvalue COMMA ty RPAREN
+| LVALUE LPAREN INT RPAREN {
+    $$ = metavar<ast::Var>(tp, (unsigned) $3);
+  }
+;
+
+lvalue_dot_id:
+   ID DOT ID {
     auto sv = new ast::SimpleVar(@$, $1);
     auto fv = new ast::FieldVar(@$, $3, sv);
     $$ = fv;
@@ -398,7 +392,10 @@ lvalue:
     auto fv = new ast::FieldVar(@$, $3, sc);
     $$ = fv;
   }
-| ID LBRACK exp RBRACK {
+;
+
+lvalue_br_exp:
+  ID LBRACK exp RBRACK {
     auto sv = new ast::SimpleVar(@$, $1);
     auto sc = new ast::SubscriptVar(@$, sv, $3);
     $$ = sc;
@@ -412,11 +409,6 @@ lvalue:
     auto sc = $1;
     auto sc2 = new ast::SubscriptVar(@$, sc, $3);
     $$ = sc2;
-  }
-
-| CAST LPAREN lvalue COMMA ty RPAREN
-| LVALUE LPAREN INT RPAREN {
-    $$ = metavar<ast::Var>(tp, (unsigned) $3);
   }
 ;
 
@@ -474,7 +466,7 @@ decs:
 ;
 
 fun_decs:
-  fun_dec {
+  fun_dec %prec DECS {
     auto vect = new std::vector<ast::FunctionDec*>();
     vect->push_back($1);
     $$ = new ast::FunctionDecs(@$, vect);
@@ -487,7 +479,7 @@ fun_decs:
 ;
 
 typ_decs:
-  typ_dec {
+  typ_dec %prec DECS {
     auto vect = new std::vector<ast::TypeDec*>();
     vect->push_back($1);
     $$ = new ast::TypeDecs(@$, vect);
@@ -504,11 +496,6 @@ var_decs:
     auto vect = new std::vector<ast::VarDec*>();
     vect->push_back($1);
     $$ = new ast::VarDecs(@$, vect);
-  }
-| var_dec var_decs {
-    auto v = $2;
-    v->push_front(*$1);
-    $$ = $2;
   }
 ;
 
