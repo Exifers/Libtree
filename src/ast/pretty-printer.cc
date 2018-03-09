@@ -273,10 +273,94 @@ PrettyPrinter::PrettyPrinter(std::ostream& ostr)
     ostr_ << "var " << e.name_get();
     if (e.type_name_get() == nullptr)
     {
+      ostr_ << " := " << *(e.init_get());
     }
     else
     {
+      ostr_ << " : " << *(e.type_name_get()) << " := " << *(e.init_get());
     }
+  }
+
+  void
+  PrettyPrinter::operator()(const TypeDec& e)
+  {
+    ostr_ << "type " << e.name_get() << " = " << e.ty_get();
+  }
+
+  void
+  PrettyPrinter::operator()(const FunctionDec& e)
+  {
+    auto result = e.result_get();
+    auto body = e.body_get();
+    if (result == nullptr && body == nullptr)
+    {
+      ostr_ << "primitive " << e.name_get() << " (" << e.formals_get() << ")";
+    }
+    else if (result == nullptr)
+    {
+      ostr_ << "function " << e.name_get() << " (" << e.formals_get() << ") "
+        << " = " << body;
+    }
+    else if (body == nullptr)
+    {
+      ostr_ << "primitive " << e.name_get() << " (" << e.formals_get() << ") "
+        << ": " << result;
+    }
+    else
+    {
+      ostr_ << "function " << e.name_get() << " (" << e.formals_get() << ") "
+        << ": " << result << " = " << body;
+    }
+  }
+
+  void
+  PrettyPrinter::operator()(const MethodDec& e)
+  {
+    ostr_ << "method " << e.name_get() << " (" << e.formals_get()
+      << ") ";
+    if (e.result_get() != nullptr)
+    {
+      ostr_ << " : " << e.result_get() << " ";
+    }
+    ostr_ << "= " << e.body_get();
+  }
+
+  void
+  PrettyPrinter::operator()(const ArrayTy& e)
+  {
+    ostr_ << "array of " << e.base_type_get();
+  }
+
+  void
+  PrettyPrinter::operator()(const ClassTy& e)
+  {
+    ostr_ << "class ";
+    try
+    {
+      ostr_ << "extends " << e.super_get();
+    }
+    catch(...)
+    {}
+    ostr_ << " {" << e.decs_get() << "} ";
+  }
+
+  void
+  PrettyPrinter::operator()(const NameTy& e)
+  {
+    ostr_ << e.name_get();
+  }
+
+  void
+  PrettyPrinter::operator()(const RecordTy& e)
+  {
+    ostr_ << "{ ";
+    auto l = e.tyfields_get();
+    for (auto it = l.begin(); it != l.end(); it++)
+    {
+      ostr_ << **it;
+      ostr_ << ", ";
+    }
+    ostr_ << " }";
   }
 
 } // namespace ast

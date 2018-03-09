@@ -48,6 +48,13 @@ namespace ast
     void operator()(const ForExp& e) override;
     void operator()(const BreakExp& e) override;
     void operator()(const VarDec& e) override;
+    void operator()(const TypeDec& e) override;
+    void operator()(const FunctionDec& e) override;
+    void operator()(const MethodDec& e) override;
+    void operator()(const ArrayTy& e) override;
+    void operator()(const ClassTy& e) override;
+    void operator()(const NameTy& e) override;
+    void operator()(const RecordTy& e) override;
     /// \}
 
   private:
