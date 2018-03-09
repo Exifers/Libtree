@@ -222,7 +222,7 @@ PrettyPrinter::PrettyPrinter(std::ostream& ostr)
     for (auto it = l.begin(); it != l.end(); it++)
     {
       ostr_ << **it;
-      ostr_ << ";" << std::endl;
+      ostr_ << ";" << misc::endl;
     }
     ostr_ << " )";
   }
@@ -299,7 +299,7 @@ PrettyPrinter::PrettyPrinter(std::ostream& ostr)
     else if (result == nullptr)
     {
       ostr_ << "function " << e.name_get() << " (" << e.formals_get() << ") "
-        << " = " << body;
+        << " = " << *body;
     }
     else if (body == nullptr)
     {
@@ -309,7 +309,7 @@ PrettyPrinter::PrettyPrinter(std::ostream& ostr)
     else
     {
       ostr_ << "function " << e.name_get() << " (" << e.formals_get() << ") "
-        << ": " << result << " = " << body;
+        << ": " << result << " = " << *body;
     }
   }
 

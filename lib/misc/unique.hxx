@@ -14,10 +14,8 @@ namespace misc
 
   template <typename T, class C>
   unique<T, C>::unique(const data_type& s)
-    : obj_(&s)
-  {
-    object_set_instance().insert(s);
-  }
+    : obj_(&*object_set_instance().insert(s).first)
+  {}
 
   template <typename T, class C>
   typename unique<T, C>::object_set_type&
@@ -85,7 +83,8 @@ namespace misc
   inline std::ostream&
   operator<<(std::ostream& ostr, const unique<T, C>& the)
   {
-    return ostr << the.get();
+    ostr << the.get();
+    return ostr;
   }
 
 } // namespace misc

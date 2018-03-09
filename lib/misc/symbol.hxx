@@ -33,7 +33,8 @@ namespace misc
   inline std::ostream&
   operator<<(std::ostream& ostr, const symbol& the)
   {
-    return ostr << the.get();
+    ostr << the.get();
+    return ostr;
   }
 
 }
