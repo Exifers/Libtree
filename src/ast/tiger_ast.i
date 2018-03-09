@@ -26,6 +26,8 @@ class std::unary_function<ast::Ast, void>
 
 %include "ast/location.hh"
 
+%include "ast/typable.hh"
+%include "ast/type-constructor.hh"
 %include "ast/escapable.hh"
 
 %include "ast/ast.hh"

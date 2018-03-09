@@ -5,8 +5,12 @@ src_libtc_la_SOURCES += %D%/libobject.hh %D%/libobject.cc
 
 src_libtc_la_SOURCES += %D%/binder.hh %D%/binder.cc
 
+src_libtc_la_SOURCES += %D%/type-checker.hh %D%/type-checker.cc
 
 
+src_libtc_la_SOURCES +=				\
+  %D%/renamer.hh %D%/renamer.cc			\
+  %D%/desugar-visitor.hh %D%/desugar-visitor.cc
 
 
 # Tests.
@@ -16,7 +20,13 @@ check_PROGRAMS += %D%/test-parse
 check_PROGRAMS += %D%/test-bind
 %C%_test_bind_LDADD = src/libtc.la
 
+check_PROGRAMS += %D%/test-type
+%C%_test_type_LDADD = src/libtc.la
 
+# FIXME: Add a test for object::Renamer.
+
+check_PROGRAMS += %D%/test-desugar
+%C%_test_desugar_LDADD = src/libtc.la
 
 
 TASKS += %D%/tasks.hh %D%/tasks.cc

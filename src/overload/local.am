@@ -1,0 +1,11 @@
+## overload module.
+
+EXTRA_DIST += %D%/tiger_overload.i
+
+src_libtc_la_SOURCES +=				\
+  %D%/over-table.hh %D%/over-table.hxx		\
+  %D%/binder.hh %D%/binder.cc			\
+  %D%/type-checker.hh %D%/type-checker.cc	\
+  %D%/liboverload.hh %D%/liboverload.cc
+
+TASKS += %D%/tasks.hh %D%/tasks.cc

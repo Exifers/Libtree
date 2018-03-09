@@ -1,3 +1,8 @@
+New in 1.66, 2018-03-09
+
+* General Maintenance
+  - remove useless misc::set
+
 New in 1.65, 2018-02-12
 
 * General Maintenance

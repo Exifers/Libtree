@@ -1,0 +1,21 @@
+## desugar module.
+src_libtc_la_SOURCES +=						\
+  %D%/desugar-visitor.hh %D%/desugar-visitor.cc			\
+  %D%/bounds-checking-visitor.hh %D%/bounds-checking-visitor.cc	\
+  %D%/libdesugar.hh %D%/libdesugar.cc
+
+check_PROGRAMS +=					\
+  %D%/test-string-cmp-desugar			\
+  %D%/test-for-loops-desugar			\
+  %D%/test-bounds-checking
+
+%C%_test_string_cmp_desugar_LDADD = src/libtc.la
+%C%_test_string_cmp_desugar_CPPFLAGS = $(AM_CPPFLAGS) -DPKGDATADIR=\"$(pkgdatadir)\"
+
+%C%_test_for_loops_desugar_LDADD = src/libtc.la
+%C%_test_for_loops_desugar_CPPFLAGS = $(AM_CPPFLAGS) -DPKGDATADIR=\"$(pkgdatadir)\"
+
+%C%_test_bounds_checking_LDADD = src/libtc.la
+%C%_test_bounds_checking_CPPFLAGS = $(AM_CPPFLAGS) -DPKGDATADIR=\"$(pkgdatadir)\"
+
+TASKS += %D%/tasks.hh %D%/tasks.cc

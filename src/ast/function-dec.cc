@@ -13,6 +13,7 @@ namespace ast
                            const misc::symbol& name, VarDecs* formals,
                            NameTy* result, Exp* body)
     : Dec(location, name)
+    , TypeConstructor()
     , formals_(formals)
     , result_(result)
     , body_(body)

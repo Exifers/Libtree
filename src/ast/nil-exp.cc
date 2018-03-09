@@ -11,6 +11,7 @@ namespace ast
 
   NilExp::NilExp(const Location& location)
     : Exp(location)
+    , TypeConstructor()
   {}
 
 

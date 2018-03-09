@@ -24,6 +24,7 @@
 %template() parse::MetavarMap<ast::Var>;
 %template() parse::MetavarMap<ast::NameTy>;
 %template() parse::MetavarMap<ast::DecsList>;
+%template() parse::MetavarMap<parse::Tweast>;
 
 /*------------------.
 | parse::position.  |

@@ -124,6 +124,8 @@ namespace parse
   TigerParser::parse_input(Tweast& s, bool extensions)
   {
     std::swap(extensions, enable_extensions_p_);
+    // Merge all aggregated Tweasts into a single one.
+    s.flatten();
     if (parse_trace_p_)
       std::cerr << "Parsing string: " << s.input_get() << '\n';
     input_ = &s;

@@ -1,0 +1,29 @@
+## type module.
+EXTRA_DIST += %D%/README.txt %D%/tiger_type.i
+
+src_libtc_la_SOURCES +=						\
+  %D%/fwd.hh %D%/types.hh					\
+  %D%/array.hh %D%/array.cc %D%/array.hxx			\
+  %D%/builtin-types.hh %D%/builtin-types.cc			\
+  %D%/nil.hh %D%/nil.cc					\
+  %D%/default-visitor.hh %D%/default-visitor.hxx		\
+  %D%/field.hh %D%/field.cc %D%/field.hxx			\
+  %D%/named.hh %D%/named.cc %D%/named.hxx			\
+  %D%/pretty-printer.hh %D%/pretty-printer.cc			\
+  %D%/record.hh %D%/record.cc %D%/record.hxx			\
+  %D%/type.hh %D%/type.hxx %D%/type.cc				\
+  %D%/type-checker.hh %D%/type-checker.hxx %D%/type-checker.cc	\
+  %D%/libtype.hh %D%/libtype.cc				\
+  %D%/visitor.hh %D%/visitor.hxx
+
+src_libtc_la_SOURCES +=					\
+  %D%/function.hh %D%/function.cc %D%/function.hxx
+src_libtc_la_SOURCES +=					\
+  %D%/attribute.hh %D%/attribute.cc %D%/attribute.hxx	\
+  %D%/class.hh %D%/class.cc %D%/class.hxx		\
+  %D%/method.hh %D%/method.cc %D%/method.hxx
+
+check_PROGRAMS += %D%/test-type
+%C%_test_type_LDADD = src/libtc.la
+
+TASKS += %D%/tasks.hh %D%/tasks.cc

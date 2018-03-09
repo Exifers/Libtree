@@ -11,6 +11,7 @@ namespace ast
 
   Dec::Dec(const Location& location, const misc::symbol& name)
     : Ast(location)
+    , Typable()
     , name_(name)
   {}
 
