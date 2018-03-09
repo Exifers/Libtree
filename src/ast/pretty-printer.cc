@@ -90,12 +90,12 @@ PrettyPrinter::PrettyPrinter(std::ostream& ostr)
   void
   PrettyPrinter::operator()(const LetExp& e)
   {
-    ostr_ << "let" << std::endl << e.decs_get() << "in" << std::endl;
+    ostr_ << "let" << misc::iendl << e.decs_get() << "in" << misc::iendl;
     auto l = e.exps_get();
     for (auto it = l.begin(); it != l.end(); it++)
     {
       ostr_ << **it;
-      ostr_ << std::endl;
+      ostr_ << misc::iendl;
     }
     ostr_ << "end";
   }
@@ -133,7 +133,7 @@ PrettyPrinter::PrettyPrinter(std::ostream& ostr)
     for (auto it = l.begin(); it != l.end(); it++)
     {
       ostr_ << **it;
-      ostr_ << std::endl;
+      ostr_ << misc::iendl;
     }
     ostr_ << " ]";
   }
@@ -152,7 +152,7 @@ PrettyPrinter::PrettyPrinter(std::ostream& ostr)
     for (auto it = l.begin(); it != l.end(); it++)
     {
       ostr_ << **it;
-      ostr_ << std::endl;
+      ostr_ << misc::iendl;
     }
     ostr_ << " )";
   }
@@ -165,7 +165,7 @@ PrettyPrinter::PrettyPrinter(std::ostream& ostr)
     for (auto it = l.begin(); it != l.end(); it++)
     {
       ostr_ << **it;
-      ostr_ << std::endl;
+      ostr_ << misc::iendl;
     }
     ostr_ << " )";
   }
@@ -222,7 +222,9 @@ PrettyPrinter::PrettyPrinter(std::ostream& ostr)
     for (auto it = l.begin(); it != l.end(); it++)
     {
       ostr_ << **it;
-      ostr_ << ";" << misc::endl;
+      auto it_cpy = it;
+      if (++it_cpy != l.end())
+        ostr_ << ";" << misc::iendl;
     }
     ostr_ << " )";
   }
@@ -236,7 +238,7 @@ PrettyPrinter::PrettyPrinter(std::ostream& ostr)
   void
   PrettyPrinter::operator()(const IfExp& e)
   {
-    ostr_ <<  "if " << e.condition_get() << " then " << std::endl
+    ostr_ <<  "if " << e.condition_get() << " then " << misc::iendl
       << e.content_get();
     try
     {
@@ -250,7 +252,7 @@ PrettyPrinter::PrettyPrinter(std::ostream& ostr)
   void
   PrettyPrinter::operator()(const WhileExp& e)
   {
-    ostr_ << "while " << e.test_get() << " do " << std::endl
+    ostr_ << "while " << e.test_get() << " do " << misc::iendl
       << e.body_get();
   }
 
@@ -358,7 +360,9 @@ PrettyPrinter::PrettyPrinter(std::ostream& ostr)
     for (auto it = l.begin(); it != l.end(); it++)
     {
       ostr_ << **it;
-      ostr_ << ", ";
+      auto it_cpy = it;
+      if (++it_cpy != l.end())
+        ostr_ << ", ";
     }
     ostr_ << " }";
   }
