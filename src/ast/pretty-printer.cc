@@ -173,7 +173,9 @@ PrettyPrinter::PrettyPrinter(std::ostream& ostr)
     for (auto it = l.begin(); it != l.end(); it++)
     {
       ostr_ << **it;
-      ostr_ << misc::iendl;
+      auto it_cpy = it;
+      if (++it_cpy != l.end())
+        ostr_ << ", ";
     }
     ostr_ << " )";
   }
@@ -267,7 +269,9 @@ PrettyPrinter::PrettyPrinter(std::ostream& ostr)
   void
   PrettyPrinter::operator()(const ForExp& e)
   {
-    ostr_ << "for " << " to " << e.hi_get() << " do "
+    ostr_ << "for " << e.vardec_get().name_get() << " := "
+      << *e.vardec_get().init_get()
+      << " to " << e.hi_get() << " do "
       << e.body_get();
   }
 
