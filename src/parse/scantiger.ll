@@ -32,6 +32,8 @@
 #define TOKEN(Type)                             \
   parser::make_ ## Type(tp.location_)
 
+#define YY_USER_ACTION tp.location_.columns(yyleng);
+
 // Flex uses `0' for end of file.  0 is not a token_type.
 #define yyterminate() return TOKEN(EOF)
 
@@ -71,17 +73,18 @@ INTEGER [0-9]+
 
   // Each time yylex is called.
   tp.location_.step();
-  tp.location_.columns(yyleng);
 %}
 
  /* The rules.  */
 
 {int}         {
                 int val = std::atoi(yytext); /* returns 0 if it can't decode */
-                if (val <= 2147483647 && val >= -2147483648)
+                if (val >= 0)
                   return TOKEN_VAL(INT, val);
                 else
-                  std::exit(2);
+                  tp.error_ << misc::error::error_type::scan
+                      << "Number out of range : " << yytext
+                      << std::endl << &misc::error::exit;
               }
 
   /* Additional lexical specifications */

@@ -542,21 +542,21 @@ classfields:
 
 classfield:
   vardec {
-    auto vect = std::make_shared<std::vector<ast::VarDec*>>();
+    auto vect = new std::vector<ast::VarDec*>();
     vect->push_back($1);
-    $$ = new ast::VarDecs(@$, vect.get());
+    $$ = new ast::VarDecs(@$, vect);
   }
 | METHOD ID LPAREN tyfields RPAREN EQ exp {
-    auto methodDec = std::make_shared<ast::MethodDec>(@$, $2, $4, nullptr, $7);
-    auto vect = std::make_shared<std::vector<ast::MethodDec*>>();
-    vect->push_back(methodDec.get());
-    $$ = new ast::MethodDecs(@$, vect.get());
+    auto methodDec = new ast::MethodDec(@$, $2, $4, nullptr, $7);
+    auto vect = new std::vector<ast::MethodDec*>();
+    vect->push_back(methodDec);
+    $$ = new ast::MethodDecs(@$, vect);
   }
 | METHOD ID LPAREN tyfields RPAREN COLON typeid EQ exp {
-    auto methodDec = std::make_shared<ast::MethodDec>(@$, $2, $4, $7, $9);
-    auto vect = std::make_shared<std::vector<ast::MethodDec*>>();
-    vect->push_back(methodDec.get());
-    $$ = new ast::MethodDecs(@$, vect.get());
+    auto methodDec = new ast::MethodDec(@$, $2, $4, $7, $9);
+    auto vect = new std::vector<ast::MethodDec*>();
+    vect->push_back(methodDec);
+    $$ = new ast::MethodDecs(@$, vect);
   }
 ;
 
@@ -632,5 +632,5 @@ void
 parse::parser::error(const location_type& l, const std::string& m)
 {
   tp.error_ << misc::error::error_type::parse << l << ": " << m
-      << std::endl << &misc::error::exit;
+      << std::endl;
 }
