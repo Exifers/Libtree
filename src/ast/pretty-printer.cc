@@ -64,7 +64,7 @@ PrettyPrinter::PrettyPrinter(std::ostream& ostr)
   void
   PrettyPrinter::operator()(const FieldVar& e)
   {
-    // FIXME: Some code was deleted here.
+    ostr_ << e.var_get() << "." << e.name_get();
   }
 
 /* Foo[10]. */
@@ -131,14 +131,17 @@ PrettyPrinter::PrettyPrinter(std::ostream& ostr)
   void
   PrettyPrinter::operator()(const RecordExp& e)
   {
-    ostr_ << e.namety_get() << "[ ";
+    ostr_ << e.namety_get() << "{ ";
     auto l = e.fields_get();
     for (auto it = l.begin(); it != l.end(); it++)
     {
       ostr_ << **it;
+      auto it_cpy = it;
+      if (++it_cpy != l.end())
+        ostr_ << ", ";
       ostr_ << misc::iendl;
     }
-    ostr_ << " ]";
+    ostr_ << " }";
   }
 
   void
@@ -155,7 +158,9 @@ PrettyPrinter::PrettyPrinter(std::ostream& ostr)
     for (auto it = l.begin(); it != l.end(); it++)
     {
       ostr_ << **it;
-      ostr_ << misc::iendl;
+      auto it_cpy = it;
+      if (++it_cpy != l.end())
+        ostr_ << ", ";
     }
     ostr_ << " )";
   }
@@ -369,6 +374,12 @@ PrettyPrinter::PrettyPrinter(std::ostream& ostr)
         ostr_ << ", ";
     }
     ostr_ << " }";
+  }
+
+  void
+  PrettyPrinter::operator()(const FieldInit& e)
+  {
+    ostr_ << e.name_get() << " = " << e.init_get();
   }
 
 } // namespace ast
