@@ -57,6 +57,8 @@ namespace ast
     void operator()(const RecordTy& e) override;
     void operator()(const FieldInit& e) override;
     void operator()(const Field& e) override;
+    void operator()(const VarDecs& e) override;
+    void operator()(const MethodDecs& e) override;
     /// \}
 
   private:
