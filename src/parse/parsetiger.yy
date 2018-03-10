@@ -597,9 +597,9 @@ tyfields2:
 
 tyfields_tail2:
   %empty { $$ = std::list<ast::Field*>(); }
-| ID COLON typeid tyfields_tail2 {
-    auto l = $4;
-    l.push_front(new ast::Field(@$, $1, $3));
+| COMMA ID COLON typeid tyfields_tail2 {
+    auto l = $5;
+    l.push_front(new ast::Field(@$, $2, $4));
     $$ = l;
   }
 ;

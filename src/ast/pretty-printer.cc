@@ -284,15 +284,17 @@ PrettyPrinter::PrettyPrinter(std::ostream& ostr)
   void
   PrettyPrinter::operator()(const VarDec& e)
   {
-    ostr_ << "var " << e.name_get();
-    if (e.type_name_get() == nullptr)
-    {
+    if (e.init_get() != nullptr)
+      ostr_ << "var ";
+
+    ostr_ << e.name_get();
+
+    if (e.type_name_get() != nullptr)
+      ostr_ << " : " << *(e.type_name_get());
+
+    if (e.init_get() != nullptr)
       ostr_ << " := " << *(e.init_get());
-    }
-    else
-    {
-      ostr_ << " : " << *(e.type_name_get()) << " := " << *(e.init_get());
-    }
+
     ostr_ << misc::iendl;
   }
 
@@ -331,13 +333,23 @@ PrettyPrinter::PrettyPrinter(std::ostream& ostr)
   void
   PrettyPrinter::operator()(const MethodDec& e)
   {
-    ostr_ << "method " << e.name_get() << " (" << e.formals_get()
-      << ") ";
+    ostr_ << "method " << e.name_get() << " (";
+
+    auto v = e.formals_get().decs_get();
+    for (auto it = v.begin(); it != v.end(); it++)
+    {
+      ostr_ << (**it).name_get() << " : " << *(**it).type_name_get();
+      auto it_cpy = it;
+      if (++it_cpy != v.end())
+        ostr_ << ", ";
+    }
+    ostr_ << ") ";
+
     if (e.result_get() != nullptr)
     {
-      ostr_ << " : " << e.result_get() << " ";
+      ostr_ << " : " << *(e.result_get()) << " ";
     }
-    ostr_ << "= " << e.body_get();
+    ostr_ << "= " << *(e.body_get());
   }
 
   void
@@ -384,6 +396,12 @@ PrettyPrinter::PrettyPrinter(std::ostream& ostr)
   PrettyPrinter::operator()(const FieldInit& e)
   {
     ostr_ << e.name_get() << " = " << e.init_get();
+  }
+
+  void
+  PrettyPrinter::operator()(const Field& e)
+  {
+    ostr_ << e.name_get() << " : " << e.type_name_get();
   }
 
 } // namespace ast
