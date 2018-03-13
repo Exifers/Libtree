@@ -55,12 +55,74 @@ namespace bind
   | Visits.  |
   `---------*/
 
-  // FIXME: Some code was deleted here.
+  void
+  Binder::operator()(ast::FunctionDec& e)
+  {
+  }
+
+  void
+  Binder::operator()(ast::MethodDec& e)
+  {
+  }
+
+  void
+  Binder::operator()(ast::TypeDec& e)
+  {
+  }
+
+  void
+  Binder::operator()(ast::VarDec& e)
+  {
+  }
+
+  void
+  Binder::operator()(ast::ArrayExp& e)
+  {
+  }
+
+  void
+  Binder::operator()(ast::AssignExp& e)
+  {
+  }
+
+  void
+  Binder::operator()(ast::CallExp& e)
+  {
+  }
+
+  void
+  Binder::operator()(ast::MethodCallExp& e)
+  {
+  }
 
   void
   Binder::operator()(ast::LetExp& e)
   {
-  // FIXME: Some code was deleted here.
+  }
+
+  void
+  Binder::operator()(ast::ObjectExp& e)
+  {
+  }
+
+  void
+  Binder::operator()(ast::RecordExp& e)
+  {
+  }
+
+  void
+  Binder::operator()(ast::SeqExp& e)
+  {
+  }
+
+  void
+  Binder::operator()(ast::VarDecs& e)
+  {
+  }
+
+  void
+  Binder::operator()(ast::MethodDecs& e)
+  {
   }
 
 
