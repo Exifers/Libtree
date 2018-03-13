@@ -3,4 +3,14 @@
  ** \brief Interface of the bind module.
  */
 
-  // FIXME: Some code was deleted here.
+#include <ast/fwd.hh>
+#include <ast/tasks.hh>
+#include "binder.hh"
+
+namespace bind
+{
+  namespace tasks
+  {
+    void bind_ast(void);
+  }
+}

@@ -8,12 +8,15 @@
 #include <bind/tasks.hh>
 #undef DEFINE_TASKS
 
+#include "libbind.hh"
+
 namespace bind::tasks
 { 
 
   void
   bindings_compute()
   {
+    bind::tasks::bind_ast();
   }
 
   void

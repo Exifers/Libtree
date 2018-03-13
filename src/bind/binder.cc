@@ -38,13 +38,17 @@ namespace bind
   void
   Binder::scope_begin()
   {
-  // FIXME: Some code was deleted here.
+    fun_stack_.scope_begin();
+    typ_stack_.scope_begin();
+    var_stack_.scope_begin();
   }
 
   void
   Binder::scope_end()
   {
-  // FIXME: Some code was deleted here.
+    fun_stack_.scope_end();
+    typ_stack_.scope_end();
+    var_stack_.scope_end();
   }
 
   /*---------.

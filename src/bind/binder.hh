@@ -168,8 +168,9 @@ namespace bind
     /// Binding errors handler.
     misc::error error_;
 
-  // FIXME: Some code was deleted here (More members).
-  // [ one stack of maps per namespace :D ]
+    misc::scoped_map<misc::symbol, ast::FunctionDec*> fun_stack_;
+    misc::scoped_map<misc::symbol, ast::TypeDec*> typ_stack_;
+    misc::scoped_map<misc::symbol, ast::VarDec*> var_stack_;
   };
 
 }
