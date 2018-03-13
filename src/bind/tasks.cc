@@ -3,4 +3,16 @@
  ** \brief Bind module tasks implementation.
  */
 
-  // FIXME: Some code was deleted here.
+
+#define DEFINE_TASKS 1
+#include <bind/tasks.hh>
+#undef DEFINE_TASKS
+
+namespace bind::tasks
+{ 
+
+  void
+  bind()
+  {
+  }
+}

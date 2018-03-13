@@ -3,4 +3,10 @@
  ** \brief Bind module related tasks.
  */
 
-  // FIXME: Some code was deleted here.
+#include <task/libtask.hh>
+
+namespace bind::tasks
+{
+  TASK_GROUP("4. Binding");
+  TASK_DECLARE("b|bind", "bind the ast", bind, "")
+} // namespace bind::tasks
