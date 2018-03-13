@@ -8,5 +8,7 @@
 namespace bind::tasks
 {
   TASK_GROUP("4. Binding");
-  TASK_DECLARE("b|bind", "bind the ast", bind, "")
+  TASK_DECLARE("b|bindings-compute", "bind the ast", bindings_compute, "");
+  TASK_DECLARE("B|bindings-display",
+      "display bindings in the ast pretty print", bindings_display, "");
 } // namespace bind::tasks

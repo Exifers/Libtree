@@ -12,7 +12,12 @@ namespace bind::tasks
 { 
 
   void
-  bind()
+  bindings_compute()
+  {
+  }
+
+  void
+  bindings_display()
   {
   }
 }
