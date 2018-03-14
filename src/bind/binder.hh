@@ -72,7 +72,9 @@ namespace bind
     void operator()(ast::RecordExp& e) override;
     void operator()(ast::SeqExp& e) override;
     void operator()(ast::VarDecs& e) override;
+    void operator()(ast::FunctionDecs& e) override;
     void operator()(ast::MethodDecs& e) override;
+    void operator()(ast::TypeDecs& e) override;
   // FIXME: Some code was deleted here.
 
     // ---------------- //

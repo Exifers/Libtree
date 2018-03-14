@@ -58,6 +58,9 @@ namespace bind
   void
   Binder::operator()(ast::FunctionDec& e)
   {
+    auto exp = e.body_get();
+    if (exp)
+      exp->accept(*this);
   }
 
   void
@@ -98,6 +101,17 @@ namespace bind
   void
   Binder::operator()(ast::LetExp& e)
   {
+    for (auto it = e.decs_get().decs_get().begin();
+        it != e.decs_get().decs_get().end(); it++)
+    {
+      (**it).accept(*this);
+    }
+
+    for (auto it = e.exps_get().begin(); it != e.exps_get().end(); it++)
+    {
+      (**it).accept(*this);
+    }
+
   }
 
   void
@@ -113,16 +127,10 @@ namespace bind
   void
   Binder::operator()(ast::SeqExp& e)
   {
-  }
-
-  void
-  Binder::operator()(ast::VarDecs& e)
-  {
-  }
-
-  void
-  Binder::operator()(ast::MethodDecs& e)
-  {
+    for (auto it = e.exps_get().begin(); it != e.exps_get().end(); it++)
+    {
+      (**it).accept(*this);
+    }
   }
 
 
@@ -130,18 +138,45 @@ namespace bind
   | Visiting VarDecs.  |
   `-------------------*/
 
-  // FIXME: Some code was deleted here.
+  void
+  Binder::operator()(ast::VarDecs& e)
+  {
+    std::cout << "Binding vardecs" << std::endl;
+  }
 
 
   /*------------------------.
   | Visiting FunctionDecs.  |
   `------------------------*/
 
-  // FIXME: Some code was deleted here.
+  void
+  Binder::operator()(ast::FunctionDecs& e)
+  {
+    for (auto it = e.decs_get().begin(); it != e.decs_get().end(); it++)
+    {
+      (**it).accept(*this);
+    }
+  }
+
+  void
+  Binder::operator()(ast::MethodDecs& e)
+  {
+    for (auto it = e.decs_get().begin(); it != e.decs_get().end(); it++)
+    {
+      (**it).accept(*this);
+    }
+  }
 
   /*--------------------.
   | Visiting TypeDecs.  |
   `--------------------*/
-  // FIXME: Some code was deleted here.
+  void
+  Binder::operator()(ast::TypeDecs& e)
+  {
+    for (auto it = e.decs_get().begin(); it != e.decs_get().end(); it++)
+    {
+      (**it).accept(*this);
+    }
+  }
 
 } // namespace bind
