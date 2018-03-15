@@ -56,62 +56,41 @@ namespace bind
   `---------*/
 
   void
-  Binder::operator()(ast::FunctionDec& e)
+  Binder::operator()(ast::CastExp& e)
   {
-    auto exp = e.body_get();
-    if (exp)
-      exp->accept(*this);
-  }
-
-  void
-  Binder::operator()(ast::MethodDec& e)
-  {
-  }
-
-  void
-  Binder::operator()(ast::TypeDec& e)
-  {
-  }
-
-  void
-  Binder::operator()(ast::VarDec& e)
-  {
-  }
-
-  void
-  Binder::operator()(ast::ArrayExp& e)
-  {
-  }
-
-  void
-  Binder::operator()(ast::AssignExp& e)
-  {
-  }
-
-  void
-  Binder::operator()(ast::CallExp& e)
-  {
-  }
-
-  void
-  Binder::operator()(ast::MethodCallExp& e)
-  {
+    super_type::operator()(e);
   }
 
   void
   Binder::operator()(ast::LetExp& e)
   {
     for (auto it = e.decs_get().decs_get().begin();
-        it != e.decs_get().decs_get().end(); it++)
+         it != e.decs_get().decs_get().end(); it++)
     {
-      (**it).accept(*this);
+      super_type::operator()(**it);
     }
 
-    for (auto it = e.exps_get().begin(); it != e.exps_get().end(); it++)
+    auto l = e.exps_get();
+    for (auto it = l.begin(); it != l.end(); it++)
     {
-      (**it).accept(*this);
+      super_type::operator()(**it);
     }
+  }
 
+  void
+  Binder::operator()(ast::ArrayExp& e)
+  {
+    super_type::operator()(e);
+  }
+
+  void
+  Binder::operator()(ast::RecordExp& e)
+  {
+    auto l = e.fields_get();
+    for (auto it = l.begin(); it != l.end(); it++)
+    {
+      super_type::operator()(**it);
+    }
   }
 
   void
@@ -120,19 +99,109 @@ namespace bind
   }
 
   void
-  Binder::operator()(ast::RecordExp& e)
+  Binder::operator()(ast::CallExp& e)
   {
+    auto l = e.exps_get();
+    for (auto it = l.begin(); it != l.end(); it++)
+    {
+      super_type::operator()(**it);
+    }
+  }
+
+  void
+  Binder::operator()(ast::MethodCallExp& e)
+  {
+    super_type::operator()(e.lvalue_get());
+    auto l = e.exps_get();
+    for (auto it = l.begin(); it != l.end(); it++)
+    {
+      super_type::operator()(**it);
+    }
   }
 
   void
   Binder::operator()(ast::SeqExp& e)
   {
-    for (auto it = e.exps_get().begin(); it != e.exps_get().end(); it++)
+    auto l = e.exps_get();
+    for (auto it = l.begin(); it != l.end(); it++)
     {
-      (**it).accept(*this);
+      super_type::operator()(**it);
     }
   }
 
+  void
+  Binder::operator()(ast::AssignExp& e)
+  {
+    super_type::operator()(e.lvalue_get());
+  }
+
+  void
+  Binder::operator()(ast::IfExp& e)
+  {
+    super_type::operator()(e.condition_get());
+    super_type::operator()(e.content_get());
+    try
+    {
+      ast::Exp& else_content = e.else_content_get();
+      super_type::operator()(else_content);
+    }
+    catch(...)
+    {}
+  }
+
+  void
+  Binder::operator()(ast::WhileExp& e)
+  {
+    super_type::operator()(e.test_get());
+    super_type::operator()(e.body_get());
+  }
+
+  void
+  Binder::operator()(ast::ForExp& e)
+  {
+    super_type::operator()(*e.vardec_get().init_get());
+    super_type::operator()(e.hi_get());
+    super_type::operator()(e.body_get());
+  }
+
+  void
+  Binder::operator()(ast::VarDec& e)
+  {
+    super_type::operator()(*(e.init_get()));
+  }
+
+  void
+  Binder::operator()(ast::TypeDec& e)
+  {
+    super_type::operator()(e.ty_get());
+  }
+
+  void
+  Binder::operator()(ast::FunctionDec& e)
+  {
+    auto result = e.result_get();
+    auto body = e.body_get();
+    if (result == nullptr && body == nullptr)
+    {
+    }
+    else if (result == nullptr)
+    {
+      super_type::operator()(*body);
+    }
+    else if (body == nullptr)
+    {
+    }
+    else
+    {
+      super_type::operator()(*body);
+    }
+  }
+
+  void
+  Binder::operator()(ast::MethodDec& e)
+  {
+    super_type::operator()(*(e.body_get()));
+  }
 
   /*-------------------.
   | Visiting VarDecs.  |
@@ -141,7 +210,12 @@ namespace bind
   void
   Binder::operator()(ast::VarDecs& e)
   {
-    std::cout << "Binding vardecs" << std::endl;
+    auto v = e.decs_get();
+    for (auto it = v.begin(); it != v.end(); it++)
+    {
+      if ((**it).init_get() != nullptr)
+        super_type::operator()(*((**it).init_get()));
+    }
   }
 
 
@@ -154,16 +228,17 @@ namespace bind
   {
     for (auto it = e.decs_get().begin(); it != e.decs_get().end(); it++)
     {
-      (**it).accept(*this);
+      (*this)(**it);
     }
   }
 
   void
   Binder::operator()(ast::MethodDecs& e)
   {
-    for (auto it = e.decs_get().begin(); it != e.decs_get().end(); it++)
+    auto v = e.decs_get();
+    for (auto it = v.begin(); it != v.end(); it++)
     {
-      (**it).accept(*this);
+      (*this)(**it);
     }
   }
 
@@ -175,7 +250,7 @@ namespace bind
   {
     for (auto it = e.decs_get().begin(); it != e.decs_get().end(); it++)
     {
-      (**it).accept(*this);
+      super_type::operator()(**it);
     }
   }
 

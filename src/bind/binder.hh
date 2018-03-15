@@ -75,7 +75,10 @@ namespace bind
     void operator()(ast::FunctionDecs& e) override;
     void operator()(ast::MethodDecs& e) override;
     void operator()(ast::TypeDecs& e) override;
-  // FIXME: Some code was deleted here.
+    void operator()(ast::CastExp& e) override;
+    void operator()(ast::IfExp& e) override;
+    void operator()(ast::WhileExp& e) override;
+    void operator()(ast::ForExp& e) override;
 
     // ---------------- //
     // Visiting /Dec/.  //
