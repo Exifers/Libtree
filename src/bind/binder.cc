@@ -58,7 +58,6 @@ namespace bind
   void
   Binder::operator()(ast::SimpleVar& e)
   {
-    std::cout << "V SV\n";
     auto def = var_stack_.get(e.name_get());
     if (def == nullptr)
       throw;
@@ -224,8 +223,7 @@ namespace bind
     auto v = e.decs_get();
     for (auto it = v.begin(); it != v.end(); it++)
     {
-      if ((**it).init_get() != nullptr)
-        super_type::operator()(*((**it).init_get()));
+      (*this)(*it);
     }
   }
 

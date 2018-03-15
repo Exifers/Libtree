@@ -19,8 +19,7 @@ namespace misc
   {
     if (stack_.size() == 0)
       return;
-    auto cur = stack_.back();
-    cur[key] = value;
+    stack_.back()[key] = value;
   }
 
   template <typename Key, typename Data>
@@ -48,7 +47,13 @@ namespace misc
   template <typename Key, typename Data>
   std::ostream& scoped_map<Key, Data>::dump(std::ostream& ostr)
   {
-    ostr << stack_;
+    for (auto it = stack_.begin(); it != stack_.end(); it++)
+    {
+      for (auto mit = it->begin(); mit != it->end(); mit++)
+      {
+        ostr << mit->first << " : " << mit->second << "\n";
+      }
+    }
     return ostr;
   }
 
