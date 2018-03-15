@@ -53,8 +53,15 @@ namespace misc
   template <typename Key, typename Data>
   void scoped_map<Key, Data>::scope_begin()
   {
-    auto cur_cpy = stack_.back();
-    stack_.push_back(cur_cpy);
+    if (stack_.size() == 0)
+    {
+      stack_.push_back(std::map<Key, Data>());
+    }
+    else
+    {
+      auto cur_cpy = stack_.back();
+      stack_.push_back(cur_cpy);
+    }
   }
 
   template <typename Key, typename Data>
