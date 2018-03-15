@@ -185,7 +185,8 @@ namespace bind
   Binder::operator()(ast::VarDec& e)
   {
     var_stack_.put(e.name_get(), &e);
-    super_type::operator()(*(e.init_get()));
+    if (e.init_get() != nullptr)
+      super_type::operator()(*(e.init_get()));
   }
 
   void
@@ -199,22 +200,15 @@ namespace bind
   Binder::operator()(ast::FunctionDec& e)
   {
     fun_stack_.put(e.name_get(), &e);
-    auto result = e.result_get();
+    scope_begin();
+
+    (*this)(e.formals_get());
+
     auto body = e.body_get();
-    if (result == nullptr && body == nullptr)
-    {
-    }
-    else if (result == nullptr)
-    {
+    if (body != nullptr)
       super_type::operator()(*body);
-    }
-    else if (body == nullptr)
-    {
-    }
-    else
-    {
-      super_type::operator()(*body);
-    }
+
+    scope_end();
   }
 
   void
