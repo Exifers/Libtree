@@ -79,6 +79,7 @@ namespace bind
     void operator()(ast::IfExp& e) override;
     void operator()(ast::WhileExp& e) override;
     void operator()(ast::ForExp& e) override;
+    void operator()(ast::SimpleVar& e) override;
 
     // ---------------- //
     // Visiting /Dec/.  //

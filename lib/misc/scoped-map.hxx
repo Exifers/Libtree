@@ -17,6 +17,8 @@ namespace misc
   template <typename Key, typename Data>
   void scoped_map<Key, Data>::put(const Key& key, const Data& value)
   {
+    if (stack_.size() == 0)
+      return;
     auto cur = stack_.back();
     cur[key] = value;
   }

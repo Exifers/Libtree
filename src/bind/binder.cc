@@ -56,6 +56,16 @@ namespace bind
   `---------*/
 
   void
+  Binder::operator()(ast::SimpleVar& e)
+  {
+    std::cout << "V SV\n";
+    auto def = var_stack_.get(e.name_get());
+    if (def == nullptr)
+      throw;
+    e.def_set(def);
+  }
+
+  void
   Binder::operator()(ast::CastExp& e)
   {
     super_type::operator()(e);
@@ -65,17 +75,8 @@ namespace bind
   Binder::operator()(ast::LetExp& e)
   {
     scope_begin();
-    for (auto it = e.decs_get().decs_get().begin();
-         it != e.decs_get().decs_get().end(); it++)
-    {
-      super_type::operator()(**it);
-    }
-
-    auto l = e.exps_get();
-    for (auto it = l.begin(); it != l.end(); it++)
-    {
-      super_type::operator()(**it);
-    }
+    super_type::operator()(e);
+    scope_end();
   }
 
   void
@@ -139,6 +140,7 @@ namespace bind
   void
   Binder::operator()(ast::IfExp& e)
   {
+    scope_begin();
     super_type::operator()(e.condition_get());
     super_type::operator()(e.content_get());
     try
@@ -148,38 +150,46 @@ namespace bind
     }
     catch(...)
     {}
+    scope_end();
   }
 
   void
   Binder::operator()(ast::WhileExp& e)
   {
+    scope_begin();
     super_type::operator()(e.test_get());
     super_type::operator()(e.body_get());
+    scope_end();
   }
 
   void
   Binder::operator()(ast::ForExp& e)
   {
+    scope_begin();
     super_type::operator()(*e.vardec_get().init_get());
     super_type::operator()(e.hi_get());
     super_type::operator()(e.body_get());
+    scope_end();
   }
 
   void
   Binder::operator()(ast::VarDec& e)
   {
+    var_stack_.put(e.name_get(), &e);
     super_type::operator()(*(e.init_get()));
   }
 
   void
   Binder::operator()(ast::TypeDec& e)
   {
+    typ_stack_.put(e.name_get(), &e);
     super_type::operator()(e.ty_get());
   }
 
   void
   Binder::operator()(ast::FunctionDec& e)
   {
+    fun_stack_.put(e.name_get(), &e);
     auto result = e.result_get();
     auto body = e.body_get();
     if (result == nullptr && body == nullptr)
