@@ -102,6 +102,11 @@ namespace bind
   void
   Binder::operator()(ast::CallExp& e)
   {
+    auto def = fun_stack_.get(e.name_get());
+    if (def == nullptr)
+      throw;
+    e.def_set(def);
+
     auto l = e.exps_get();
     for (auto it = l.begin(); it != l.end(); it++)
     {
@@ -112,6 +117,11 @@ namespace bind
   void
   Binder::operator()(ast::MethodCallExp& e)
   {
+    auto def = fun_stack_.get(e.name_get());
+    if (def == nullptr)
+      throw;
+    e.def_set(def);
+
     super_type::operator()(e.lvalue_get());
     auto l = e.exps_get();
     for (auto it = l.begin(); it != l.end(); it++)
@@ -210,6 +220,7 @@ namespace bind
   void
   Binder::operator()(ast::MethodDec& e)
   {
+    fun_stack_.put(e.name_get(), &e);
     super_type::operator()(*(e.body_get()));
   }
 

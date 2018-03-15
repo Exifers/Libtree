@@ -32,6 +32,8 @@ namespace ast
     misc::symbol& name_get();
     const std::list<Exp*>& exps_get() const;
     std::list<Exp*>& exps_get();
+    void def_set(FunctionDec *def);
+    FunctionDec *def_get();
 
     protected:
     misc::symbol name_;

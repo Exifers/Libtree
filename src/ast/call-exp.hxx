@@ -34,4 +34,16 @@ namespace ast
     return exps_;
   }
 
+  inline void
+  CallExp::def_set(FunctionDec *def)
+  {
+    def_ = def;
+  }
+
+  inline FunctionDec *
+  CallExp::def_get()
+  {
+    return def_;
+  }
+
 } // namespace ast

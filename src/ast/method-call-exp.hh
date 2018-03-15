@@ -39,7 +39,6 @@ namespace ast
 
     protected:
     Var *lvalue_;
-    MethodDec *def_ = nullptr;
   };
 
 } // namespace ast

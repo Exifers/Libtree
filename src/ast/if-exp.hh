@@ -44,4 +44,3 @@ namespace ast
 } // namespace ast
 
 #include <ast/if-exp.hxx>
-
