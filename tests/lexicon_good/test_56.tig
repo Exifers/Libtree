@@ -1,1 +1,1 @@
-strcmp('a', 'b')
+strcmp("a", "b")

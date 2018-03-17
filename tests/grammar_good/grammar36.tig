@@ -1,10 +1,10 @@
 let
 	var a:= 1
+in
+	a;
 	let
 		var b:=1
 	in
 		b
 	end
-in
-	a
 end

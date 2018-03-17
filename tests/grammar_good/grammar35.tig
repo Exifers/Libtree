@@ -1,5 +1,5 @@
 let
-	var ahah := 99999999999999999999999999999999
+	var ahah := 9999999
 in
 	ahah
 end

@@ -2,5 +2,5 @@ let
 	var a := 0
 in
 	a+a+a+a+a+a+a+a+a+a+a+a+a+a+a+a+a+a+0;
-	a;
+	a
 end

@@ -1,0 +1,49 @@
+
+
+
+
+
+  ,,eoideoidjeo,,
+
+
+
+
+
+cdi 
+
+  
+
+
+oioi  
+  
+
+
+oioi  
+
+
+ 
+,,,e o,o,
+i   
+  
+
+
+
+      printf "${RED}Test have failed : $file (return status: $ret)${NC}\n
+      printf "^ from test at : $file\n" >> error.log
+      nb_errors=$((nb_errors + 1))
+f
+      printf "${RED}Test have failed : $file (return status: $ret)${NC}\n"
+      printf "^ from test at : $ffle\n" >> error.log
+      nb_errors=$((nb_errors + 1)p
+      printf "${RED}Test have failed : $file (return status: $ret)${NC}\n"
+      printf "^ from test at : $file\n" >> error.log
+      nb_errors=$((nb_errors + 1))
+fp$k$
+$
+
+
+
+$ 
+$ 
+$
+$fpkpofkpfokprkfpfp$$$

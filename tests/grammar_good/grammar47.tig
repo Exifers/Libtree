@@ -2,6 +2,8 @@ let
 	var a := 0
 in
 	while a <> 1 do
+  (
 		a + 1
+  );
 	a
 end

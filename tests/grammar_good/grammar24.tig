@@ -3,5 +3,5 @@ let
 	var b := 5
 in
 	a + 1;
-	a + b;
+	a + b
 end

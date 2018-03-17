@@ -59,6 +59,7 @@ int     [0-9]+
 SPACE   [ \t]
 ID      ([a-zA-Z][0-9a-zA-Z_]*|"_main")
 INTEGER [0-9]+
+LF      (\n|\r|\n\r|\r\n)
 
 %%
 %{
@@ -191,12 +192,30 @@ INTEGER [0-9]+
                }
              }
 
-             . {
-               grown_string.append(yytext);
+             "\\a"
+             "\\b"
+             "\\f"
+             "\\n"
+             "\\r"
+             "\\t"
+             "\\v"
+
+
+             "\\\\" {
+               grown_string.append("\\");
              }
 
              "\\\"" {
                grown_string.append("\\\"");
+             }
+
+             "\\". {
+               tp.error_ << misc::error::error_type::scan
+                   << "Unexpected value after \\" << &misc::error::exit;
+             }
+
+             . {
+               grown_string.append(yytext);
              }
 
              <<EOF>> {
@@ -207,7 +226,7 @@ INTEGER [0-9]+
            }
 
 <<EOF>> return TOKEN(EOF);
-\n        { tp.location_.lines(yyleng); }
+{LF}      { tp.location_.lines(yyleng); }
 .         {
             tp.error_ << misc::error::error_type::scan
                 << "Unexpected character : " << yytext
