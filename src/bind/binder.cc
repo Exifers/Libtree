@@ -101,17 +101,27 @@ namespace bind
   void
   Binder::operator()(ast::ArrayExp& e)
   {
-    super_type::operator()(e);
+    auto name = e.namety_get().name_get();
+    auto def = typ_stack_.get(name);
+    if (def == nullptr)
+    {
+      undeclared<ast::NameTy>("type", e.namety_get());
+    }
+    e.namety_get().def_set(def);
+    e.size_exp_get().accept(*this);
+    e.type_exp_get().accept(*this);
   }
 
   void
   Binder::operator()(ast::RecordExp& e)
   {
-    auto l = e.fields_get();
-    for (auto it = l.begin(); it != l.end(); it++)
-    {
-      super_type::operator()(**it);
-    }
+    auto name = e.namety_get().name_get();
+    auto def = typ_stack_.get(name);
+    if (def == nullptr)
+      undeclared<ast::NameTy>("type", e.namety_get());
+    e.namety_get().def_set(def);
+
+    super_type::operator()(e);
   }
 
   void
@@ -284,7 +294,7 @@ namespace bind
   {
     for (auto it = e.decs_get().begin(); it != e.decs_get().end(); it++)
     {
-      super_type::operator()(**it);
+      (*this)(**it);
     }
   }
 

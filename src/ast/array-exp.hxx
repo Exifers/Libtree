@@ -44,5 +44,5 @@ namespace ast
   {
     return *type_exp_;
   }
-} // namespace ast
 
+} // namespace ast
