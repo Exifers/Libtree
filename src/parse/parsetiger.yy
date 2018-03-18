@@ -180,8 +180,6 @@
        WHILE        "while"
        EOF 0        "end of file"
 
-/* TODO check operator priority on these from subject */
-
 %nonassoc THEN DO OF
 %nonassoc ELSE
 %nonassoc ASSIGN

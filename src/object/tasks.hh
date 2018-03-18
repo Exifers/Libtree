@@ -19,7 +19,7 @@ namespace object::tasks
   TASK_DECLARE("object-parse", "parse a file, allowing objects",
                object_parse, "object parse");
 
-  // FIXME: Some code was deleted here.
+#warning // FIXME: Some code was deleted here.
 
 
 

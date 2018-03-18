@@ -10,7 +10,7 @@
 namespace ast
 {
 
-  // FIXME: Some code was deleted here.
+#warning // FIXME: Some code was deleted here.
 
 } // namespace ast
 

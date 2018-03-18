@@ -17,7 +17,7 @@ main()
   const symbol titi1("titi");
 
   // Checking symbol.
-  // FIXME: Some code was deleted here (Testing set size).
+#warning // FIXME: Some code was deleted here (Testing set size).
   assertion(toto1.get() == "toto");
 
   assertion(toto1 == "toto");

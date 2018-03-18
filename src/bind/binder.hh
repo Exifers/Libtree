@@ -128,7 +128,7 @@ namespace bind
     template <class D>
     void visit_dec_body(D& e);
 
-  // FIXME: Some code was deleted here.
+#warning // FIXME: Some code was deleted here.
     /// \}
 
     /// \name Error handling

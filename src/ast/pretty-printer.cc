@@ -24,7 +24,7 @@ namespace
     operator<<(std::ostream& ostr, const Escapable& e)
     {
       if (escapes_display(ostr)
-          // FIXME: Some code was deleted here.
+#warning // FIXME: Some code was deleted here.
          )
         ostr << "/* escaping */ ";
 

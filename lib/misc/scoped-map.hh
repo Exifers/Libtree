@@ -50,7 +50,7 @@ namespace misc
   std::ostream&
   operator<<(std::ostream& ostr, const scoped_map<Key, Data>& tbl);
 
-  // FIXME: Some code was deleted here.
+#warning // FIXME: Some code was deleted here.
 
 } // namespace misc
 

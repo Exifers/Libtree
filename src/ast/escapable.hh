@@ -13,7 +13,7 @@ namespace ast
   /// Escapable.
   class Escapable
   {
-  // FIXME: Some code was deleted here.
+#warning // FIXME: Some code was deleted here.
   };
 
 } // namespace ast

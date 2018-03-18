@@ -54,7 +54,7 @@ namespace escapes
     /// Import all the overloaded visit methods.
     using super_type::operator();
 
-  // FIXME: Some code was deleted here.
+#warning // FIXME: Some code was deleted here.
   };
 
 } // namespace escapes

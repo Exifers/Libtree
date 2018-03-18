@@ -39,7 +39,7 @@ namespace bind
   void
   Binder::check_main(const ast::FunctionDec& e)
   {
-  // FIXME: Some code was deleted here.
+#warning // FIXME: Some code was deleted here.
   }
 
   /*----------------.

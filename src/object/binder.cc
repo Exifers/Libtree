@@ -21,14 +21,14 @@ namespace object
   void
   Binder::operator()(ast::SimpleVar& e)
   {
-  // FIXME: Some code was deleted here.
+#warning // FIXME: Some code was deleted here.
   }
 
   // Handle the case of `Object'.
   void
   Binder::operator()(ast::NameTy& e)
   {
-  // FIXME: Some code was deleted here.
+#warning // FIXME: Some code was deleted here.
   }
 
 
@@ -96,7 +96,7 @@ namespace object
   {
     // Shorthand.
     using decs_type = ast::AnyDecs<D>;
-  // FIXME: Some code was deleted here (Two passes: once on headers, then on bodies).
+#warning // FIXME: Some code was deleted here (Two passes: once on headers, then on bodies).
   }
 
   // This trampoline is needed, since `virtual' and `template' cannot

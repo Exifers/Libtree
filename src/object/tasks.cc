@@ -17,7 +17,7 @@ namespace object::tasks
     object_parse()
     {}
 
-  // FIXME: Some code was deleted here.
+#warning // FIXME: Some code was deleted here.
 
 
 

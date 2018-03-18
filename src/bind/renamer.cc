@@ -14,6 +14,6 @@ namespace bind
     : super_type(), new_names_()
   {}
 
-  // FIXME: Some code was deleted here.
+#warning // FIXME: Some code was deleted here.
 
 } // namespace bind

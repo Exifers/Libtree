@@ -55,12 +55,12 @@ namespace bind
 
     /// \name Visiting definition sites.
     /// \{
-  // FIXME: Some code was deleted here.
+#warning // FIXME: Some code was deleted here.
     /// \}
 
     /// \name Visiting usage sites.
     /// \{
-  // FIXME: Some code was deleted here.
+#warning // FIXME: Some code was deleted here.
     /// \}
 
   private:
