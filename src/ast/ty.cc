@@ -11,6 +11,8 @@ namespace ast
 
   Ty::Ty(const Location& location)
     : Ast(location)
+    , Typable()
+    , TypeConstructor()
   {}
 
 

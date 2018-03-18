@@ -43,6 +43,8 @@
 #include <ast/string-exp.hh>
 #include <ast/subscript-var.hh>
 #include <ast/ty.hh>
+#include <ast/typable.hh>
+#include <ast/type-constructor.hh>
 #include <ast/type-dec.hh>
 #include <ast/var.hh>
 #include <ast/var-dec.hh>

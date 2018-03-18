@@ -1,0 +1,15 @@
+## module callgraph.
+
+EXTRA_DIST += %D%/tiger_callgraph.i
+
+# Compiling.
+# Libcallgraph
+src_libtc_la_SOURCES +=					\
+  %D%/libcallgraph.hh %D%/libcallgraph.cc		\
+  %D%/fundec-graph.hh %D%/fundec-graph.hxx		\
+  %D%/call-graph-visitor.hh %D%/call-graph-visitor.cc
+
+src_libtc_la_LDFLAGS += $(BOOST_GRAPH_LDFLAGS)
+src_libtc_la_LIBADD += $(BOOST_GRAPH_LIBS)
+
+TASKS += %D%/tasks.hh %D%/tasks.cc

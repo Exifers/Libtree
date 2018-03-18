@@ -49,4 +49,26 @@ main()
       exit(e.status_get_value());
     }
 
+  try
+    {
+      // Test Tweasts within a Tweast.
+      parse::Tweast* op1 = new parse::Tweast;
+      parse::Tweast* op2 = new parse::Tweast;
+      parse::Tweast* op3 = new parse::Tweast;
+      parse::Tweast op;
+
+      *op1 << "1 + 2";
+      *op2 << "3 * 4";
+      *op3 << op1 << " - " << op2;
+      op << "42 / (" << op3 << ")";
+
+      ast::Exp* tree = parse::parse(op);
+      std::cout << *tree << '\n';
+      delete tree;
+    }
+  catch (misc::error& e)
+    {
+      std::cerr << e;
+      exit(e.status_get_value());
+    }
 }

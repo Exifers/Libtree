@@ -33,6 +33,8 @@ AST_NODES =  \
   src/ast/string-exp.hh src/ast/string-exp.hxx src/ast/string-exp.cc \
   src/ast/subscript-var.hh src/ast/subscript-var.hxx src/ast/subscript-var.cc \
   src/ast/ty.hh src/ast/ty.hxx src/ast/ty.cc \
+  src/ast/typable.hh src/ast/typable.hxx src/ast/typable.cc \
+  src/ast/type-constructor.hh src/ast/type-constructor.hxx src/ast/type-constructor.cc \
   src/ast/type-dec.hh src/ast/type-dec.hxx src/ast/type-dec.cc \
   src/ast/var.hh src/ast/var.hxx src/ast/var.cc \
   src/ast/var-dec.hh src/ast/var-dec.hxx src/ast/var-dec.cc \

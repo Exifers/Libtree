@@ -1,0 +1,7 @@
+## inlining module.
+src_libtc_la_SOURCES +=				\
+  %D%/inliner.hh %D%/inliner.cc			\
+  %D%/pruner.hh %D%/pruner.cc			\
+  %D%/libinlining.hh %D%/libinlining.cc
+
+TASKS += %D%/tasks.hh %D%/tasks.cc

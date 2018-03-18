@@ -1,0 +1,12 @@
+## astclone module.
+
+src_libtc_la_SOURCES +=				\
+  %D%/cloner.hh %D%/cloner.hxx %D%/cloner.cc	\
+  %D%/libastclone.hh %D%/libastclone.hxx
+
+check_PROGRAMS += %D%/test-cloner
+%C%_test_cloner_LDADD = src/libtc.la
+%C%_test_cloner_CPPFLAGS = $(AM_CPPFLAGS) -DPKGDATADIR=\"$(pkgdatadir)\"
+
+
+TASKS += %D%/tasks.hh %D%/tasks.cc
