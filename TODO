@@ -14,7 +14,7 @@ Notation:
 [X] debug mode triggered by env variable (lexer)
 [X] debug mode triggered by env variable (parser)
 
-[/] Testsuite
+[X] Testsuite
 
 == TC-1 ==
 
@@ -23,22 +23,30 @@ Notation:
 [X] tarball generation
 
 [/] complete all FIXME
-[ ] complete given code (few classes) -> then check --parse-debug
+[X] complete given code (few classes) -> then check --parse-debug
 
 [X] integrate homemade testsuite in Autotools
 
 == TC-2 ==
 
-[/] Complete uncompleted node classes
-[/] Build ast
-[ ] Make visitor
-[ ] Make pretty-print
-[ ] Tweast
-[ ] Test-suite
+[X] Complete uncompleted node classes
+[X] Build ast
+[X] Make visitor
+[X] Make pretty-print
+[X] Tweast
+[X] Test-suite
 
+== TC-3 ==
 
+[X] scoped_map
+[X] binder
+[ ] object-binder
+[ ] add commands 
+[ ] test-suite
+[ ] renamer
+[ ] escaping variables
 
-
+== TC-4 ==
 
 == Bug List ==
 
@@ -53,17 +61,13 @@ Notation:
              keeps reading beyond end of file
              --> fixed by including meta variables
 
-[ ] AST : add LBRACE tyfields RBRACE rule
+[X] AST : add LBRACE tyfields RBRACE rule
 
 
 == Questions to Yaka ==
 
-* Since we have a glr do we have to remove all the '%prec' in parsetiger.yy ?
-  - There's warning about those during compilation
-
-* Is it ok to use std::list instead of std::vector ?
-
-* How to implement the flyweight design pattern (misc::unique), because we
-  can't set the _obj pointer to point inside a std::set ?
-
 * How to bind the test-suite to autotools smoothly ?
+
+* How to fix the invalid write appearing in the traces ?
+
+* How to fix the fails of lexer in the test-suite ?
