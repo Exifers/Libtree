@@ -24,11 +24,20 @@ namespace bind
 
   void Binder::error(const ast::Ast& loc, const std::string& msg)
   {
+    error_ << misc::error::error_type::bind
+      << loc.location_get() << ": " << msg << misc::iendl
+      << &misc::error::exit;
   }
 
   template <typename T>
   void Binder::undeclared(const std::string& k, const T& e)
   {
+    if (k == "variable")
+      error(e, "undeclared variable: " + e.name_get().get());
+    else if (k == "function")
+      error(e, "undeclared function: " + e.name_get().get());
+    else if (k == "type")
+      error(e, "undeclared type: " + e.name_get().get());
   }
 
   template <typename T>
@@ -45,7 +54,6 @@ namespace bind
   /*----------------.
   | Symbol tables.  |
   `----------------*/
-
 
   void
   Binder::scope_begin()
@@ -72,7 +80,7 @@ namespace bind
   {
     auto def = var_stack_.get(e.name_get());
     if (def == nullptr)
-      throw;
+      undeclared<ast::SimpleVar>("variable", e);
     e.def_set(def);
   }
 
@@ -116,7 +124,7 @@ namespace bind
   {
     auto def = fun_stack_.get(e.name_get());
     if (def == nullptr)
-      throw;
+      undeclared<ast::CallExp>("function", e);
     e.def_set(def);
 
     auto l = e.exps_get();
@@ -131,7 +139,7 @@ namespace bind
   {
     auto def = fun_stack_.get(e.name_get());
     if (def == nullptr)
-      throw;
+      undeclared<ast::CallExp>("function", e);
     e.def_set(def);
 
     super_type::operator()(e.lvalue_get());
