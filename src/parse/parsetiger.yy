@@ -91,7 +91,7 @@
   /* Printers and destructors */
 %destructor { delete $$; } <ast::Exp*>
 %destructor { delete $$; } <ast::DecsList*>
-%printer { debug_stream () << $$; } <int> <string>
+%printer { debug_stream () << $$; } <int> <std::string>
 
 /*-----------------------------------------.
 | Code output in the implementation file.  |
@@ -180,7 +180,7 @@
        WHILE        "while"
        EOF 0        "end of file"
 
-  /* TODO check operator priority on these from subject */
+/* TODO check operator priority on these from subject */
 
 %nonassoc THEN DO OF
 %nonassoc ELSE
@@ -226,57 +226,56 @@
 
 %%
 
-  /* Hint : non terminals are in lower case, terminals in upper case */
+/* Hint : non terminals are in lower case, terminals in upper case */
 
 program: exp   { tp.ast_ = $1; }
-       | decs  { tp.ast_ = $1; }
-       ;
+     | decs  { tp.ast_ = $1; }
+     ;
 
-%token CAST "_cast";
 %token EXP "_exp";
 
 exp:
-  /* Literals */
-  NIL          { $$ = new ast::NilExp(@$); }
+/* Literals */
+NIL          { $$ = new ast::NilExp(@$); }
 | INT          { $$ = new ast::IntExp(@$, $1); }
 | STRING       { $$ = new ast::StringExp(@$, $1); }
 
-| CAST LPAREN exp COMMA ty RPAREN
+| CAST LPAREN exp COMMA ty RPAREN { $$ = $3; }
 | EXP LPAREN INT RPAREN { $$ = metavar<ast::Exp>(tp, (unsigned) $3); }
 
-  /* Array and record creation */
+/* Array and record creation */
 | ID LBRACK exp RBRACK OF exp  {
-    $$ = new ast::ArrayExp(@$, new ast::NameTy(@$, $1), $3, $6);
-  }
+  $$ = new ast::ArrayExp(@$, new ast::NameTy(@$, $1), $3, $6);
+}
 
 | ID LBRACE RBRACE {
-    $$ = new ast::RecordExp(@$, new ast::NameTy(@$, $1),
-        std::list<ast::FieldInit*>());
-  }
+  $$ = new ast::RecordExp(@$, new ast::NameTy(@$, $1),
+      std::list<ast::FieldInit*>());
+}
 | ID LBRACE rec_init_list RBRACE {
-    $$ = new ast::RecordExp(@$, new ast::NameTy(@$, $1), $3);
-  }
-  /* Object creation */
+  $$ = new ast::RecordExp(@$, new ast::NameTy(@$, $1), $3);
+}
+/* Object creation */
 | NEW ID { $$ = new ast::ObjectExp(@$, new ast::NameTy(@$, $2)); }
-  /* Variables, field, element of an array */
+/* Variables, field, element of an array */
 | lvalue {
-    $$ = $1;
-  }
-  /* Function call */
+  $$ = $1;
+}
+/* Function call */
 | ID LPAREN RPAREN {
-    $$ = new ast::CallExp(@$, $1, std::list<ast::Exp*>());
-  }
+  $$ = new ast::CallExp(@$, $1, std::list<ast::Exp*>());
+}
 | ID LPAREN exp_comma_list RPAREN {
-    $$ = new ast::CallExp(@$, $1, $3);
-  }
-  /* Method call */
+  $$ = new ast::CallExp(@$, $1, $3);
+}
+/* Method call */
 | lvalue_dot_id LPAREN RPAREN {
-    $$ = new ast::MethodCallExp(@$, misc::symbol(), std::list<ast::Exp*>(), $1);
-  }
+  $$ = new ast::MethodCallExp(@$, misc::symbol(), std::list<ast::Exp*>(), $1);
+}
 | lvalue_dot_id LPAREN exp_comma_list RPAREN {
-    $$ = new ast::MethodCallExp(@$, misc::symbol(), $3, $1);
-  }
-  /* Operations */
+  $$ = new ast::MethodCallExp(@$, misc::symbol(), $3, $1);
+}
+/* Operations */
 | MINUS exp { $$ = new ast::OpExp(@$, nullptr, ast::OpExp::Oper::sub, $2); }
 
 | exp PLUS exp { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::add, $3); }
@@ -289,162 +288,166 @@ exp:
 | exp LE exp { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::le, $3); }
 | exp GT exp { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::gt, $3); }
 | exp GE exp  { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::ge, $3); }
-| exp AND exp
-| exp OR exp
-
+| exp AND exp {
+    $$ = tp.enable_extensions().parse(parse::Tweast()
+        << "if " << $1 << "then ( if " << $3 << " then 1 else 0 ) else 0" ); }
+| exp OR exp {
+    $$ = tp.enable_extensions().parse(parse::Tweast()
+        << "if " << $1 << "then 1 else ( if " << $3
+        << " then 1 else 0 )" ); }
 | LPAREN exps RPAREN { $$ = new ast::SeqExp(@$, $2); }
 
-  /* Assignment */
+/* Assignment */
 | lvalue ASSIGN exp {
-    $$ = new ast::AssignExp(@$, $1, $3);
-  }
+  $$ = new ast::AssignExp(@$, $1, $3);
+}
 
-  /* Control structures */
+/* Control structures */
 | IF exp THEN exp {
-    $$ = new ast::IfExp(@$, $2, $4, nullptr);
-  }
+  $$ = new ast::IfExp(@$, $2, $4, nullptr);
+}
 
 | IF exp THEN exp ELSE exp {
-    $$ = new ast::IfExp(@$, $2, $4, $6);
-  }
+  $$ = new ast::IfExp(@$, $2, $4, $6);
+}
 
 | WHILE exp DO exp {
-    $$ = new ast::WhileExp(@$, $2, $4);
-  }
+  $$ = new ast::WhileExp(@$, $2, $4);
+}
 
 | FOR ID ASSIGN exp TO exp DO exp {
-    $$ = new ast::ForExp(@$, new ast::VarDec(@$, $2, nullptr, $4), $6, $8);
-  }
+  $$ = new ast::ForExp(@$, new ast::VarDec(@$, $2, nullptr, $4), $6, $8);
+}
 | BREAK { $$ = new ast::BreakExp(@$); }
 | LET decs IN exps END { $$ = new ast::LetExp(@$, $2, $4); }
 ;
 
 exps:
-  %empty { $$ = std::list<ast::Exp*>(); }
+%empty { $$ = std::list<ast::Exp*>(); }
 | exp_semicolon_list { $$ = $1; }
 ;
 
 exp_semicolon_list:
-  exp {
-    auto l = std::list<ast::Exp*>();
-    l.push_front($1);
-    $$ = l;
-  }
+exp {
+  auto l = std::list<ast::Exp*>();
+  l.push_front($1);
+  $$ = l;
+}
 | exp SEMI exp_semicolon_list {
-    $3.push_front($1);
-    $$ = $3;
-  }
+  $3.push_front($1);
+  $$ = $3;
+}
 ;
 
 exp_comma_list:
-  exp {
-    auto l = std::list<ast::Exp*>();
-    l.push_front($1);
-    $$ = l;
-  }
+exp {
+  auto l = std::list<ast::Exp*>();
+  l.push_front($1);
+  $$ = l;
+}
 | exp COMMA exp_comma_list {
-    $3.push_front($1);
-    $$ = $3;
-  }
+  $3.push_front($1);
+  $$ = $3;
+}
 ;
 
 rec_init_list:
-  ID EQ exp {
-    auto field = new ast::FieldInit(@$, $1, $3);
-    auto l = std::list<ast::FieldInit*>();
-    l.push_front(field);
-    $$ = l;
-  }
+ID EQ exp {
+  auto field = new ast::FieldInit(@$, $1, $3);
+  auto l = std::list<ast::FieldInit*>();
+  l.push_front(field);
+  $$ = l;
+}
 | ID EQ exp COMMA rec_init_list {
-    auto field = new ast::FieldInit(@$, $1, $3);
-    auto l = $5;
-    l.push_front(field);
-    $$ = l;
-  }
+  auto field = new ast::FieldInit(@$, $1, $3);
+  auto l = $5;
+  l.push_front(field);
+  $$ = l;
+}
 ;
 
 %token LVALUE "_lvalue";
 
 lvalue:
-  ID { $$ = new ast::SimpleVar(@$, $1); }
+ID { $$ = new ast::SimpleVar(@$, $1); }
 | lvalue_dot_id { $$ = $1; }
 | lvalue_br_exp { $$ = $1; }
-| CAST LPAREN lvalue COMMA ty RPAREN
+| CAST LPAREN lvalue COMMA ty RPAREN { $$ = $3; }
 | LVALUE LPAREN INT RPAREN {
-    $$ = metavar<ast::Var>(tp, (unsigned) $3);
-  }
+  $$ = metavar<ast::Var>(tp, (unsigned) $3);
+}
 ;
 
 lvalue_dot_id:
-   ID DOT ID {
-    auto sv = new ast::SimpleVar(@$, $1);
-    auto fv = new ast::FieldVar(@$, $3, sv);
-    $$ = fv;
-  }
+ ID DOT ID {
+  auto sv = new ast::SimpleVar(@$, $1);
+  auto fv = new ast::FieldVar(@$, $3, sv);
+  $$ = fv;
+}
 | lvalue_fv DOT ID {
-    auto fv = $1;
-    auto fv2 = new ast::FieldVar(@$, $3, fv);
-    $$ = fv2;
-  }
+  auto fv = $1;
+  auto fv2 = new ast::FieldVar(@$, $3, fv);
+  $$ = fv2;
+}
 | lvalue_sc DOT ID {
-    auto sc = $1;
-    auto fv = new ast::FieldVar(@$, $3, sc);
-    $$ = fv;
-  }
+  auto sc = $1;
+  auto fv = new ast::FieldVar(@$, $3, sc);
+  $$ = fv;
+}
 ;
 
 lvalue_br_exp:
-  ID LBRACK exp RBRACK {
-    auto sv = new ast::SimpleVar(@$, $1);
-    auto sc = new ast::SubscriptVar(@$, sv, $3);
-    $$ = sc;
-  }
+ID LBRACK exp RBRACK {
+  auto sv = new ast::SimpleVar(@$, $1);
+  auto sc = new ast::SubscriptVar(@$, sv, $3);
+  $$ = sc;
+}
 | lvalue_fv LBRACK exp RBRACK {
-    auto fv = $1;
-    auto sc = new ast::SubscriptVar(@$, fv, $3);
-    $$ = sc;
-  }
+  auto fv = $1;
+  auto sc = new ast::SubscriptVar(@$, fv, $3);
+  $$ = sc;
+}
 | lvalue_sc LBRACK exp RBRACK {
-    auto sc = $1;
-    auto sc2 = new ast::SubscriptVar(@$, sc, $3);
-    $$ = sc2;
-  }
+  auto sc = $1;
+  auto sc2 = new ast::SubscriptVar(@$, sc, $3);
+  $$ = sc2;
+}
 ;
 
 lvalue_fv:
-         ID DOT ID {
-    auto sv = new ast::SimpleVar(@$, $1);
-    auto fv = new ast::FieldVar(@$, $3, sv);
-    $$ = fv;
-  }
+       ID DOT ID {
+  auto sv = new ast::SimpleVar(@$, $1);
+  auto fv = new ast::FieldVar(@$, $3, sv);
+  $$ = fv;
+}
 | lvalue_fv DOT ID {
-    auto fv = $1;
-    auto fv2 = new ast::FieldVar(@$, $3, fv);
-    $$ = fv2;
-  }
+  auto fv = $1;
+  auto fv2 = new ast::FieldVar(@$, $3, fv);
+  $$ = fv2;
+}
 | lvalue_sc DOT ID {
-    auto sc = $1;
-    auto fv = new ast::FieldVar(@$, $3, sc);
-    $$ = fv;
-  }
+  auto sc = $1;
+  auto fv = new ast::FieldVar(@$, $3, sc);
+  $$ = fv;
+}
 ;
 
 lvalue_sc:
-         ID LBRACK exp RBRACK {
-    auto sv = new ast::SimpleVar(@$, $1);
-    auto sc = new ast::SubscriptVar(@$, sv, $3);
-    $$ = sc;
-  }
+       ID LBRACK exp RBRACK {
+  auto sv = new ast::SimpleVar(@$, $1);
+  auto sc = new ast::SubscriptVar(@$, sv, $3);
+  $$ = sc;
+}
 | lvalue_fv LBRACK exp RBRACK {
-    auto fv = $1;
-    auto sc = new ast::SubscriptVar(@$, fv, $3);
-    $$ = sc;
-  }
+  auto fv = $1;
+  auto sc = new ast::SubscriptVar(@$, fv, $3);
+  $$ = sc;
+}
 | lvalue_sc LBRACK exp RBRACK {
-    auto sc = $1;
-    auto sc2 = new ast::SubscriptVar(@$, sc, $3);
-    $$ = sc2;
-  }
+  auto sc = $1;
+  auto sc2 = new ast::SubscriptVar(@$, sc, $3);
+  $$ = sc2;
+}
 ;
 
 /*---------------.
@@ -455,13 +458,16 @@ lvalue_sc:
 %token NAMETY "_namety";
 
 decs:
-  %empty { $$ = new ast::DecsList(@$, std::list<ast::Decs*>()); }
+%empty { $$ = new ast::DecsList(@$, std::list<ast::Decs*>()); }
 | fun_decs decs { $2->push_front($1); $$ = $2; }
 | typ_decs decs { $2->push_front($1); $$ = $2; }
 | var_decs decs { $2->push_front($1); $$ = $2; }
 | DECS LPAREN INT RPAREN decs {
-    $$ = metavar<ast::DecsList>(tp, (unsigned) $3);
-  }
+  auto l = metavar<ast::DecsList>(tp, (unsigned) $3);
+  l->splice_back(*$5);
+  $$ = l;
+}
+| IMPORT STRING {}
 ;
 
 fun_decs:

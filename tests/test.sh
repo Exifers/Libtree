@@ -133,7 +133,7 @@ for file in $tests; do
   fi
 
   if [[ "$file" =~ .*ast.* ]]; then
-    ret=$($bin $file -A 2>> error.log 1>/dev/null | $bin - ; printf $?)
+    ret=$($bin $file -XA 2>> error.log 1>/dev/null | $bin - ; printf $?)
   else
     ret=$($bin $file 2>> error.log 1>/dev/null ; printf $?)
   fi
