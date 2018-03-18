@@ -1,0 +1,4 @@
+let
+  type doije = { depzok :dezij , doziej : dzij, dozij : dezij}
+in
+end

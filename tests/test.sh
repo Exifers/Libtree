@@ -89,7 +89,7 @@ for file in $tests; do
       last_error_st=$error_st
     fi
   elif [[ "$file" =~ .*ast.* ]]; then
-    error_st="not zero"
+    error_st=999
     if [ "$error_st" -ne "$last_error_st" ]; then
       if [ "$last_error_st" -ne "0" ];then
         print_results $cur_errors $cur_nb_tests $skipped
@@ -113,7 +113,7 @@ for file in $tests; do
       last_error_st=$error_st
     fi
   else
-    error_st=-1
+    error_st=999
     if [ "$error_st" -ne "$last_error_st" ]; then
       if [ "$last_error_st" -ne "0" ];then
         print_results $cur_errors $cur_nb_tests $skipped
@@ -132,7 +132,11 @@ for file in $tests; do
     typ="good"
   fi
 
-  ret=$($bin $file 2>> error.log 1>/dev/null ; printf $?)
+  if [[ "$file" =~ .*ast.* ]]; then
+    ret=$($bin $file -A 2>> error.log 1>/dev/null | $bin - ; printf $?)
+  else
+    ret=$($bin $file 2>> error.log 1>/dev/null ; printf $?)
+  fi
 
   if [ $typ = "good" ]; then
     if [ "$ret" -le "$error_st" -a "$ret" -ne "0" ]; then

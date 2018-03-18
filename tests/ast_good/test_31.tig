@@ -1,0 +1,4 @@
+let
+  type doij = class foeij extends dozej {doijz : doze , doizj : doz }
+in
+end

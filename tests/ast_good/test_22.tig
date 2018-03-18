@@ -1,0 +1,4 @@
+let
+in
+  for dezoi := dij to dozij do dezijo
+end

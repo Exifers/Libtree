@@ -1,0 +1,14 @@
+let
+in
+  a + b;
+  a - b;
+  a * b;
+  a / b;
+  a > b;
+  a >= b;
+  a < b;
+  a <= b;
+  a <> b;
+  a & b;
+  a | b
+end
