@@ -59,10 +59,10 @@ namespace bind
     const misc::error& error_get() const;
 
     /* The visiting methods. */
-    void operator()(ast::FunctionDec& e) override;
-    void operator()(ast::MethodDec& e) override;
-    void operator()(ast::TypeDec& e) override;
-    void operator()(ast::VarDec& e) override;
+    void operator()(ast::FunctionDecs& e) override;
+    void operator()(ast::MethodDecs& e) override;
+    void operator()(ast::TypeDecs& e) override;
+    void operator()(ast::VarDecs& e) override;
     void operator()(ast::ArrayExp& e) override;
     void operator()(ast::AssignExp& e) override;
     void operator()(ast::CallExp& e) override;
@@ -71,15 +71,13 @@ namespace bind
     void operator()(ast::ObjectExp& e) override;
     void operator()(ast::RecordExp& e) override;
     void operator()(ast::SeqExp& e) override;
-    void operator()(ast::VarDecs& e) override;
-    void operator()(ast::FunctionDecs& e) override;
-    void operator()(ast::MethodDecs& e) override;
-    void operator()(ast::TypeDecs& e) override;
+    void operator()(ast::VarDec& e) override;
     void operator()(ast::CastExp& e) override;
     void operator()(ast::IfExp& e) override;
     void operator()(ast::WhileExp& e) override;
     void operator()(ast::ForExp& e) override;
     void operator()(ast::SimpleVar& e) override;
+    void operator()(ast::NameTy& e) override;
 
     // ---------------- //
     // Visiting /Dec/.  //
@@ -128,7 +126,15 @@ namespace bind
     template <class D>
     void visit_dec_body(D& e);
 
-#warning // FIXME: Some code was deleted here.
+    void visit_dec_header(ast::FunctionDec& e);
+    void visit_dec_body(ast::FunctionDec& e);
+
+    void visit_dec_header(ast::MethodDec& e);
+    void visit_dec_body(ast::MethodDec& e);
+
+    void visit_dec_header(ast::TypeDec& e);
+    void visit_dec_body(ast::TypeDec& e);
+
     /// \}
 
     /// \name Error handling

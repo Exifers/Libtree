@@ -30,14 +30,72 @@ namespace bind
   void
   Binder::decs_visit(ast::AnyDecs<D>& e)
   {
-    // Shorthand.
-    using decs_type = ast::AnyDecs<D>;
-#warning // FIXME: Some code was deleted here (Two passes: once on headers, then on bodies).
+    auto v = e.decs_get();
+    for (auto it = v.begin(); it != v.end(); it++)
+      visit_dec_header<D>(**it);
+    for (auto it = v.begin(); it != v.end(); it++)
+      visit_dec_body<D>(**it);
   }
 
   /* These specializations are in bind/binder.hxx, so that derived
      visitors can use them (otherwise, they wouldn't see them).  */
 
-#warning // FIXME: Some code was deleted here.
+  template <>
+  inline
+  void
+  Binder::visit_dec_header(ast::FunctionDec& e)
+  {
+    fun_stack_.put(e.name_get(), &e);
+  }
+
+  template <>
+  inline
+  void
+  Binder::visit_dec_body(ast::FunctionDec& e)
+  {
+    scope_begin();
+    (*this)(e.formals_get());
+    if (e.body_get() != nullptr)
+      (*this)(*e.body_get());
+    scope_end();
+  }
+
+  template <>
+  inline
+  void
+  Binder::visit_dec_header(ast::MethodDec& e)
+  {
+    fun_stack_.put(e.name_get(), &e);
+  }
+
+  template <>
+  inline
+  void
+  Binder::visit_dec_body(ast::MethodDec& e)
+  {
+    scope_begin();
+    (*this)(e.formals_get());
+    if (e.body_get() != nullptr)
+      (*this)(*e.body_get());
+    scope_end();
+  }
+
+  template <>
+  inline
+  void
+  Binder::visit_dec_header(ast::TypeDec& e)
+  {
+    typ_stack_.put(e.name_get(), &e);
+  }
+
+  template <>
+  inline
+  void
+  Binder::visit_dec_body(ast::TypeDec& e)
+  {
+    scope_begin();
+    (*this)(e.ty_get());
+    scope_end();
+  }
 
 } // namespace bind

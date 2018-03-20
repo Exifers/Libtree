@@ -43,6 +43,10 @@ namespace bind
   template <typename T>
   void Binder::redefinition(const T& e1, const T& e2)
   {
+    error_ << misc::error::error_type::bind
+      << e1.location_get() << ": redefition: " << e1.name_get();
+    error_ << misc::error::error_type::bind
+      << e2.location_get() << ": first definition" << &misc::error::exit;
   }
 
   void
@@ -222,32 +226,12 @@ namespace bind
   }
 
   void
-  Binder::operator()(ast::TypeDec& e)
+  Binder::operator()(ast::NameTy& e)
   {
-    typ_stack_.put(e.name_get(), &e);
-    super_type::operator()(e.ty_get());
-  }
-
-  void
-  Binder::operator()(ast::FunctionDec& e)
-  {
-    fun_stack_.put(e.name_get(), &e);
-    scope_begin();
-
-    (*this)(e.formals_get());
-
-    auto body = e.body_get();
-    if (body != nullptr)
-      super_type::operator()(*body);
-
-    scope_end();
-  }
-
-  void
-  Binder::operator()(ast::MethodDec& e)
-  {
-    fun_stack_.put(e.name_get(), &e);
-    super_type::operator()(*(e.body_get()));
+    auto def = typ_stack_.get(e.name_get());
+    if (def == nullptr)
+      undeclared<ast::NameTy>("type", e);
+    e.def_set(def);
   }
 
   /*-------------------.
@@ -264,7 +248,6 @@ namespace bind
     }
   }
 
-
   /*------------------------.
   | Visiting FunctionDecs.  |
   `------------------------*/
@@ -272,20 +255,13 @@ namespace bind
   void
   Binder::operator()(ast::FunctionDecs& e)
   {
-    for (auto it = e.decs_get().begin(); it != e.decs_get().end(); it++)
-    {
-      (*this)(**it);
-    }
+    decs_visit<ast::FunctionDec>(e);
   }
 
   void
   Binder::operator()(ast::MethodDecs& e)
   {
-    auto v = e.decs_get();
-    for (auto it = v.begin(); it != v.end(); it++)
-    {
-      (*this)(**it);
-    }
+    decs_visit<ast::MethodDec>(e);
   }
 
   /*--------------------.
@@ -294,10 +270,7 @@ namespace bind
   void
   Binder::operator()(ast::TypeDecs& e)
   {
-    for (auto it = e.decs_get().begin(); it != e.decs_get().end(); it++)
-    {
-      (*this)(**it);
-    }
+    decs_visit<ast::TypeDec>(e);
   }
 
 } // namespace bind
