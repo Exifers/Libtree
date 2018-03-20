@@ -29,30 +29,9 @@ namespace bind
       << &misc::error::exit;
   }
 
-  template <typename T>
-  void Binder::undeclared(const std::string& k, const T& e)
-  {
-    if (k == "variable")
-      error(e, "undeclared variable: " + e.name_get().get());
-    else if (k == "function")
-      error(e, "undeclared function: " + e.name_get().get());
-    else if (k == "type")
-      error(e, "undeclared type: " + e.name_get().get());
-  }
-
-  template <typename T>
-  void Binder::redefinition(const T& e1, const T& e2)
-  {
-    error_ << misc::error::error_type::bind
-      << e1.location_get() << ": redefition: " << e1.name_get();
-    error_ << misc::error::error_type::bind
-      << e2.location_get() << ": first definition" << &misc::error::exit;
-  }
-
   void
   Binder::check_main(const ast::FunctionDec& e)
   {
-#warning // FIXME: Some code was deleted here.
   }
 
   /*----------------.
@@ -220,7 +199,11 @@ namespace bind
   void
   Binder::operator()(ast::VarDec& e)
   {
+    if (var_stack_.get(e.name_get()) != nullptr)
+      redefinition(e, *var_stack_.get(e.name_get()));
     var_stack_.put(e.name_get(), &e);
+    if (e.type_name_get() != nullptr)
+      (*this)(*e.type_name_get());
     if (e.init_get() != nullptr)
       super_type::operator()(*(e.init_get()));
   }

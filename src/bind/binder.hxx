@@ -14,13 +14,31 @@ namespace bind
   | Error handling.  |
   `-----------------*/
 
-#warning // FIXME: Some code was deleted here (Error reporting).
+  template <typename T>
+  void Binder::undeclared(const std::string& k, const T& e)
+  {
+    if (k == "variable")
+      error(e, "undeclared variable: " + e.name_get().get());
+    else if (k == "function")
+      error(e, "undeclared function: " + e.name_get().get());
+    else if (k == "type")
+      error(e, "undeclared type: " + e.name_get().get());
+  }
+
+  template <typename T>
+  void Binder::redefinition(const T& e1, const T& e2)
+  {
+    error_ << misc::error::error_type::bind
+      << e1.location_get() << ": redefition: " << e1.name_get() << misc::iendl;
+    error_ << misc::error::error_type::bind
+      << e2.location_get() << ": first definition"
+      << misc::iendl << &misc::error::exit;
+  }
 
   /*-------------------.
   | Definition sites.  |
   `-------------------*/
 
-#warning // FIXME: Some code was deleted here.
 
   /*------------------.
   | Visiting /Decs/.  |
@@ -45,6 +63,8 @@ namespace bind
   void
   Binder::visit_dec_header(ast::FunctionDec& e)
   {
+    if (fun_stack_.get(e.name_get()) != nullptr)
+      redefinition<ast::FunctionDec>(e, *fun_stack_.get(e.name_get()));
     fun_stack_.put(e.name_get(), &e);
   }
 
@@ -65,6 +85,8 @@ namespace bind
   void
   Binder::visit_dec_header(ast::MethodDec& e)
   {
+    if (fun_stack_.get(e.name_get()) != nullptr)
+      redefinition<ast::FunctionDec>(e, *fun_stack_.get(e.name_get()));
     fun_stack_.put(e.name_get(), &e);
   }
 
@@ -85,6 +107,8 @@ namespace bind
   void
   Binder::visit_dec_header(ast::TypeDec& e)
   {
+    if (typ_stack_.get(e.name_get()) != nullptr)
+      redefinition<ast::TypeDec>(e, *typ_stack_.get(e.name_get()));
     typ_stack_.put(e.name_get(), &e);
   }
 

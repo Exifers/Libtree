@@ -25,6 +25,19 @@ namespace misc
   template <typename Key, typename Data>
   Data scoped_map<Key, Data>::get(const Key& key) const
   {
+    if (stack_.size() == 0)
+    {
+      if (std::is_pointer<Data>::value)
+      {
+        Data p = nullptr;
+        return p;
+      }
+      else
+      {
+        throw std::range_error("map is of size 0");
+      }
+    }
+
     auto cur = stack_.back();
     try
     {
