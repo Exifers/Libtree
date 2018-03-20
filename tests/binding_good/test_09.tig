@@ -1,0 +1,6 @@
+let
+  function a ( b : are, c : ave) = ( b )
+  function b ( d : are, e : ave) = ( d )
+in
+  a ( b (1 , 3) , 4 )
+end

@@ -59,6 +59,8 @@ namespace ast
     void operator()(const Field& e) override;
     void operator()(const VarDecs& e) override;
     void operator()(const MethodDecs& e) override;
+    void operator()(const TypeDecs& e) override;
+    void operator()(const FunctionDecs& e) override;
     /// \}
 
   private:

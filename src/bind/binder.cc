@@ -127,6 +127,11 @@ namespace bind
   void
   Binder::operator()(ast::ObjectExp& e)
   {
+    auto name = e.namety_get().name_get();
+    auto def = typ_stack_.get(name);
+    if (def == nullptr)
+      undeclared<ast::NameTy>("type", e.namety_get());
+    e.namety_get().def_set(def);
   }
 
   void
@@ -137,11 +142,7 @@ namespace bind
       undeclared<ast::CallExp>("function", e);
     e.def_set(def);
 
-    auto l = e.exps_get();
-    for (auto it = l.begin(); it != l.end(); it++)
-    {
-      super_type::operator()(**it);
-    }
+    super_type::operator()(e);
   }
 
   void
@@ -163,6 +164,7 @@ namespace bind
   void
   Binder::operator()(ast::SeqExp& e)
   {
+    scope_begin();
     auto l = e.exps_get();
     for (auto it = l.begin(); it != l.end(); it++)
     {

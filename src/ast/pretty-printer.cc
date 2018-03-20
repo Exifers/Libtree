@@ -16,27 +16,27 @@
 namespace ast
 {
 
-// Anonymous namespace: these functions are private to this file.
-namespace
-{
-  /// Output \a e on \a ostr.
-  inline
-    std::ostream&
-    operator<<(std::ostream& ostr, const Escapable& e)
-    {
-      if (escapes_display(ostr)
+  // Anonymous namespace: these functions are private to this file.
+  namespace
+  {
+    /// Output \a e on \a ostr.
+    inline
+      std::ostream&
+      operator<<(std::ostream& ostr, const Escapable& e)
+      {
+        if (escapes_display(ostr)
 #warning // FIXME: Some code was deleted here.
-         )
-        ostr << "/* escaping */ ";
+           )
+          ostr << "/* escaping */ ";
 
-      return ostr;
-    }
+        return ostr;
+      }
 
-  /// \brief Output \a e on \a ostr.
-  ///
-  /// Used to factor the output of the name declared,
-  /// and its possible additional attributes.
-  inline
+    /// \brief Output \a e on \a ostr.
+    ///
+    /// Used to factor the output of the name declared,
+    /// and its possible additional attributes.
+    inline
     std::ostream&
     operator<<(std::ostream& ostr, const Dec& e)
     {
@@ -45,13 +45,13 @@ namespace
         ostr << " /* " << &e << " */";
       return ostr;
     }
-}
+  }
 
 
 
-PrettyPrinter::PrettyPrinter(std::ostream& ostr)
-  : ostr_(ostr)
-{}
+  PrettyPrinter::PrettyPrinter(std::ostream& ostr)
+    : ostr_(ostr)
+  {}
 
 
   void
@@ -128,7 +128,7 @@ PrettyPrinter::PrettyPrinter(std::ostream& ostr)
   void
   PrettyPrinter::operator()(const StringExp& e)
   {
-    ostr_ << "\"" << e.value_get() << "\"";
+    ostr_ << "\"" << misc::escape<std::string>(e.value_get()) << "\"";
   }
 
   void
@@ -311,7 +311,7 @@ PrettyPrinter::PrettyPrinter(std::ostream& ostr)
   void
   PrettyPrinter::operator()(const TypeDec& e)
   {
-    ostr_ << "type " << e.name_get() << " = " << e.ty_get() << misc::iendl;
+    ostr_ << "type " << e.name_get() << " = " << e.ty_get();
   }
 
   void
@@ -443,8 +443,34 @@ PrettyPrinter::PrettyPrinter(std::ostream& ostr)
     auto v = e.decs_get();
     for (auto it = v.begin(); it != v.end(); it++)
     {
-      ostr_ << **it;
+      operator()(**it);
       ostr_ << misc::iendl;
+    }
+  }
+
+  void
+  PrettyPrinter::operator()(const FunctionDecs& e)
+  {
+    auto v = e.decs_get();
+    for (auto it = v.begin(); it != v.end(); it++)
+    {
+      operator()(**it);
+      auto it_cpy = it;
+      if (++it_cpy != v.end())
+        ostr_ << misc::iendl;
+    }
+  }
+
+  void
+  PrettyPrinter::operator()(const TypeDecs& e)
+  {
+    auto v = e.decs_get();
+    for (auto it = v.begin(); it != v.end(); it++)
+    {
+      operator()(**it);
+      auto it_cpy = it;
+      if (++it_cpy != v.end())
+        ostr_ << misc::iendl;
     }
   }
 

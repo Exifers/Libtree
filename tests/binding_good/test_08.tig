@@ -1,0 +1,8 @@
+let
+  function a (b : are, c : abe) = ( b ; c )
+in
+  let
+  in
+    a (1, 2)
+  end
+end

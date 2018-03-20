@@ -1,0 +1,10 @@
+let
+  var a := 12
+  var b := 12
+in
+  let
+  in
+    a;
+    b
+  end
+end
