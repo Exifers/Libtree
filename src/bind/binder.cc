@@ -181,8 +181,10 @@ namespace bind
   Binder::operator()(ast::WhileExp& e)
   {
     scope_begin();
+    loops_.push_back(&e);
     super_type::operator()(e.test_get());
     super_type::operator()(e.body_get());
+    loops_.pop_back();
     scope_end();
   }
 
@@ -190,10 +192,20 @@ namespace bind
   Binder::operator()(ast::ForExp& e)
   {
     scope_begin();
+    loops_.push_back(&e);
     super_type::operator()(*e.vardec_get().init_get());
     super_type::operator()(e.hi_get());
     super_type::operator()(e.body_get());
+    loops_.pop_back();
     scope_end();
+  }
+
+  void
+  Binder::operator()(ast::BreakExp& e)
+  {
+    if (loops_.size() == 0)
+      error(e, ": `break' outside a loop");
+    e.loop_set(loops_.back());
   }
 
   void

@@ -24,6 +24,12 @@ namespace ast
 
     void accept(ConstVisitor& v) const override;
     void accept(Visitor& v) override;
+
+    void loop_set(Exp *loop);
+    Exp& loop_get() const;
+
+    protected:
+    Exp *loop_ = nullptr;
   };
 
 } // namespace ast

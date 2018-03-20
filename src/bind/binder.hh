@@ -78,6 +78,7 @@ namespace bind
     void operator()(ast::ForExp& e) override;
     void operator()(ast::SimpleVar& e) override;
     void operator()(ast::NameTy& e) override;
+    void operator()(ast::BreakExp& e) override;
 
     // ---------------- //
     // Visiting /Dec/.  //
@@ -183,6 +184,8 @@ namespace bind
     misc::scoped_map<misc::symbol, ast::FunctionDec*> fun_stack_;
     misc::scoped_map<misc::symbol, ast::TypeDec*> typ_stack_;
     misc::scoped_map<misc::symbol, ast::VarDec*> var_stack_;
+
+    std::vector<ast::Exp *> loops_;
   };
 
 }

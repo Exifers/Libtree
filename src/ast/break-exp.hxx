@@ -12,7 +12,16 @@
 
 namespace ast
 {
+  inline void
+  BreakExp::loop_set(Exp *loop)
+  {
+    loop_ = loop;
+  }
 
-
+  inline Exp&
+  BreakExp::loop_get() const
+  {
+    return *loop_;
+  }
 } // namespace ast
 
