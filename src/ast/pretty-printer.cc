@@ -41,7 +41,7 @@ namespace ast
     operator<<(std::ostream& ostr, const Dec& e)
     {
       ostr << e.name_get();
-      if (bindings_display(ostr))
+      if (ast::g_bindings_display)
         ostr << " /* " << &e << " */";
       return ostr;
     }
@@ -297,7 +297,7 @@ namespace ast
     if (e.init_get() != nullptr)
       ostr_ << "var ";
 
-    ostr_ << e.name_get();
+    ostr_ << (Dec&) e;
 
     if (e.type_name_get() != nullptr)
       ostr_ << " : " << *(e.type_name_get());

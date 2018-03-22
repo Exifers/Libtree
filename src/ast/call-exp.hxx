@@ -41,7 +41,7 @@ namespace ast
   }
 
   inline FunctionDec *
-  CallExp::def_get()
+  CallExp::def_get() const
   {
     return def_;
   }

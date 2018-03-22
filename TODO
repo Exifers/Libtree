@@ -71,3 +71,5 @@ Notation:
 * How to fix the invalid write appearing in the traces ?
 
 * How to fix the fails of lexer in the test-suite ?
+
+* How to set bindings_display to true ?

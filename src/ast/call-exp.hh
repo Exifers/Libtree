@@ -33,7 +33,7 @@ namespace ast
     const std::list<Exp*>& exps_get() const;
     std::list<Exp*>& exps_get();
     void def_set(FunctionDec *def);
-    FunctionDec *def_get();
+    FunctionDec *def_get() const;
 
     protected:
     misc::symbol name_;

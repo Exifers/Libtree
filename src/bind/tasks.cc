@@ -10,8 +10,15 @@
 
 #include "libbind.hh"
 
+namespace ast
+{
+  extern const misc::xalloc<bool> bindings_display;
+  extern bool g_bindings_display;
+  extern bool g_escape_display;
+}
+
 namespace bind::tasks
-{ 
+{
 
   void
   bindings_compute()
@@ -20,7 +27,8 @@ namespace bind::tasks
   }
 
   void
-  bindings_display()
+  bindings_display_task()
   {
+    ast::g_bindings_display = true;
   }
 }
