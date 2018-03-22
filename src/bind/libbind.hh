@@ -12,5 +12,6 @@ namespace bind
   namespace tasks
   {
     void bind_ast(void);
+    void rename_ast(void);
   }
 }

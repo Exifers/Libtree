@@ -3,7 +3,6 @@
  ** \brief Bind module tasks implementation.
  */
 
-
 #define DEFINE_TASKS 1
 #include <bind/tasks.hh>
 #undef DEFINE_TASKS
@@ -30,5 +29,11 @@ namespace bind::tasks
   bindings_display_task()
   {
     ast::g_bindings_display = true;
+  }
+
+  void
+  rename_task()
+  {
+    bind::tasks::rename_ast();
   }
 }

@@ -10,5 +10,8 @@ namespace bind::tasks
   TASK_GROUP("3. Binding");
   TASK_DECLARE("b|bindings-compute", "bind the ast", bindings_compute, "parse");
   TASK_DECLARE("B|bindings-display",
-      "display bindings in the ast pretty print", bindings_display_task, "parse");
+      "display bindings in the ast pretty print", bindings_display_task,
+      "parse");
+  TASK_DECLARE("R|rename", "rename names to avoid duplicates", rename_task,
+      "bindings-compute");
 } // namespace bind::tasks

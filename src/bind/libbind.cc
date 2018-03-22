@@ -5,6 +5,7 @@
 
 
 #include "libbind.hh"
+#include "renamer.hh"
 
 namespace bind
 {
@@ -14,6 +15,12 @@ namespace bind
     {
       bind::Binder binder = bind::Binder();
       ast::tasks::the_program->accept(binder);
+    }
+
+    void rename_ast(void)
+    {
+      bind::Renamer renamer = bind::Renamer();
+      ast::tasks::the_program->accept(renamer);
     }
   } // namespace bind::tasks
 } // namespace bind
