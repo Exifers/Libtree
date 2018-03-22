@@ -57,92 +57,17 @@ namespace bind
 
   void Renamer::operator()(ast::SimpleVar& e)
   {
-  }
-
-  void Renamer::operator()(ast::FieldVar& e)
-  {
-
-  }
-
-  void Renamer::operator()(ast::SubscriptVar& e)
-  {
-
-  }
-
-  void Renamer::operator()(ast::CastVar& e)
-  {
-
-  }
-
-
-  void Renamer::operator()(ast::NilExp& e)
-  {
-
-  }
-
-  void Renamer::operator()(ast::IntExp& e)
-  {
-
-  }
-
-  void Renamer::operator()(ast::StringExp& e)
-  {
-
+    e.name_set(new_names_[e.def_get()]);
   }
 
   void Renamer::operator()(ast::CallExp& e)
   {
-
+    e.name_set(new_names_[e.def_get()]);
+    super_type::operator()(e);
   }
 
-  void Renamer::operator()(ast::OpExp& e)
+  void Renamer::operator()(ast::NameTy& e)
   {
-
+    e.name_set(new_names_[e.def_get()]);
   }
-
-  void Renamer::operator()(ast::RecordExp& e)
-  {
-
-  }
-
-  void Renamer::operator()(ast::AssignExp& e)
-  {
-
-  }
-
-  void Renamer::operator()(ast::IfExp& e)
-  {
-
-  }
-
-  void Renamer::operator()(ast::WhileExp& e)
-  {
-
-  }
-
-  void Renamer::operator()(ast::ForExp& e)
-  {
-
-  }
-
-  void Renamer::operator()(ast::BreakExp&)
-  {
-
-  }
-
-  void Renamer::operator()(ast::ArrayExp& e)
-  {
-
-  }
-
-  void Renamer::operator()(ast::CastExp& e)
-  {
-
-  }
-
-  void Renamer::operator()(ast::FieldInit& e)
-  {
-
-  }
-
 } // namespace bind

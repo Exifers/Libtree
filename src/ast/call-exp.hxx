@@ -22,6 +22,12 @@ namespace ast
     return name_;
   }
 
+  inline void
+  CallExp::name_set(misc::symbol &name)
+  {
+    name_ = name;
+  }
+
   inline const std::list<Exp*>&
   CallExp::exps_get() const
   {

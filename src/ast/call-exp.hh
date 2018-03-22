@@ -30,6 +30,7 @@ namespace ast
 
     const misc::symbol& name_get() const;
     misc::symbol& name_get();
+    void name_set(misc::symbol &name);
     const std::list<Exp*>& exps_get() const;
     std::list<Exp*>& exps_get();
     void def_set(FunctionDec *def);

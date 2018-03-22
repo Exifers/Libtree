@@ -157,7 +157,8 @@ namespace bind
   void
   Binder::operator()(ast::AssignExp& e)
   {
-    super_type::operator()(e.lvalue_get());
+    (*this)(e.lvalue_get());
+    (*this)(e.exp_get());
   }
 
   void
