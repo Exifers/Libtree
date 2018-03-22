@@ -46,6 +46,10 @@ namespace ast
     const Exp* init_get() const;
     /// Return the initial value (expression) assigned to the variable.
     Exp* init_get();
+
+    TypeDec *def_get() const;
+    void def_set(TypeDec *typedec);
+
     /** \} */
 
   protected:
@@ -53,6 +57,7 @@ namespace ast
     NameTy* type_name_;
     /// The initial value (expression) assigned to the variable.
     Exp* init_;
+    TypeDec *def_ = nullptr;
   };
 
 } // namespace ast

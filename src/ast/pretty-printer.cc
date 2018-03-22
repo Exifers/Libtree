@@ -15,6 +15,7 @@
 
 namespace ast
 {
+  extern bool g_bindings_display;
 
   // Anonymous namespace: these functions are private to this file.
   namespace
@@ -58,7 +59,7 @@ namespace ast
   PrettyPrinter::operator()(const SimpleVar& e)
   {
     ostr_ << e.name_get();
-    if (bindings_display(ostr_))
+    if (ast::g_bindings_display)
       ostr_ << " /* " << e.def_get() << " */";
   }
 
@@ -163,7 +164,10 @@ namespace ast
   void
   PrettyPrinter::operator()(const CallExp& e)
   {
-    ostr_ << e.name_get() << "( ";
+    ostr_ << e.name_get();
+    if (ast::g_bindings_display)
+      ostr_ << " /* " << e.def_get() << " */";
+    ostr_ << "( ";
     auto l = e.exps_get();
     for (auto it = l.begin(); it != l.end(); it++)
     {
@@ -272,14 +276,20 @@ namespace ast
   void
   PrettyPrinter::operator()(const WhileExp& e)
   {
-    ostr_ << "while " << e.test_get() << " do " << misc::iendl
+    ostr_ << "while ";
+    if (ast::g_bindings_display)
+      ostr_ << "/* " << &e << " */";
+    ostr_ << e.test_get() << " do " << misc::iendl
       << e.body_get();
   }
 
   void
   PrettyPrinter::operator()(const ForExp& e)
   {
-    ostr_ << "for " << e.vardec_get().name_get() << " := "
+    ostr_ << "for ";
+    if (ast::g_bindings_display)
+      ostr_ << "/* " << &e << " */";
+    ostr_ << e.vardec_get().name_get() << " := "
       << *e.vardec_get().init_get()
       << " to " << e.hi_get() << " do "
       << e.body_get();
@@ -289,29 +299,17 @@ namespace ast
   PrettyPrinter::operator()(const BreakExp& e)
   {
     ostr_ << "break";
-  }
-
-  void
-  PrettyPrinter::operator()(const VarDec& e)
-  {
-    if (e.init_get() != nullptr)
-      ostr_ << "var ";
-
-    ostr_ << (Dec&) e;
-
-    if (e.type_name_get() != nullptr)
-      ostr_ << " : " << *(e.type_name_get());
-
-    if (e.init_get() != nullptr)
-      ostr_ << " := " << *(e.init_get());
-
-    ostr_ << misc::iendl;
+    if (ast::g_bindings_display)
+      ostr_ << " /* " << &e.loop_get() << " */";
   }
 
   void
   PrettyPrinter::operator()(const TypeDec& e)
   {
-    ostr_ << "type " << e.name_get() << " = " << e.ty_get();
+    ostr_ << "type " << e.name_get();
+    if (ast::g_bindings_display)
+      ostr_ << " /* " << &e << " */";
+    ostr_ << " = " << e.ty_get();
   }
 
   void
@@ -321,21 +319,33 @@ namespace ast
     auto body = e.body_get();
     if (result == nullptr && body == nullptr)
     {
-      ostr_ << "primitive " << e.name_get() << " (" << e.formals_get() << ")";
+      ostr_ << "primitive " << e.name_get();
+      if (ast::g_bindings_display)
+        ostr_ << " /* " << &e << " */ ";
+      ostr_  << " (" << e.formals_get() << ")";
     }
     else if (result == nullptr)
     {
-      ostr_ << "function " << e.name_get() << " (" << e.formals_get() << ") "
+      ostr_ << "function " << e.name_get();
+      if (ast::g_bindings_display)
+        ostr_ << " /* " << &e << " */ ";
+      ostr_ << " (" << e.formals_get() << ") "
         << " = " << *body;
     }
     else if (body == nullptr)
     {
-      ostr_ << "primitive " << e.name_get() << " (" << e.formals_get() << ") "
+      ostr_ << "primitive " << e.name_get();
+      if (ast::g_bindings_display)
+        ostr_ << " /* " << &e << " */ ";
+      ostr_ << " (" << e.formals_get() << ") "
         << ": " << *result;
     }
     else
     {
-      ostr_ << "function " << e.name_get() << " (" << e.formals_get() << ") "
+      ostr_ << "function " << e.name_get();
+      if (ast::g_bindings_display)
+        ostr_ << " /* " << &e << " */ ";
+      ostr_ << " (" << e.formals_get() << ") "
         << ": " << *result << " = " << *body;
     }
   }
@@ -423,10 +433,14 @@ namespace ast
       if ((**it).init_get() != nullptr)
         ostr_ << "var ";
 
-      ostr_ << (**it).name_get();
+      ostr_ << (const Dec&) (**it);
 
       if ((**it).type_name_get() != nullptr)
+      {
         ostr_ << " : " << *((**it).type_name_get());
+        if (ast::g_bindings_display)
+          ostr_ << " /* " << (**it).def_get() << " */ ";
+      }
 
       if ((**it).init_get() != nullptr)
         ostr_ << " := " << *((**it).init_get());

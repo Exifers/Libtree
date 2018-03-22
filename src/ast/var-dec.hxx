@@ -33,6 +33,17 @@ namespace ast
     return init_;
   }
 
+  inline TypeDec *
+  VarDec::def_get() const
+  {
+    return def_;
+  }
+
+  inline void
+  VarDec::def_set(TypeDec *typedec)
+  {
+    def_ = typedec;
+  }
 
 } // namespace ast
 

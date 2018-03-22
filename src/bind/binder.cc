@@ -1,5 +1,4 @@
 /**
- ** \file bind/binder.cc
  ** \brief Implementation for bind/binder.hh.
  */
 
@@ -215,7 +214,13 @@ namespace bind
       redefinition(e, *var_stack_.get(e.name_get()));
     var_stack_.put(e.name_get(), &e);
     if (e.type_name_get() != nullptr)
-      (*this)(*e.type_name_get());
+    {
+      ast::NameTy& namety = *e.type_name_get();
+      auto typ_def = typ_stack_.get(namety.name_get());
+      if (typ_def == nullptr)
+        undeclared<ast::NameTy>("type", namety);
+      e.def_set(typ_def);
+    }
     if (e.init_get() != nullptr)
       super_type::operator()(*(e.init_get()));
   }
