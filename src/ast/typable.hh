@@ -23,7 +23,18 @@ namespace ast
 
   class Typable
   {
-#warning // FIXME: Some code was deleted here.
+    public:
+      Typable(const type::Type *type);
+      Typable() = default;
+      ~Typable() = default;
+
+      virtual void accept(ConstVisitor& v) const = 0;
+      virtual void accept(Visitor& v) = 0;
+
+      void type_set(const type::Type *type);
+      const type::Type *type_get() const;
+    private:
+      const type::Type *type_;
   };
 
 } // namespace ast

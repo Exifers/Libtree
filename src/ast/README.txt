@@ -40,7 +40,7 @@ Classes containing a pointer to a definition are tagged with '+'.
   /Ty/              ()
     ArrayTy         (NameTy base_type)
     ClassTy         (NameTy super, DecsList decs)
-    NameTy          (symbol name)
+ +  NameTy          (symbol name)
 -   RecordTy        // list of tyfields, ie list of Field
   /Decs/
     AnyDecs

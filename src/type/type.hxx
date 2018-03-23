@@ -14,7 +14,6 @@ namespace type
   operator==(const Type& lhs, const Type& rhs)
   {
 #warning // FIXME: Some code was deleted here.
-    die("REMOVE ME!");
   }
 
   inline bool

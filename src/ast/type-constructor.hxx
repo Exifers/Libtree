@@ -10,8 +10,17 @@
 
 namespace ast
 {
+  inline void
+  TypeConstructor::created_type_set(const type::Type *created_type)
+  {
+    created_type_ = created_type;
+  }
 
-#warning // FIXME: Some code was deleted here.
+  inline const type::Type *
+  TypeConstructor::created_type_get() const
+  {
+    return created_type_;
+  }
 
 } // namespace ast
 

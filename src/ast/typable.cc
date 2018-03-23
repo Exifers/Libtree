@@ -9,7 +9,23 @@
 namespace ast
 {
 
-#warning // FIXME: Some code was deleted here.
+  Typable::Typable(const type::Type *type)
+    : type_(type)
+  {}
+
+  /*
+  void
+  Typable::accept(ConstVisitor& v) const
+  {
+    v(*this);
+  }
+
+  void
+  Typable::accept(Visitor& v)
+  {
+    v(*this);
+  }
+  */
 
 } // namespace ast
 

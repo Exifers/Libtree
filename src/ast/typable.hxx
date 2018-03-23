@@ -9,8 +9,17 @@
 
 namespace ast
 {
+  inline void
+  Typable::type_set(const type::Type *type)
+  {
+    type_ = type;
+  }
 
-#warning // FIXME: Some code was deleted here.
+  inline const type::Type *
+  Typable::type_get() const
+  {
+    return type_;
+  }
 
 } // namespace ast
 
