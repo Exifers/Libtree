@@ -15,7 +15,7 @@ namespace ast
 
   TypeConstructor::~TypeConstructor()
   {
-    delete created_type_;
+    //delete created_type_;
   }
 
 } // namespace ast

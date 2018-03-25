@@ -20,6 +20,7 @@ namespace ast
   {
     public:
     LetExp(const Location& location, DecsList* decs, std::list<Exp*> exps);
+    LetExp(const Location& location, DecsList* decs, std::vector<Exp*>* exps);
     LetExp(const LetExp&) = delete;
     LetExp& operator=(const LetExp&) = delete;
 

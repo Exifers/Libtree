@@ -27,7 +27,7 @@ namespace misc
   {
     if (stack_.size() == 0)
     {
-      if (std::is_pointer<Data>::value)
+      if constexpr (std::is_pointer<Data>::value)
       {
         Data p = nullptr;
         return p;
@@ -45,7 +45,7 @@ namespace misc
     }
     catch(...)
     {
-      if (std::is_pointer<Data>::value)
+      if constexpr (std::is_pointer<Data>::value)
       {
         Data p = nullptr;
         return p;

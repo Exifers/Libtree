@@ -15,6 +15,8 @@ namespace ast
   {
     public:
     SeqExp(const Location& location, std::list<Exp*> exps);
+    SeqExp(const Location& location, std::vector<Exp*> exps);
+    SeqExp(const Location& location, std::vector<Exp*>* exps);
     SeqExp(const SeqExp&) = delete;
     SeqExp& operator=(const SeqExp&) = delete;
 

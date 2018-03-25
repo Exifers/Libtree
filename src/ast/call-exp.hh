@@ -20,6 +20,8 @@ namespace ast
   {
     public:
     CallExp(const Location& location, misc::symbol name, std::list<Exp*> exps);
+    CallExp(const Location& location, misc::symbol name,
+        std::vector<Exp*>* exps);
     CallExp(const CallExp&) = delete;
     CallExp& operator=(const CallExp&) = delete;
 

@@ -9,10 +9,25 @@
 
 namespace ast
 {
-  
   SeqExp::SeqExp(const Location& location, std::list<Exp*> exps)
   : Exp(location), exps_(exps)
   {}
+
+  SeqExp::SeqExp(const Location& location, std::vector<Exp*> exps)
+    : Exp(location)
+  {
+    auto l = std::list<Exp*>{};
+    std::copy(exps.begin(), exps.end(), std::back_inserter(l));
+    exps_ = l;
+  }
+
+  SeqExp::SeqExp(const Location& location, std::vector<Exp*>* exps)
+    : Exp(location)
+  {
+    auto l = std::list<Exp*>{};
+    std::copy(exps->begin(), exps->end(), std::back_inserter(l));
+    exps_ = l;
+  }
 
   void
   SeqExp::accept(ConstVisitor& v) const

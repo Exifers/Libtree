@@ -13,8 +13,17 @@ namespace ast
   CallExp::CallExp(const Location& location,
       misc::symbol name,
       std::list<Exp*> exps)
-    : Exp(location), name_(name), exps_(exps) 
+    : Exp(location), name_(name), exps_(exps)
   {}
+
+  CallExp::CallExp(const Location& location, misc::symbol name,
+      std::vector<Exp*>* exps)
+    : Exp(location), name_(name)
+  {
+    auto l = std::list<Exp*>{};
+    std::copy(exps->begin(), exps->end(), std::back_inserter(l));
+    exps_ = l;
+  }
 
   void CallExp::accept(ConstVisitor& v) const
   {
